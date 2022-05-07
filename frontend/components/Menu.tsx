@@ -1,5 +1,5 @@
 import {FC} from "react";
-import {Button, Container, Navbar} from "react-bootstrap";
+import {Button, Container, Nav, Navbar} from "react-bootstrap";
 import Link from "next/link";
 import {User} from "../src/user";
 import {LoggedUser} from "./LoggedUser";
@@ -17,6 +17,11 @@ const Menu: FC<Props> = (props: Props) => {
                     <Link href={"/"} passHref>
                         <Navbar.Brand>Hřiště Veselice</Navbar.Brand>
                     </Link>
+                    <Nav className="me-auto" hidden={!props.user.isAdmin}>
+                        <Link href={"/admin"} passHref>
+                            <Nav.Link>Admin</Nav.Link>
+                        </Link>
+                    </Nav>
                     <Navbar.Toggle/>
                     <Navbar.Collapse className="justify-content-end">
                         <LoggedUser user={props.user}/>

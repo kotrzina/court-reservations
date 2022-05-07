@@ -75,7 +75,12 @@ func (srv *Server) createRouter() *gin.Engine {
 	{
 		private.GET("/v1/time-table", srv.createTimeTableEndpoint(true))
 		private.GET("/v1/available/:date/:firstSlot", srv.getAvailable)
+		private.DELETE("/v1/reservation/:date/:slotFrom", srv.deleteReservation)
 		private.POST("/v1/reservation", srv.postReservation)
+		private.GET("/v1/admin/reservation", srv.getAllReservations)
+
+		private.GET("/v1/admin/user", srv.getAllUsers)
+		private.DELETE("/v1/admin/user/:username", srv.deleteUser)
 	}
 
 	router.GET("/", func(c *gin.Context) {

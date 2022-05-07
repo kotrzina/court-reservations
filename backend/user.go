@@ -7,27 +7,34 @@ import (
 
 type UserService struct {
 	jwtSigningKey string
+	admins        []string // should be refactored to map
 }
 
 type UserClaims struct {
 	Name     string `json:"name"`
 	Username string `json:"username"`
+	IsAdmin  bool   `json:"isAdmin"`
 	jwt.StandardClaims
 }
 
 type LoggedUser struct {
 	Name     string
 	Username string
+	IsAdmin  bool
 }
 
-func NewUserService(jsk string) *UserService {
-	return &UserService{jwtSigningKey: jsk}
+func NewUserService(jsk string, admins []string) *UserService {
+	return &UserService{
+		jwtSigningKey: jsk,
+		admins:        admins,
+	}
 }
 
 func (us *UserService) GenerateJwt(name, username string) (string, error) {
 	claims := UserClaims{
 		name,
 		username,
+		us.IsAdmin(username),
 		jwt.StandardClaims{
 			Issuer: "court app",
 		},
@@ -52,8 +59,19 @@ func (us *UserService) VerifyJwt(tokenString string) (*LoggedUser, error) {
 		return &LoggedUser{
 			Name:     claim.Name,
 			Username: claim.Username,
+			IsAdmin:  claim.IsAdmin,
 		}, nil
 	}
 
 	return nil, fmt.Errorf("could not verify identity")
+}
+
+func (us *UserService) IsAdmin(username string) bool {
+	for _, u := range us.admins {
+		if u == username {
+			return true
+		}
+	}
+
+	return false
 }

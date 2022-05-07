@@ -2,6 +2,7 @@ export type User = {
     logged: boolean;
     name: string;
     username: string;
+    isAdmin: boolean;
     jwt: string;
 }
 
@@ -9,6 +10,7 @@ export const emptyUser: User = {
     logged: false,
     name: "",
     username: "",
+    isAdmin: false,
     jwt: "",
 }
 
@@ -31,6 +33,7 @@ export function getUserFromStorage(): User {
         logged: false,
         name: "",
         username: "",
+        isAdmin: false,
         jwt: "",
     }
 

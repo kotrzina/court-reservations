@@ -22,6 +22,7 @@ const Login: FC = () => {
                 logged: true,
                 name: data.name,
                 username: username,
+                isAdmin: data.isAdmin,
                 jwt: data.jwt,
             }
             login(u)

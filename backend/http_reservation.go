@@ -8,6 +8,13 @@ import (
 	"time"
 )
 
+type reservationItem struct {
+	Date     string `json:"date"`
+	SlotFrom int    `json:"slotFrom,omitempty"`
+	SlotTo   int    `json:"slotTo,omitempty"`
+	Owner    string `json:"owner"`
+}
+
 func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		type slotOutput struct {
@@ -20,13 +27,6 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 		type dayOutput struct {
 			Date  string       `json:"date"`
 			Slots []slotOutput `json:"slots"`
-		}
-
-		type reservationItem struct {
-			Date     string `json:"date"`
-			SlotFrom int    `json:"slotFrom,omitempty"`
-			SlotTo   int    `json:"slotTo,omitempty"`
-			Owner    string `json:"owner"`
 		}
 
 		type output struct {
@@ -93,12 +93,7 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 		if includeDetails {
 			for _, r := range reservations {
 				if currentSlot <= r.SlotTo {
-					today = append(today, reservationItem{
-						Date:     r.Date.Format(dateFormat),
-						SlotFrom: r.SlotFrom,
-						SlotTo:   r.SlotTo,
-						Owner:    r.Name,
-					})
+					today = append(today, mapReservationItem(r))
 				}
 			}
 		}
@@ -116,12 +111,7 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 				return
 			}
 			for _, ur := range userReservations {
-				userRes = append(userRes, reservationItem{
-					Date:     ur.Date.Format(dateFormat),
-					SlotFrom: ur.SlotFrom,
-					SlotTo:   ur.SlotTo,
-					Owner:    ur.Name,
-				})
+				userRes = append(userRes, mapReservationItem(ur))
 			}
 		}
 
@@ -272,6 +262,81 @@ func (srv *Server) postReservation(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, struct{}{})
+}
+
+func (srv *Server) getAllReservations(c *gin.Context) {
+	user, err := srv.GetLoggedUser(c)
+	if err != nil {
+		c.JSON(createHttpError(http.StatusInternalServerError, err.Error()))
+		return
+	}
+
+	if !user.IsAdmin {
+		c.JSON(createHttpError(http.StatusForbidden, "insufficient permissions"))
+		return
+	}
+
+	res, err := srv.storage.GetAllActiveReservations()
+	if err != nil {
+		c.JSON(createHttpError(http.StatusInternalServerError, err.Error()))
+		return
+	}
+
+	items := []reservationItem{}
+	for _, r := range res {
+		items = append(items, mapReservationItem(r))
+	}
+
+	c.JSON(http.StatusOK, items)
+}
+
+func (srv *Server) deleteReservation(c *gin.Context) {
+	date, err := time.ParseInLocation("2006-01-02", c.Param("date"), getPrague())
+	if err != nil {
+		c.JSON(createHttpError(http.StatusBadRequest, "could not parse date parameter"))
+		return
+	}
+
+	slotFrom, err := strconv.Atoi(c.Param("slotFrom"))
+	if err != nil || slotFrom < 0 || slotFrom > 95 {
+		c.JSON(createHttpError(http.StatusBadRequest, "could not parse slot parameter"))
+		return
+	}
+
+	reservation, err := srv.storage.GetReservation(date, slotFrom)
+	if err != nil {
+		c.JSON(createHttpError(http.StatusNotFound, "reservation does not exist"))
+		return
+	}
+
+	user, err := srv.GetLoggedUser(c)
+	if err != nil {
+		c.JSON(createHttpError(http.StatusInternalServerError, "could not load logged user"))
+		return
+	}
+
+	// owner of the reservation or admin
+	if reservation.Username != user.Username && !user.IsAdmin {
+		c.JSON(createHttpError(http.StatusForbidden, "insufficient permissions"))
+		return
+	}
+
+	err = srv.storage.DeleteReservation(date, slotFrom)
+	if err != nil {
+		c.JSON(createHttpError(http.StatusInternalServerError, "could not delete reservation"))
+		return
+	}
+
+	c.JSON(http.StatusOK, struct{}{})
+}
+
+func mapReservationItem(r Reservation) reservationItem {
+	return reservationItem{
+		Date:     r.Date.Format(dateFormat),
+		SlotFrom: r.SlotFrom,
+		SlotTo:   r.SlotTo,
+		Owner:    r.Name,
+	}
 }
 
 func (srv *Server) checkMaxDays(now, reservation time.Time) error {

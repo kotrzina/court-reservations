@@ -14,6 +14,7 @@ func (srv *Server) loginUser(c *gin.Context) {
 	type output struct {
 		Username string `json:"username"`
 		Name     string `json:"name"`
+		IsAdmin  bool   `json:"isAdmin"`
 		Jwt      string `json:"jwt"`
 	}
 
@@ -22,7 +23,6 @@ func (srv *Server) loginUser(c *gin.Context) {
 	if err != nil {
 		c.JSON(createHttpError(400, "could not decode input json"))
 		return
-
 	}
 
 	user, err := srv.storage.GetUserByUsername(request.Username)
@@ -31,7 +31,7 @@ func (srv *Server) loginUser(c *gin.Context) {
 		return
 	}
 
-	if !PasswordValid(request.Password, user.Hash) {
+	if !isPasswordValid(request.Password, user.Hash) {
 		c.JSON(createHttpError(http.StatusUnauthorized, "invalid password"))
 		return
 	}
@@ -45,6 +45,7 @@ func (srv *Server) loginUser(c *gin.Context) {
 	response := output{
 		Name:     user.Name,
 		Username: user.Username,
+		IsAdmin:  srv.userService.IsAdmin(user.Username),
 		Jwt:      jwt,
 	}
 
@@ -81,6 +82,57 @@ func (srv *Server) registerUser(c *gin.Context) {
 	err = srv.storage.CreateUser(request.Username, request.Password, request.Name)
 	if err != nil {
 		c.JSON(createHttpError(http.StatusBadRequest, "could not create new user"))
+		return
+	}
+
+	c.JSON(http.StatusOK, struct{}{})
+}
+
+func (srv *Server) getAllUsers(c *gin.Context) {
+	type output struct {
+		Username string `json:"username"`
+		Name     string `json:"name"`
+	}
+
+	loggedUser, err := srv.GetLoggedUser(c)
+	if err != nil || !loggedUser.IsAdmin {
+		c.JSON(createHttpError(http.StatusForbidden, "insufficient permissions"))
+		return
+	}
+
+	users, err := srv.storage.GetUsers()
+	if err != nil {
+		c.JSON(createHttpError(http.StatusInternalServerError, "could not load list of users"))
+		return
+	}
+
+	response := []output{}
+	for _, u := range users {
+		response = append(response, output{
+			Username: u.Username,
+			Name:     u.Name,
+		})
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
+func (srv *Server) deleteUser(c *gin.Context) {
+	loggedUser, err := srv.GetLoggedUser(c)
+	if err != nil || !loggedUser.IsAdmin {
+		c.JSON(createHttpError(http.StatusForbidden, "insufficient permissions"))
+		return
+	}
+
+	username := c.Param("username")
+	if username == "" {
+		c.JSON(createHttpError(http.StatusNotFound, "invalid parameter username"))
+		return
+	}
+
+	err = srv.storage.DeleteUser(username)
+	if err != nil {
+		c.JSON(createHttpError(http.StatusInternalServerError, "could not delete user"))
 		return
 	}
 

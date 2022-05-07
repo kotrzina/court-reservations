@@ -18,7 +18,7 @@ func main() {
 		panic(err)
 	}
 
-	us := NewUserService(c.JwtSigningKey)
+	us := NewUserService(c.JwtSigningKey, c.Admins)
 
 	server := NewServer(s, c, us, 8081)
 	server.StartServer()

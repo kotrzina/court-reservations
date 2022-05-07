@@ -7,18 +7,10 @@ import (
 
 const colUser = "createUser"
 
-type Role int64
-
-const (
-	RoleRegular = 0
-	RoleAdmin   = 1
-)
-
 type User struct {
 	Username string
 	Hash     string // password hash
 	Name     string // real name
-	Role     int64
 }
 
 func (s *Storage) GetUserByUsername(username string) (*User, error) {
@@ -33,7 +25,6 @@ func (s *Storage) GetUserByUsername(username string) (*User, error) {
 		Username: data["username"].(string),
 		Hash:     data["hash"].(string),
 		Name:     data["name"].(string),
-		Role:     data["role"].(int64),
 	}, nil
 }
 
@@ -47,7 +38,6 @@ func (s *Storage) CreateUser(username, password, name string) error {
 		"username": username,
 		"hash":     hash,
 		"name":     name,
-		"role":     RoleRegular,
 	}
 
 	ctx := context.Background()
@@ -56,7 +46,7 @@ func (s *Storage) CreateUser(username, password, name string) error {
 	return err
 }
 
-func (s *Storage) ChangeUserRole(username string, role int64) error {
+func (s *Storage) ChangeUserRole(username string) error {
 	ctx := context.Background()
 	doc, err := s.client.Collection(colUser).Doc(username).Get(ctx)
 	if err != nil {
@@ -68,7 +58,6 @@ func (s *Storage) ChangeUserRole(username string, role int64) error {
 		"username": data["username"].(string),
 		"hash":     data["hash"].(string),
 		"name":     data["name"].(string),
-		"role":     role,
 	}
 
 	_, err = s.client.Collection(colUser).Doc(username).Set(ctx, u)
@@ -76,7 +65,33 @@ func (s *Storage) ChangeUserRole(username string, role int64) error {
 	return err
 }
 
-func PasswordValid(password, hash string) bool {
+func (s *Storage) GetUsers() ([]User, error) {
+	ctx := context.Background()
+	docs, err := s.client.Collection(colUser).Documents(ctx).GetAll()
+	if err != nil {
+		return nil, err
+	}
+
+	users := []User{}
+	for _, doc := range docs {
+		data := doc.Data()
+		users = append(users, User{
+			Username: data["username"].(string),
+			Hash:     data["hash"].(string),
+			Name:     data["name"].(string),
+		})
+	}
+
+	return users, nil
+}
+
+func (s *Storage) DeleteUser(username string) error {
+	ctx := context.Background()
+	_, err := s.client.Collection(colUser).Doc(username).Delete(ctx)
+	return err
+}
+
+func isPasswordValid(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
 }

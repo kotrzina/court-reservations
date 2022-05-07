@@ -12,7 +12,7 @@ export type Day = {
     slots: Slot[]; // always 96 slots
 }
 
-export type ReservationListItem = {
+export type ReservationItem = {
     date: string;
     slotFrom: number;
     slotTo: number;
@@ -21,8 +21,8 @@ export type ReservationListItem = {
 
 export type TimeTable = {
     timeTable: Day[];
-    todayReservations: ReservationListItem[];
-    userReservations: ReservationListItem[];
+    todayReservations: ReservationItem[];
+    userReservations: ReservationItem[];
 }
 
 export type Reservation = {
@@ -40,9 +40,14 @@ export type AvailableReservations = {
 export type LoginResponse = {
     name: string;
     username: string;
+    isAdmin: boolean;
     jwt: string;
 }
 
+export type User = {
+    username: string;
+    name: string;
+}
 
 export async function fetchTimeTable(): Promise<TimeTable> {
     const user = getUserFromStorage()
@@ -137,6 +142,72 @@ export async function postRegister(username: string, password: string, name: str
 
     if (res.status !== 200) {
         throw Error("could not register user")
+    }
+
+    return true
+}
+
+export async function fetchAllReservations(): Promise<ReservationItem[]> {
+    const user = getUserFromStorage()
+    const res = await fetch("http://localhost:8081/api/private/v1/admin/reservation", {
+        headers: {
+            "Authorization": `Bearer ${user.jwt}`,
+            "Accept": "application/json",
+        }
+    })
+
+    if (res.status !== 200) {
+        throw Error("could not fetch data from API")
+    }
+
+    return await res.json()
+}
+
+export async function deleteReservation(date: string, slotFrom: number): Promise<ReservationItem[]> {
+    const user = getUserFromStorage()
+    const res = await fetch(`http://localhost:8081/api/private/v1/reservation/${date}/${slotFrom}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${user.jwt}`,
+            "Accept": "application/json",
+        }
+    })
+
+    if (res.status !== 200) {
+        throw Error("could not fetch data from API")
+    }
+
+    return await res.json()
+}
+
+export async function fetchUsers(): Promise<User[]> {
+    const user = getUserFromStorage()
+    const res = await fetch("http://localhost:8081/api/private/v1/admin/user", {
+        headers: {
+            "Authorization": `Bearer ${user.jwt}`,
+            "Accept": "application/json",
+        }
+    })
+
+    if (res.status !== 200) {
+        throw Error("could not fetch data from API")
+    }
+
+    return await res.json()
+}
+
+export async function deleteUser(username: string): Promise<boolean> {
+    const user = getUserFromStorage()
+    const res = await fetch(`http://localhost:8081/api/private/v1/admin/user/${username}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${user.jwt}`,
+            "Accept": "application/json",
+        }
+    })
+
+    if (res.status !== 200) {
+        throw Error("could not delete user")
     }
 
     return true

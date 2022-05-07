@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 type Config struct {
@@ -11,6 +12,7 @@ type Config struct {
 	MaxFrames        int // one frame = 15 min; e.g. when MaxFrames is 8 that means maximal reservation frame could be two hours
 	JwtSigningKey    string
 	RegistrationCode string
+	Admins           []string
 }
 
 func LoadConfig() (*Config, error) {
@@ -37,7 +39,7 @@ func LoadConfig() (*Config, error) {
 	jwt := os.Getenv("JWT_SIGNING_KEY")
 	if jwt == "" {
 		fmt.Println("[WARNING] Using default JWT_SIGNING_KEY")
-		jwt = "test"
+		jwt = "test" // default  value
 	}
 
 	registrationCode := os.Getenv("REGISTRATION_CODE")
@@ -46,10 +48,17 @@ func LoadConfig() (*Config, error) {
 		registrationCode = "test"
 	}
 
+	admins := []string{}
+	adminsEnv := os.Getenv("ADMINS") // comma separated list of usernames
+	if adminsEnv != "" {
+		admins = strings.Split(adminsEnv, ",")
+	}
+
 	return &Config{
 		MaxDays:          maxDays,
 		MaxFrames:        maxFrames,
 		JwtSigningKey:    jwt,
 		RegistrationCode: registrationCode,
+		Admins:           admins,
 	}, nil
 }

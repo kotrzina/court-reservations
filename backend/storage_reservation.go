@@ -37,10 +37,20 @@ func (s *Storage) CreateReservation(date time.Time, slotFrom, slotTo, status int
 	}
 
 	ctx := context.Background()
-	id := fmt.Sprintf("%s-%d", date.Format(dateFormat), slotFrom)
+	id := calculateReservationId(date, slotFrom)
 	_, err := s.client.Collection(colReservation).Doc(id).Set(ctx, data)
 
 	return err
+}
+
+func (s *Storage) GetReservation(date time.Time, slotFrom int) (Reservation, error) {
+	id := calculateReservationId(date, slotFrom)
+	ctx := context.Background()
+	doc, err := s.client.Collection(colReservation).Doc(id).Get(ctx)
+	if err != nil {
+		return Reservation{}, err
+	}
+	return mapReservation(doc.Data()), nil
 }
 
 func (s *Storage) GetReservationsBetween(from, to time.Time) ([]Reservation, error) {
@@ -116,6 +126,54 @@ func (s *Storage) GetUserActiveReservations(username string) ([]Reservation, err
 	})
 
 	return reservations, nil
+}
+
+func (s *Storage) GetAllActiveReservations() ([]Reservation, error) {
+	ctx := context.Background()
+	today := RoundDay(time.Now())
+	docs, err := s.client.Collection(colReservation).
+		Where("date", ">=", today).
+		Documents(ctx).
+		GetAll()
+
+	if err != nil {
+		return nil, err
+	}
+
+	reservations := []Reservation{}
+	for _, doc := range docs {
+		reservations = append(reservations, mapReservation(doc.Data()))
+	}
+
+	sort.SliceStable(reservations, func(i, j int) bool {
+		r1 := reservations[i]
+		r2 := reservations[j]
+
+		// sort days
+		if r2.Date.After(r1.Date) {
+			return true
+		}
+
+		// sort slots in same day
+		if r1.Date.Unix() == r2.Date.Unix() {
+			return r2.SlotFrom > r1.SlotFrom
+		}
+
+		return false
+	})
+
+	return reservations, nil
+}
+
+func (s *Storage) DeleteReservation(date time.Time, slotFrom int) error {
+	id := calculateReservationId(date, slotFrom)
+	ctx := context.Background()
+	_, err := s.client.Collection(colReservation).Doc(id).Delete(ctx)
+	return err
+}
+
+func calculateReservationId(date time.Time, slotFrom int) string {
+	return fmt.Sprintf("%s-%d", RoundDay(date).Format(dateFormat), slotFrom)
 }
 
 func mapReservation(data map[string]interface{}) Reservation {
