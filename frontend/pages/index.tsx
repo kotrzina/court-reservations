@@ -43,7 +43,7 @@ const Home: NextPage = () => {
                 </Col>
 
                 <Col md={6}>
-                    <ReservationsList  title={"Vaše rezervace:"} reservations={table.userReservations}/>
+                    <ReservationsList title={"Vaše rezervace:"} reservations={table.userReservations}/>
                 </Col>
             </Row>
         </>

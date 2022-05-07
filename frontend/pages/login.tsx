@@ -38,7 +38,8 @@ const Login: FC = () => {
                 <Flash flash={flash}/>
                 <Form>
                     <Form.Group className="mb-3">
-                        <Form.Control type="name" placeholder="Vaše jméno" onChange={e => setUsername(e.target.value)}/>
+                        <Form.Control type="name" placeholder="Přihlašovací jméno"
+                                      onChange={e => setUsername(e.target.value)}/>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
@@ -47,8 +48,7 @@ const Login: FC = () => {
 
                     <Form.Group className="mb-3">
                         <Form.Text className="text-muted">
-                            Jméno není nijak kontrolováno. Rezervace budou prováděny na toto jméno a všichni jej uvidí.
-                            Proto prosím zadejte něco smysluplného.
+                            Pokud jste heslo zapomněli, napište na kozak@talko.cz
                         </Form.Text>
                     </Form.Group>
 
