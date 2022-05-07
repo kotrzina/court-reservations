@@ -42,6 +42,7 @@ func (s *Storage) CreateUser(username, password, name string) error {
 	if err != nil {
 		return err
 	}
+	
 	u := map[string]interface{}{
 		"username": username,
 		"hash":     hash,
@@ -73,6 +74,11 @@ func (s *Storage) ChangeUserRole(username string, role int64) error {
 	_, err = s.client.Collection(colUser).Doc(username).Set(ctx, u)
 
 	return err
+}
+
+func PasswordValid(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
 }
 
 func hashPassword(password string) (string, error) {

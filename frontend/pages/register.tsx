@@ -1,16 +1,10 @@
-import React, {FC, useContext, useEffect, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import {Button, Col, Form, Row} from "react-bootstrap";
 import {useFlash} from "../src/useFlash";
 import {Flash} from "../components/Flash";
-import {postLogin} from "../src/api";
-import {User} from "../src/user";
-import {useRouter} from "next/router";
-import {UserContext} from "../src/UserContext";
+import {postRegister} from "../src/api";
 
 const Register: FC = () => {
-
-    const {login} = useContext(UserContext)
-    const router = useRouter()
 
     const [flash, setFlash] = useFlash()
     const [name, setName] = useState<string>("")
@@ -24,36 +18,32 @@ const Register: FC = () => {
     const [passwordValid, setPasswordValid] = useState<boolean>(false)
     const [passwordSame, setPasswordSame] = useState<boolean>(false)
     const [codeValid, setCodeValid] = useState<boolean>(false)
+    const [allValid, setAllValid] = useState<boolean>(false)
 
     useEffect(() => {
-        if (password.length < 5) {
-
-        }
+        revalidate()
     }, [name, username, password, passwordCheck, code])
 
+    function revalidate(): void {
+        setNameValid(name.length >= 5)
+        setUsernameValid(username.length >= 3)
+        setPasswordValid(password.length >= 5)
+        setPasswordSame(passwordCheck == password)
+        setCodeValid(code.length > 0)
+
+        setAllValid(nameValid && usernameValid && passwordValid && passwordSame && codeValid)
+    }
+
     function onRegister() {
-        if (password.length < 5) {
-            setFlash("error", "")
-            return
-        }
-
-        if (password !== passwordCheck) {
-            setFlash("error", "")
-            return
-        }
-
-
-        postLogin(username, password).then(data => {
-            const u: User = {
-                logged: true,
-                name: data.name,
-                username: username,
-                jwt: data.jwt,
-            }
-            login(u)
-            router.push("/")
+        postRegister(username, password, name, code).then(data => {
+            setFlash("ok", "Registrace proběhla úspěšně. Můžete se přihlásit")
+            setName("")
+            setUsername("")
+            setPassword("")
+            setPasswordCheck("")
+            setCode("")
         }).catch(() => {
-            setFlash("error", "Chyba přihlášení")
+            setFlash("error", "Chyba registrace")
         })
     }
 
@@ -65,7 +55,8 @@ const Register: FC = () => {
                 <Form>
                     <Form.Group className="mb-3">
                         <Form.Control
-                            type="name"
+                            value={name}
+                            isInvalid={!nameValid}
                             placeholder="Vaše celé jméno"
                             onChange={e => setName(e.target.value)}
                         />
@@ -76,7 +67,8 @@ const Register: FC = () => {
 
                     <Form.Group className="mb-3">
                         <Form.Control
-                            type="name"
+                            value={username}
+                            isInvalid={!usernameValid}
                             placeholder="Přihlašovací jméno"
                             onChange={e => setUsername(e.target.value)}
                         />
@@ -87,9 +79,10 @@ const Register: FC = () => {
 
                     <Form.Group className="mb-3">
                         <Form.Control
+                            value={password}
                             type="password"
-                            placeholder="Heslo"
                             isInvalid={!passwordValid}
+                            placeholder="Heslo"
                             onChange={e => {
                                 setPassword(e.target.value)
                             }}
@@ -98,9 +91,10 @@ const Register: FC = () => {
 
                     <Form.Group className="mb-3">
                         <Form.Control
+                            value={passwordCheck}
                             type="password"
-                            placeholder="Heslo znovu"
                             isInvalid={!passwordSame}
+                            placeholder="Heslo znovu"
                             onChange={e => {
                                 setPasswordCheck(e.target.value)
                             }}
@@ -109,7 +103,8 @@ const Register: FC = () => {
 
                     <Form.Group className="mb-3">
                         <Form.Control
-                            type="code"
+                            value={code}
+                            isInvalid={!codeValid}
                             placeholder="Tajný kód"
                             onChange={e => setCode(e.target.value)}
                         />
@@ -119,11 +114,11 @@ const Register: FC = () => {
                         </Form.Text>
                     </Form.Group>
 
-                    <Button variant="success" type="submit" onClick={e => {
+                    <Button variant="success" type="submit" disabled={!allValid} onClick={e => {
                         e.preventDefault()
                         onRegister()
                     }}>
-                        Přihlásit se
+                        Zaregistrovat se
                     </Button>
                 </Form>
             </Col>

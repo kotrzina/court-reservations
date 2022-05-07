@@ -14,16 +14,18 @@ import (
 )
 
 type Server struct {
-	storage *Storage
-	config  *Config
-	port    int
+	storage     *Storage
+	config      *Config
+	userService *UserService
+	port        int
 }
 
-func NewServer(s *Storage, c *Config, port int) *Server {
+func NewServer(s *Storage, c *Config, us *UserService, port int) *Server {
 	return &Server{
-		storage: s,
-		config:  c,
-		port:    port,
+		storage:     s,
+		config:      c,
+		userService: us,
+		port:        port,
 	}
 }
 

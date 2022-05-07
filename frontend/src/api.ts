@@ -90,7 +90,7 @@ export async function postLogin(username: string, password: string): Promise<Log
     return await res.json()
 }
 
-export async function postRegister(username: string, password: string, name: string): Promise<void> {
+export async function postRegister(username: string, password: string, name: string, code: string): Promise<boolean> {
     const res = await fetch(`http://localhost:8081/api/user/register`, {
         method: "POST",
         headers: {
@@ -101,10 +101,13 @@ export async function postRegister(username: string, password: string, name: str
             name: name,
             username: username,
             password: password,
+            code: code,
         })
     })
 
     if (res.status !== 200) {
         throw Error("could not register user")
     }
+
+    return true
 }
