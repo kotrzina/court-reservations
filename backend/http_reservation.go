@@ -151,7 +151,7 @@ func (srv *Server) getAvailable(c *gin.Context) {
 	}
 
 	maxDelta := 8
-	placedReservations, err := srv.storage.GetReservationsBetween(date, date.Add(24*time.Hour))
+	placedReservations, err := srv.storage.GetReservationsBetween(date, date)
 	for _, placedReservation := range placedReservations {
 
 		// start is in range of existing reservation
