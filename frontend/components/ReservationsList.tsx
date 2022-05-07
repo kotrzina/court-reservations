@@ -27,6 +27,7 @@ export const ReservationsList: FC<Props> = (props: Props) => {
                     <ListGroup.Item
                         as="li"
                         className="d-flex justify-content-between align-items-start"
+                        key={`${r.date}-${r.slotFrom}`}
                     >
                         <div className="ms-2 me-auto">
                             <div className="fw-bold">

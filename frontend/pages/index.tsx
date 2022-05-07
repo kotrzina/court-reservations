@@ -45,7 +45,7 @@ const Home: NextPage = () => {
                 <Col className={'d-none d-sm-none d-md-block d-lg-block d-xl-block'} md={12}
                      style={{marginTop: "30px"}}>
                     <Table className={'tableView'} responsive={true}>
-                        <TableHead/>
+                        <TableHead table={table}/>
                         <TableBody table={table}/>
                     </Table>
                 </Col>

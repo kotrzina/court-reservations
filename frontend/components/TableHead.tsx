@@ -1,31 +1,30 @@
 import React, {FC} from "react";
-
-// generates 96 slots for day
-function getSlots(): number[] {
-    return Array(96).fill(0).map((_, i) => i);
-}
+import {TimeTable} from "../src/api";
 
 function slot(h: number): JSX.Element {
-    if (h % 4 === 0) {
+    if (h % 2 === 0) {
         return (
-            <th colSpan={4}>
-                {h / 4}:00
+            <th colSpan={2}>
+                {h / 2}:00
             </th>
         )
     }
     return <></>
 }
 
+type Props = {
+    table: TimeTable;
+};
 
-export const TableHead: FC = () => {
+export const TableHead: FC<Props> = (props: Props) => {
     return (
         <thead>
         <tr>
             <th>&nbsp;</th>
-            {getSlots().map(h => {
+            {props.table.timeTable[0]?.slots.map((s, idx) => {
                 return (
-                    <React.Fragment key={h}>
-                        {slot(h)}
+                    <React.Fragment key={s.index}>
+                        {slot(s.index)}
                     </React.Fragment>
                 )
             })}

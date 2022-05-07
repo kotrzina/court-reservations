@@ -28,7 +28,7 @@ func LoadConfig() (*Config, error) {
 	}
 
 	maxFramesEnv := os.Getenv("MAX_FRAMES")
-	maxFrames := 8 // default value
+	maxFrames := 4 // default value
 	if maxFramesEnv != "" {
 		maxFrames, err = strconv.Atoi(maxFramesEnv)
 		if err != nil {

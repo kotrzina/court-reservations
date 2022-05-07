@@ -18,7 +18,7 @@ a {
 table.tableView tr th {
     padding-bottom: 4px;
     padding-left: 0;
-    text-align: left;
+    text-align: center;
     border-right: 2px #444 solid;
 }
 
@@ -30,7 +30,7 @@ table.tableView tr td {
     border: 1px #888 solid;
 }
 
-table.tableView tr td:nth-child(4n + 1) {
+table.tableView tr td:nth-child(2n + 1) {
     border-right: 3px #111 solid;
 }
 

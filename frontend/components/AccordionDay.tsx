@@ -18,7 +18,7 @@ export const AccordionDay: FC<Props> = (props: Props) => {
                     <tbody>
                     {props.day.slots.map(s => {
                         return (
-                            <tr>
+                            <tr key={s.index}>
                                 <AccordionSlot slot={s}/>
                             </tr>
                         )

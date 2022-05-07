@@ -11,7 +11,7 @@ export const AccordionBody: FC<Props> = (props: Props) => {
         <Accordion>
             {props.table.timeTable.map(d => {
                 return (
-                    <AccordionDay day={d}/>
+                    <AccordionDay key={d.date} day={d}/>
                 )
             })}
         </Accordion>

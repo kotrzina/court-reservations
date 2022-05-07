@@ -8,7 +8,7 @@ func TimeToSlot(t time.Time) int {
 	h := t.Hour()
 	m := t.Minute()
 
-	return h*4 + m/15
+	return h*2 + m/30
 }
 
 func MapSlotStatus(status int) string {

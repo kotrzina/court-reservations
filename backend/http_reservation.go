@@ -15,6 +15,9 @@ type reservationItem struct {
 	Owner    string `json:"owner"`
 }
 
+const startingSlot = 12 // 6:00
+const endingSlot = 43   // 21:45
+
 func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		type slotOutput struct {
@@ -43,21 +46,20 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 		days := make([]dayOutput, srv.config.MaxDays-1)
 		current := start
 		for d := 0; d < srv.config.MaxDays-1; d++ {
-			slots := make([]slotOutput, 96)
-			for s := 0; s < 96; s++ {
-
+			slots := []slotOutput{}
+			for s := startingSlot; s <= endingSlot; s++ {
 				status := MapSlotStatus(SlotStatusFree)
 				if d == 0 && s <= currentSlot {
 					// today in pass
 					status = MapSlotStatus(SlotStatusHistory)
 				}
 
-				slots[s] = slotOutput{
+				slots = append(slots, slotOutput{
 					Date:   current.Format(dateFormat),
 					Index:  s,
 					Status: status,
 					Owner:  "",
-				}
+				})
 			}
 
 			days[d] = dayOutput{
@@ -81,8 +83,8 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 
 					// update all slots
 					for s := r.SlotFrom; s <= r.SlotTo; s++ {
-						days[dayIdx].Slots[s].Status = MapSlotStatus(r.Status)
-						days[dayIdx].Slots[s].Owner = name
+						days[dayIdx].Slots[s-startingSlot].Status = MapSlotStatus(r.Status)
+						days[dayIdx].Slots[s-startingSlot].Owner = name
 
 					}
 				}
@@ -92,7 +94,7 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 		today := []reservationItem{}
 		if includeDetails {
 			for _, r := range reservations {
-				if currentSlot <= r.SlotTo {
+				if r.Date.Equal(start) && currentSlot <= r.SlotTo {
 					today = append(today, mapReservationItem(r))
 				}
 			}
@@ -139,8 +141,8 @@ func (srv *Server) getAvailable(c *gin.Context) {
 		c.JSON(createHttpError(http.StatusBadRequest, "could not parse date parameter"))
 		return
 	}
-	firstSlot, err := strconv.Atoi(c.Param("firstSlot"))
-	if err != nil || firstSlot < 0 || firstSlot > 95 {
+	slot, err := strconv.Atoi(c.Param("firstSlot"))
+	if err != nil || slot < 0 || slot > 47 {
 		c.JSON(createHttpError(http.StatusBadRequest, "could not parse slot parameter"))
 		return
 	}
@@ -150,26 +152,26 @@ func (srv *Server) getAvailable(c *gin.Context) {
 		return
 	}
 
-	maxDelta := 8
+	maxDelta := srv.config.MaxFrames
 	placedReservations, err := srv.storage.GetReservationsBetween(date, date)
 	for _, placedReservation := range placedReservations {
 
 		// start is in range of existing reservation
-		if firstSlot >= placedReservation.SlotFrom && firstSlot <= placedReservation.SlotTo {
+		if slot >= placedReservation.SlotFrom && slot <= placedReservation.SlotTo {
 			c.JSON(createHttpError(http.StatusConflict, "existing reservation"))
 			return
 		}
 
-		if placedReservation.SlotFrom >= firstSlot && firstSlot+srv.config.MaxFrames >= placedReservation.SlotFrom {
-			maxDelta = placedReservation.SlotFrom - firstSlot
+		if placedReservation.SlotFrom >= slot && slot+srv.config.MaxFrames >= placedReservation.SlotFrom {
+			maxDelta = placedReservation.SlotFrom - slot
 		}
 	}
 
 	ress := []reservationOutput{}
-	for s := firstSlot; s <= 95 && s < firstSlot+maxDelta; s++ {
+	for s := slot; s <= endingSlot && s < slot+maxDelta; s++ {
 		ress = append(ress, reservationOutput{
 			Date:     date.Format(dateFormat),
-			SlotFrom: firstSlot,
+			SlotFrom: slot,
 			SlotTo:   s,
 		})
 	}
@@ -198,13 +200,13 @@ func (srv *Server) postReservation(c *gin.Context) {
 	}
 
 	// validate slot from
-	if request.SlotFrom < 0 || request.SlotFrom > 95 {
+	if request.SlotFrom < 0 || request.SlotFrom > 47 {
 		c.JSON(createHttpError(http.StatusBadRequest, "invalid input for slotFrom"))
 		return
 	}
 
 	// validate to
-	if request.SlotTo < 0 || request.SlotTo > 95 {
+	if request.SlotTo < 0 || request.SlotTo > 47 {
 		c.JSON(createHttpError(http.StatusBadRequest, "invalid input for SlotTo"))
 		return
 	}
@@ -298,7 +300,7 @@ func (srv *Server) deleteReservation(c *gin.Context) {
 	}
 
 	slotFrom, err := strconv.Atoi(c.Param("slotFrom"))
-	if err != nil || slotFrom < 0 || slotFrom > 95 {
+	if err != nil || slotFrom < 0 || slotFrom > 47 {
 		c.JSON(createHttpError(http.StatusBadRequest, "could not parse slot parameter"))
 		return
 	}

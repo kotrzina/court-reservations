@@ -4,13 +4,12 @@ import React from "react";
  * Converts slot index to exact time slot
  * @example:
  * 0 -> 00:00
- * 1 -> 00:15
- * 2 -> 00:30
- * 5 -> 01:15
+ * 1 -> 00:30
+ * 2 -> 01:00
  */
 export function indexToTime(idx: number): string {
-    const h = Math.floor(idx / 4)
-    const m = (idx % 4) * 15
+    const h = Math.floor(idx / 2)
+    const m = (idx % 2) * 30
 
     return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`
 }
@@ -27,8 +26,8 @@ export function formatDate(dateString: string): string {
 
 export function slotsToDuration(slotFrom: number, slotTo: number): string {
     const d = slotTo - slotFrom + 1
-    const h = Math.floor(d / 4)
-    const m = (d % 4) * 15
+    const h = Math.floor(d / 2)
+    const m = (d % 2) * 30
 
     if (h > 0) {
         return `${h.toString()}h ${m.toString().padStart(2, "0")}m`
