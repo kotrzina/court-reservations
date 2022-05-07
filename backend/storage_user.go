@@ -42,7 +42,7 @@ func (s *Storage) CreateUser(username, password, name string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	u := map[string]interface{}{
 		"username": username,
 		"hash":     hash,

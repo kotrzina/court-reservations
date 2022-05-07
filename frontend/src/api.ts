@@ -1,7 +1,10 @@
+import {getUserFromStorage} from "./user";
+
 export type Slot = {
     date: string; // date in format Y-m-d
     index: number; // slot index 0-95
     status: "free" | "taken" | "maintenance" | "history";
+    owner?: string;
 }
 
 export type Day = {
@@ -32,7 +35,17 @@ export type LoginResponse = {
 
 
 export async function fetchTimeTable(): Promise<TimeTable> {
-    const res = await fetch("http://localhost:8081/api/time-table")
+    const user = getUserFromStorage()
+    let res: Response
+    if (user.logged) {
+        res = await fetch("http://localhost:8081/api/private/v1/time-table", {
+            headers: {
+                "Authorization": `Bearer ${user.jwt}`
+            }
+        })
+    } else {
+        res = await fetch("http://localhost:8081/api/public/v1/time-table")
+    }
 
     if (res.status !== 200) {
         throw Error("could not fetch data from API")
@@ -42,7 +55,12 @@ export async function fetchTimeTable(): Promise<TimeTable> {
 }
 
 export async function fetchAvailable(date: string, firstSlot: number): Promise<AvailableReservations> {
-    const res = await fetch(`http://localhost:8081/api/available/${date}/${firstSlot}`)
+    const user = getUserFromStorage()
+    const res = await fetch(`http://localhost:8081/api/private/v1/available/${date}/${firstSlot}`, {
+        headers: {
+            "Authorization": `Bearer ${user.jwt}`
+        }
+    })
 
     if (res.status !== 200) {
         throw Error("could not fetch data from API")
@@ -52,11 +70,13 @@ export async function fetchAvailable(date: string, firstSlot: number): Promise<A
 }
 
 export async function postReservation(date: string, slotFrom: number, slotTo: number): Promise<void> {
-    const res = await fetch(`http://localhost:8081/api/reservation`, {
+    const user = getUserFromStorage()
+    const res = await fetch(`http://localhost:8081/api/private/v1/reservation`, {
         method: "POST",
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${user.jwt}`
         },
         body: JSON.stringify({
             date: date,
@@ -71,7 +91,7 @@ export async function postReservation(date: string, slotFrom: number, slotTo: nu
 }
 
 export async function postLogin(username: string, password: string): Promise<LoginResponse> {
-    const res = await fetch(`http://localhost:8081/api/user/login`, {
+    const res = await fetch(`http://localhost:8081/api/public/v1/user/login`, {
         method: "POST",
         headers: {
             "Accept": "application/json",
@@ -91,7 +111,7 @@ export async function postLogin(username: string, password: string): Promise<Log
 }
 
 export async function postRegister(username: string, password: string, name: string, code: string): Promise<boolean> {
-    const res = await fetch(`http://localhost:8081/api/user/register`, {
+    const res = await fetch(`http://localhost:8081/api/public/v1/user/register`, {
         method: "POST",
         headers: {
             "Accept": "application/json",

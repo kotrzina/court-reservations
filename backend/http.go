@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 )
@@ -61,19 +62,24 @@ func (srv *Server) createRouter() *gin.Engine {
 	router.Use(gin.Recovery())
 	router.Use(gin.Logger())
 	router.Use(CORSMiddleware())
-	api := router.Group("/api")
+
+	public := router.Group("/api/public")
 	{
-		api.GET("/time-table", srv.getTimeTable)
-		api.GET("/available/:date/:firstSlot", srv.getAvailable)
-		api.POST("/reservation", srv.postReservation)
+		public.GET("/v1/time-table", srv.createTimeTableEndpoint(false))
+		public.POST("/v1/user/register", srv.registerUser)
+		public.POST("/v1/user/login", srv.loginUser)
+	}
 
-		api.POST("/user/register", srv.registerUser)
-		api.POST("/user/login", srv.loginUser)
-
+	private := router.Group("/api/private")
+	private.Use(srv.AuthMiddleware())
+	{
+		private.GET("/v1/time-table", srv.createTimeTableEndpoint(true))
+		private.GET("/v1/available/:date/:firstSlot", srv.getAvailable)
+		private.POST("/v1/reservation", srv.postReservation)
 	}
 
 	router.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "Welcome Gin Server")
+		c.String(http.StatusOK, "Hello world! (https://github.com/kotrzina/court-reservations)")
 	})
 
 	router.GET("/ping", func(c *gin.Context) {
@@ -81,6 +87,31 @@ func (srv *Server) createRouter() *gin.Engine {
 	})
 
 	return router
+}
+
+func (srv *Server) AuthMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		_, err := srv.GetLoggedUser(c)
+		if err != nil {
+			c.AbortWithStatusJSON(createHttpError(http.StatusUnauthorized, "invalid JWT token"))
+		}
+		c.Next()
+	}
+}
+
+func (srv *Server) GetLoggedUser(c *gin.Context) (*LoggedUser, error) {
+	reqToken := c.GetHeader("Authorization")
+	splitToken := strings.Split(reqToken, "Bearer ")
+	if len(splitToken) != 2 {
+		return nil, fmt.Errorf("could not read bearer token")
+	}
+	token := splitToken[1]
+	user, err := srv.userService.VerifyJwt(token)
+	if err != nil {
+		return nil, fmt.Errorf("invalid jwt token")
+	}
+
+	return user, nil
 }
 
 func CORSMiddleware() gin.HandlerFunc {

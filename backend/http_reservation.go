@@ -8,68 +8,80 @@ import (
 	"time"
 )
 
-func (srv *Server) getTimeTable(c *gin.Context) {
-	type slotOutput struct {
-		Date   string `json:"date"`
-		Index  int    `json:"index"`
-		Status string `json:"status"`
-	}
-
-	type dayOutput struct {
-		Date  string       `json:"date"`
-		Slots []slotOutput `json:"slots"`
-	}
-
-	type output struct {
-		TimeTable []dayOutput `json:"timeTable"`
-	}
-
-	now := time.Now()
-	currentSlot := TimeToSlot(now)
-	start := RoundDay(now)
-	end := start.Add((time.Duration(srv.config.MaxDays) - 1) * 24 * time.Hour)
-
-	days := make([]dayOutput, srv.config.MaxDays-1)
-	current := start
-	for d := 0; d < srv.config.MaxDays-1; d++ {
-		slots := make([]slotOutput, 96)
-		for s := 0; s < 96; s++ {
-
-			status := MapSlotStatus(SlotStatusFree)
-			if d == 0 && s <= currentSlot {
-				// today in pass
-				status = MapSlotStatus(SlotStatusHistory)
-			}
-
-			slots[s] = slotOutput{
-				Date:   current.Format(dateFormat),
-				Index:  s,
-				Status: status,
-			}
+func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		type slotOutput struct {
+			Date   string `json:"date"`
+			Index  int    `json:"index"`
+			Status string `json:"status"`
+			Owner  string `json:"owner"`
 		}
 
-		days[d] = dayOutput{
-			Date:  current.Format(dateFormat),
-			Slots: slots,
+		type dayOutput struct {
+			Date  string       `json:"date"`
+			Slots []slotOutput `json:"slots"`
 		}
 
-		current = current.Add(24 * time.Hour)
-	}
+		type output struct {
+			TimeTable []dayOutput `json:"timeTable"`
+		}
 
-	// update slot statuses
-	reservations, _ := srv.storage.GetReservationsBetween(start, end)
-	for _, r := range reservations {
-		for dayIdx, day := range days {
-			if r.Date.Format(dateFormat) == day.Date {
-				// update all slots
-				for s := r.SlotFrom; s <= r.SlotTo; s++ {
-					days[dayIdx].Slots[s].Status = MapSlotStatus(r.Status)
+		now := time.Now()
+		currentSlot := TimeToSlot(now)
+		start := RoundDay(now)
+		end := start.Add((time.Duration(srv.config.MaxDays) - 1) * 24 * time.Hour)
+
+		days := make([]dayOutput, srv.config.MaxDays-1)
+		current := start
+		for d := 0; d < srv.config.MaxDays-1; d++ {
+			slots := make([]slotOutput, 96)
+			for s := 0; s < 96; s++ {
+
+				status := MapSlotStatus(SlotStatusFree)
+				if d == 0 && s <= currentSlot {
+					// today in pass
+					status = MapSlotStatus(SlotStatusHistory)
+				}
+
+				slots[s] = slotOutput{
+					Date:   current.Format(dateFormat),
+					Index:  s,
+					Status: status,
+					Owner:  "",
+				}
+			}
+
+			days[d] = dayOutput{
+				Date:  current.Format(dateFormat),
+				Slots: slots,
+			}
+
+			current = current.Add(24 * time.Hour)
+		}
+
+		// update slot statuses
+		reservations, _ := srv.storage.GetReservationsBetween(start, end)
+		for _, r := range reservations {
+			for dayIdx, day := range days {
+				if r.Date.Format(dateFormat) == day.Date {
+
+					name := ""
+					if includeDetails {
+						name = r.Name
+					}
+
+					// update all slots
+					for s := r.SlotFrom; s <= r.SlotTo; s++ {
+						days[dayIdx].Slots[s].Status = MapSlotStatus(r.Status)
+						days[dayIdx].Slots[s].Owner = name
+
+					}
 				}
 			}
 		}
-	}
 
-	c.JSON(http.StatusOK, output{TimeTable: days})
+		c.JSON(http.StatusOK, output{TimeTable: days})
+	}
 }
 
 func (srv *Server) getAvailable(c *gin.Context) {
@@ -198,8 +210,13 @@ func (srv *Server) postReservation(c *gin.Context) {
 
 	}
 
-	// @todo user
-	err = srv.storage.CreateReservation("dummyuser", date, request.SlotFrom, request.SlotTo, SlotStatusTaken)
+	user, err := srv.GetLoggedUser(c)
+	if err != nil {
+		c.JSON(createHttpError(http.StatusInternalServerError, "could not read user"))
+		return
+	}
+
+	err = srv.storage.CreateReservation(date, request.SlotFrom, request.SlotTo, SlotStatusTaken, user.Username, user.Name)
 	if err != nil {
 		c.JSON(createHttpError(http.StatusInternalServerError, "could not create reservation"))
 		return
