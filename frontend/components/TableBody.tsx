@@ -1,6 +1,6 @@
 import React, {FC} from "react";
 import {TableDay} from "./TableDay";
-import {TimeTable} from "../src/Api";
+import {TimeTable} from "../src/api";
 
 type Props = {
     table: TimeTable;

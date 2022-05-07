@@ -1,5 +1,5 @@
 import React, {FC} from "react";
-import {Slot} from "../src/Api";
+import {Slot} from "../src/api";
 import {useRouter} from "next/router";
 import {indexToTime} from "../src/utils";
 

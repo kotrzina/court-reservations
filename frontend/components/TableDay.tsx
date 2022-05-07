@@ -1,5 +1,5 @@
 import React, {FC} from "react";
-import {Day} from "../src/Api";
+import {Day} from "../src/api";
 import {TableSlot} from "./TableSlot";
 
 type Props = {
