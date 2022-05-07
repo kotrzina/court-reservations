@@ -9,18 +9,28 @@ export type Slot = {
 
 export type Day = {
     date: string,
-    slots: Slot[] // always 96 slots
+    slots: Slot[]; // always 96 slots
+}
+
+export type ReservationListItem = {
+    date: string;
+    slotFrom: number;
+    slotTo: number;
+    owner: string;
 }
 
 export type TimeTable = {
-    timeTable: Day[]
+    timeTable: Day[];
+    todayReservations: ReservationListItem[];
+    userReservations: ReservationListItem[];
 }
 
 export type Reservation = {
     date: string; // date in format Y-m-d
     slotFrom: number;
     slotTo: number;
-    owner?: string; // name of the booking owner
+    name?: string;
+    username?: string;
 }
 
 export type AvailableReservations = {

@@ -22,8 +22,17 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 			Slots []slotOutput `json:"slots"`
 		}
 
+		type reservationItem struct {
+			Date     string `json:"date"`
+			SlotFrom int    `json:"slotFrom,omitempty"`
+			SlotTo   int    `json:"slotTo,omitempty"`
+			Owner    string `json:"owner"`
+		}
+
 		type output struct {
-			TimeTable []dayOutput `json:"timeTable"`
+			TimeTable         []dayOutput       `json:"timeTable"`
+			TodayReservations []reservationItem `json:"todayReservations"`
+			UserReservations  []reservationItem `json:"userReservations"`
 		}
 
 		now := time.Now()
@@ -80,7 +89,47 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 			}
 		}
 
-		c.JSON(http.StatusOK, output{TimeTable: days})
+		today := []reservationItem{}
+		if includeDetails {
+			for _, r := range reservations {
+				if currentSlot <= r.SlotTo {
+					today = append(today, reservationItem{
+						Date:     r.Date.Format(dateFormat),
+						SlotFrom: r.SlotFrom,
+						SlotTo:   r.SlotTo,
+						Owner:    r.Name,
+					})
+				}
+			}
+		}
+
+		userRes := []reservationItem{}
+		if includeDetails {
+			user, err := srv.GetLoggedUser(c)
+			if err != nil {
+				c.JSON(createHttpError(http.StatusInternalServerError, "could not load user"))
+				return
+			}
+			userReservations, err := srv.storage.GetUserActiveReservations(user.Username)
+			if err != nil {
+				c.JSON(createHttpError(http.StatusInternalServerError, "could not load user reservations"))
+				return
+			}
+			for _, ur := range userReservations {
+				userRes = append(userRes, reservationItem{
+					Date:     ur.Date.Format(dateFormat),
+					SlotFrom: ur.SlotFrom,
+					SlotTo:   ur.SlotTo,
+					Owner:    ur.Name,
+				})
+			}
+		}
+
+		c.JSON(http.StatusOK, output{
+			TimeTable:         days,
+			TodayReservations: today,
+			UserReservations:  userRes,
+		})
 	}
 }
 
@@ -122,7 +171,7 @@ func (srv *Server) getAvailable(c *gin.Context) {
 		}
 
 		if placedReservation.SlotFrom >= firstSlot && firstSlot+srv.config.MaxFrames >= placedReservation.SlotFrom {
-			maxDelta = int(placedReservation.SlotFrom) - firstSlot
+			maxDelta = placedReservation.SlotFrom - firstSlot
 		}
 	}
 

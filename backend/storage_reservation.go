@@ -71,7 +71,45 @@ func (s *Storage) GetReservationsBetween(from, to time.Time) ([]Reservation, err
 
 		// sort slots in same day
 		if r1.Date.Unix() == r2.Date.Unix() {
-			return r2.SlotFrom < r1.SlotFrom
+			return r2.SlotFrom > r1.SlotFrom
+		}
+
+		return false
+	})
+
+	return reservations, nil
+}
+
+func (s *Storage) GetUserActiveReservations(username string) ([]Reservation, error) {
+	ctx := context.Background()
+	today := RoundDay(time.Now())
+	docs, err := s.client.Collection(colReservation).
+		Where("username", "==", username).
+		Where("date", ">=", today).
+		Documents(ctx).
+		GetAll()
+
+	if err != nil {
+		return nil, err
+	}
+
+	reservations := []Reservation{}
+	for _, doc := range docs {
+		reservations = append(reservations, mapReservation(doc.Data()))
+	}
+
+	sort.SliceStable(reservations, func(i, j int) bool {
+		r1 := reservations[i]
+		r2 := reservations[j]
+
+		// sort days
+		if r2.Date.After(r1.Date) {
+			return true
+		}
+
+		// sort slots in same day
+		if r1.Date.Unix() == r2.Date.Unix() {
+			return r2.SlotFrom > r1.SlotFrom
 		}
 
 		return false

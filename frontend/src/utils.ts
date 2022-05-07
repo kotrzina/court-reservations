@@ -24,3 +24,15 @@ export function formatDate(dateString: string): string {
 
     return `${day}. ${month}.`
 }
+
+export function slotsToDuration(slotFrom: number, slotTo: number): string {
+    const d = slotTo - slotFrom + 1
+    const h = Math.floor(d / 4)
+    const m = (d % 4) * 15
+
+    if (h > 0) {
+        return `${h.toString()}h ${m.toString().padStart(2, "0")}m`
+    }
+
+    return `${m.toString().padStart(2, "0")}m`
+}
