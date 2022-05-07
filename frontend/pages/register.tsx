@@ -28,7 +28,7 @@ const Register: FC = () => {
         setNameValid(name.length >= 5)
         setUsernameValid(username.length >= 3)
         setPasswordValid(password.length >= 5)
-        setPasswordSame(passwordCheck == password)
+        setPasswordSame(passwordCheck == password && passwordCheck.length > 0)
         setCodeValid(code.length > 0)
 
         setAllValid(nameValid && usernameValid && passwordValid && passwordSame && codeValid)
