@@ -1,27 +1,18 @@
 import React, {FC} from "react";
 import {Day} from "../src/api";
 import {TableSlot} from "./TableSlot";
+import {getDayInWeek} from "../src/utils";
 
 type Props = {
     day: Day;
 };
 export const TableDay: FC<Props> = (props: Props) => {
 
-    const days = [
-        "ne",
-        "po",
-        "út",
-        "st",
-        "čt",
-        "pá",
-        "so",
-    ]
-
     function formatDate(dateString: string): JSX.Element {
         const d = new Date(dateString)
         const day = d.getDate().toString()
         const month = (d.getMonth() + 1).toString()
-        const name = days[d.getDay()]
+        const name = getDayInWeek(dateString)
 
         return (
             <>{name}&nbsp;{day}.&nbsp;{month}.</>

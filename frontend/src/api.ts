@@ -53,13 +53,13 @@ export async function fetchTimeTable(): Promise<TimeTable> {
     const user = getUserFromStorage()
     let res: Response
     if (user.logged) {
-        res = await fetch("http://localhost:8081/api/private/v1/time-table", {
+        res = await fetch("http://192.168.0.107:8081/api/private/v1/time-table", {
             headers: {
                 "Authorization": `Bearer ${user.jwt}`
             }
         })
     } else {
-        res = await fetch("http://localhost:8081/api/public/v1/time-table")
+        res = await fetch("http://192.168.0.107:8081/api/public/v1/time-table")
     }
 
     if (res.status !== 200) {
@@ -71,7 +71,7 @@ export async function fetchTimeTable(): Promise<TimeTable> {
 
 export async function fetchAvailable(date: string, firstSlot: number): Promise<AvailableReservations> {
     const user = getUserFromStorage()
-    const res = await fetch(`http://localhost:8081/api/private/v1/available/${date}/${firstSlot}`, {
+    const res = await fetch(`http://192.168.0.107:8081/api/private/v1/available/${date}/${firstSlot}`, {
         headers: {
             "Authorization": `Bearer ${user.jwt}`
         }
@@ -86,7 +86,7 @@ export async function fetchAvailable(date: string, firstSlot: number): Promise<A
 
 export async function postReservation(date: string, slotFrom: number, slotTo: number): Promise<void> {
     const user = getUserFromStorage()
-    const res = await fetch(`http://localhost:8081/api/private/v1/reservation`, {
+    const res = await fetch(`http://192.168.0.107:8081/api/private/v1/reservation`, {
         method: "POST",
         headers: {
             "Accept": "application/json",
@@ -106,7 +106,7 @@ export async function postReservation(date: string, slotFrom: number, slotTo: nu
 }
 
 export async function postLogin(username: string, password: string): Promise<LoginResponse> {
-    const res = await fetch(`http://localhost:8081/api/public/v1/user/login`, {
+    const res = await fetch(`http://192.168.0.107:8081/api/public/v1/user/login`, {
         method: "POST",
         headers: {
             "Accept": "application/json",
@@ -126,7 +126,7 @@ export async function postLogin(username: string, password: string): Promise<Log
 }
 
 export async function postRegister(username: string, password: string, name: string, code: string): Promise<boolean> {
-    const res = await fetch(`http://localhost:8081/api/public/v1/user/register`, {
+    const res = await fetch(`http://192.168.0.107:8081/api/public/v1/user/register`, {
         method: "POST",
         headers: {
             "Accept": "application/json",
@@ -149,7 +149,7 @@ export async function postRegister(username: string, password: string, name: str
 
 export async function fetchAllReservations(): Promise<ReservationItem[]> {
     const user = getUserFromStorage()
-    const res = await fetch("http://localhost:8081/api/private/v1/admin/reservation", {
+    const res = await fetch("http://192.168.0.107:8081/api/private/v1/admin/reservation", {
         headers: {
             "Authorization": `Bearer ${user.jwt}`,
             "Accept": "application/json",
@@ -165,7 +165,7 @@ export async function fetchAllReservations(): Promise<ReservationItem[]> {
 
 export async function deleteReservation(date: string, slotFrom: number): Promise<ReservationItem[]> {
     const user = getUserFromStorage()
-    const res = await fetch(`http://localhost:8081/api/private/v1/reservation/${date}/${slotFrom}`, {
+    const res = await fetch(`http://192.168.0.107:8081/api/private/v1/reservation/${date}/${slotFrom}`, {
         method: "DELETE",
         headers: {
             "Authorization": `Bearer ${user.jwt}`,
@@ -182,7 +182,7 @@ export async function deleteReservation(date: string, slotFrom: number): Promise
 
 export async function fetchUsers(): Promise<User[]> {
     const user = getUserFromStorage()
-    const res = await fetch("http://localhost:8081/api/private/v1/admin/user", {
+    const res = await fetch("http://192.168.0.107:8081/api/private/v1/admin/user", {
         headers: {
             "Authorization": `Bearer ${user.jwt}`,
             "Accept": "application/json",
@@ -198,7 +198,7 @@ export async function fetchUsers(): Promise<User[]> {
 
 export async function deleteUser(username: string): Promise<boolean> {
     const user = getUserFromStorage()
-    const res = await fetch(`http://localhost:8081/api/private/v1/admin/user/${username}`, {
+    const res = await fetch(`http://192.168.0.107:8081/api/private/v1/admin/user/${username}`, {
         method: "DELETE",
         headers: {
             "Authorization": `Bearer ${user.jwt}`,

@@ -36,3 +36,18 @@ export function slotsToDuration(slotFrom: number, slotTo: number): string {
 
     return `${m.toString().padStart(2, "0")}m`
 }
+
+export function getDayInWeek(date: string): string {
+    const days = [
+        "ne",
+        "po",
+        "út",
+        "st",
+        "čt",
+        "pá",
+        "so",
+    ]
+
+    const d = new Date(date)
+    return days[d.getDay()]
+}

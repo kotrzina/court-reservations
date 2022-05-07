@@ -3,7 +3,7 @@ import {UserContext} from "../src/UserContext";
 import {Button, Col, Row, Table} from "react-bootstrap";
 import {deleteReservation, deleteUser, fetchAllReservations, fetchUsers, ReservationItem, User} from "../src/api";
 import {useRouter} from "next/router";
-import {indexToTime, slotsToDuration} from "../src/utils";
+import {formatDate, indexToTime, slotsToDuration} from "../src/utils";
 
 
 const Admin: FC = () => {
@@ -77,8 +77,8 @@ const Admin: FC = () => {
                     {reservations.map(r => {
                         return (
                             <tr key={`${r.date}-${r.slotFrom}`}>
-                                <td>{r.date}</td>
-                                <td>{indexToTime(r.slotFrom)} - {indexToTime(r.slotTo + 1)}</td>
+                                <td>{formatDate(r.date)}</td>
+                                <td>{indexToTime(r.slotFrom)}&nbsp;-&nbsp;{indexToTime(r.slotTo + 1)}</td>
                                 <td>{slotsToDuration(r.slotFrom, r.slotTo)}</td>
                                 <td>{r.owner}</td>
                                 <td>

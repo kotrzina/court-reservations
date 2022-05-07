@@ -1,25 +1,17 @@
 import React, {FC, useContext} from "react";
 import {Slot} from "../src/api";
 import {useRouter} from "next/router";
-import {indexToTime} from "../src/utils";
+import {formatDate, getDayInWeek, indexToTime} from "../src/utils";
 import {UserContext} from "../src/UserContext";
 
 type Props = {
     slot: Slot;
 };
 
-export const TableSlot: FC<Props> = (props: Props) => {
+export const AccordionSlot: FC<Props> = (props: Props) => {
+
     const router = useRouter()
     const userContext = useContext(UserContext)
-
-    function title(): string {
-        let title = indexToTime(props.slot.index) + " - " + indexToTime(props.slot.index + 1)
-        if (props.slot.owner) {
-            title += ` ${props.slot.owner}`
-        }
-
-        return title
-    }
 
     function onSlotClicked() {
         if (userContext.user.logged && props.slot.status === "free") {
@@ -28,6 +20,10 @@ export const TableSlot: FC<Props> = (props: Props) => {
     }
 
     return (
-        <td title={title()} className={props.slot.status} onClick={() => onSlotClicked()}></td>
+        <td className={props.slot.status}
+            onClick={() => onSlotClicked()}
+        >
+            {getDayInWeek(props.slot.date)} {formatDate(props.slot.date)} 🕜 {indexToTime(props.slot.index)}
+        </td>
     )
 };

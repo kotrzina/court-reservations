@@ -15,45 +15,75 @@ a {
     box-sizing: border-box;
 }
 
-table tr th {
+table.tableView tr th {
     padding-bottom: 4px;
     padding-left: 0;
     text-align: left;
     border-right: 2px #444 solid;
 }
 
-table tr td {
+table.tableView tr td {
     width: 20px;
     height: 20px;
     margin: 0;
-    padding: 4px;
+    padding: 8px;
     border: 1px #888 solid;
 }
 
-table tr td:nth-child(4n + 1) {
+table.tableView tr td:nth-child(4n + 1) {
     border-right: 3px #111 solid;
 }
 
-table tr td.dateCell {
+table.tableView tr td.dateCell {
     border: none;
     padding-right: 15px;
 }
 
-table tr td.free {
+table.tableView tr td.free {
     background-color: #176910;
     cursor: pointer;
 }
 
-table tr td.taken {
+table.tableView tr td.taken {
     background-color: #751222;
     cursor: not-allowed;
 }
 
-table tr td.history {
+table.tableView tr td.history, table.tableView tr td.maintenance {
     background-color: #666;
     cursor: not-allowed;
 }
 
-table tr td.free:hover {
+table.tableView tr td.free:hover {
     background-color: #0c4b5e;
 }
+
+table.accordionView tr td {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    padding: 12px 8px;
+    border: 2px #222 solid;
+    color: #FFF;
+    text-align: center;
+}
+
+table.accordionView tr td.free:active {
+    background-color: #0c4b5e;
+}
+
+table.accordionView tr td.free {
+    background-color: #176910;
+    cursor: pointer;
+}
+
+table.accordionView tr td.taken {
+    background-color: #751222;
+    cursor: not-allowed;
+}
+
+table.accordionView tr td.history, table.accordionView tr td.maintenance {
+    display: none;
+}
+
+
