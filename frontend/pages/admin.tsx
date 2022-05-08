@@ -80,7 +80,7 @@ const Admin: FC = () => {
                                 <td>{formatDate(r.date)}</td>
                                 <td>{indexToTime(r.slotFrom)}&nbsp;-&nbsp;{indexToTime(r.slotTo + 1)}</td>
                                 <td>{slotsToDuration(r.slotFrom, r.slotTo)}</td>
-                                <td>{r.owner}</td>
+                                <td>{r.name} ({r.username})</td>
                                 <td>
                                     <Button variant={"danger"} onClick={() => onDeleteReservation(r)}>
                                         Smazat

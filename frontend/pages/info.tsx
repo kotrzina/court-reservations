@@ -18,19 +18,18 @@ const Login: NextPage = () => {
                     Asi si dokážete přestavit, že se s někým domluvíte třeba na tenis na určitou hodinu a na místě se
                     sejdete. Kurt však bude obsazený a vám nezbude nic jiného než čekat. Právě tento rezervační systém
                     by měl tento problém vyřešit. Bohužel nejde nijak vymáhat, aby lidé striktně dodržovali kalendář,
-                    ale doufáme, že lidé budou i ve svém vlastím zájmu tyto "pravidla" dodržovat.
+                    ale doufáme, že lidé budou i ve svém vlastím zájmu tyto &ldquo;pravidla&ldquo; dodržovat.
                 </p>
 
                 <h3>Registrace</h3>
                 <p>
-                    <Link href={"/register"}>Zaregistrovat</Link> se může <strong>kdokoliv</strong>, kdo zná <strong>"tajný
-                    kód"</strong>. Ten můžete
-                    najít na cedulce při vstupu na hřiště. Tento tajný kód má zabránit registraci zcela náhodných lidi.
-                    Dále je nutné zadat svoje přihlašovací údaje (uživatelské jméno a heslo). Také je nutné uvést
-                    vaše celé jméno
-                    a obec. Vyhrazujeme si právo uživatele smazat, pokud jméno nebo obec bude smyšlené nebo nebude možné
-                    uživatele identifikovat. Hřiště ve Veselici by mělo primárně sloužit lidem z Veselice a blízkého
-                    okolí. To je důvodem těchto opatření.
+                    <Link href={"/register"}>Zaregistrovat</Link> se může <strong>kdokoliv</strong>, kdo
+                    zná <strong>&ldquo;tajný kód&ldquo;</strong>. Ten můžete najít na cedulce při vstupu na hřiště.
+                    Tento tajný kód má zabránit registraci zcela náhodných lidi. Dále je nutné zadat svoje přihlašovací
+                    údaje (uživatelské jméno a heslo). Také je nutné uvést vaše celé jméno a obec. Vyhrazujeme si právo
+                    uživatele smazat, pokud jméno nebo obec bude smyšlené nebo nebude možné uživatele identifikovat.
+                    Hřiště ve Veselici by mělo primárně sloužit lidem z Veselice a blízkého okolí. To je důvodem těchto
+                    opatření.
                 </p>
 
                 <h3>Přihlášení</h3>
@@ -99,7 +98,10 @@ const Login: NextPage = () => {
                 <h3>Otevřený zdrojový kód:</h3>
                 <p>
                     Kompletní zdrojové kódy aplikace jsou k dispozici na
-                    <a href={"https://github.com/kotrzina/court-reservations"} target={"_blank"}>
+                    <a href={"https://github.com/kotrzina/court-reservations"}
+                       rel={"noreferrer"}
+                       target={"_blank"}
+                    >
                         https://github.com/kotrzina/court-reservations</a> pod
                     WTFPL licencí. Změny jsou vítány.
                 </p>
