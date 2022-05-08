@@ -231,7 +231,7 @@ func (srv *Server) postReservation(c *gin.Context) {
 	}
 
 	// check conflict with all placed reservation iin the current day
-	placedReservations, err := srv.storage.GetReservationsBetween(date, date.Add(24*time.Hour))
+	placedReservations, err := srv.storage.GetReservationsBetween(date, date)
 	for _, pr := range placedReservations {
 		// check if reservation request is between any existing reservation
 		if request.SlotFrom >= pr.SlotFrom && request.SlotFrom <= pr.SlotTo ||
