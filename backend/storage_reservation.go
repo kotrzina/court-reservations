@@ -7,8 +7,6 @@ import (
 	"time"
 )
 
-const colReservation = "reservation"
-
 const (
 	SlotStatusFree        = 0
 	SlotStatusTaken       = 1
@@ -38,7 +36,7 @@ func (s *Storage) CreateReservation(date time.Time, slotFrom, slotTo, status int
 
 	ctx := context.Background()
 	id := calculateReservationId(date, slotFrom)
-	_, err := s.client.Collection(colReservation).Doc(id).Set(ctx, data)
+	_, err := s.client.Collection(s.config.CollectionReservations).Doc(id).Set(ctx, data)
 	if err != nil {
 		s.logger.Error(err)
 	}
@@ -49,7 +47,7 @@ func (s *Storage) CreateReservation(date time.Time, slotFrom, slotTo, status int
 func (s *Storage) GetReservation(date time.Time, slotFrom int) (Reservation, error) {
 	id := calculateReservationId(date, slotFrom)
 	ctx := context.Background()
-	doc, err := s.client.Collection(colReservation).Doc(id).Get(ctx)
+	doc, err := s.client.Collection(s.config.CollectionReservations).Doc(id).Get(ctx)
 	if err != nil {
 		s.logger.Error(err)
 		return Reservation{}, err
@@ -59,7 +57,7 @@ func (s *Storage) GetReservation(date time.Time, slotFrom int) (Reservation, err
 
 func (s *Storage) GetReservationsBetween(from, to time.Time) ([]Reservation, error) {
 	ctx := context.Background()
-	docs, err := s.client.Collection(colReservation).
+	docs, err := s.client.Collection(s.config.CollectionReservations).
 		Where("date", ">=", from).
 		Where("date", "<=", to).
 		Documents(ctx).
@@ -98,7 +96,7 @@ func (s *Storage) GetReservationsBetween(from, to time.Time) ([]Reservation, err
 func (s *Storage) GetUserActiveReservations(username string) ([]Reservation, error) {
 	ctx := context.Background()
 	today := RoundDay(time.Now())
-	docs, err := s.client.Collection(colReservation).
+	docs, err := s.client.Collection(s.config.CollectionReservations).
 		Where("username", "==", username).
 		Where("date", ">=", today).
 		Documents(ctx).
@@ -137,7 +135,7 @@ func (s *Storage) GetUserActiveReservations(username string) ([]Reservation, err
 func (s *Storage) GetAllActiveReservations() ([]Reservation, error) {
 	ctx := context.Background()
 	today := RoundDay(time.Now())
-	docs, err := s.client.Collection(colReservation).
+	docs, err := s.client.Collection(s.config.CollectionReservations).
 		Where("date", ">=", today).
 		Documents(ctx).
 		GetAll()
@@ -175,7 +173,7 @@ func (s *Storage) GetAllActiveReservations() ([]Reservation, error) {
 func (s *Storage) DeleteReservation(date time.Time, slotFrom int) error {
 	id := calculateReservationId(date, slotFrom)
 	ctx := context.Background()
-	_, err := s.client.Collection(colReservation).Doc(id).Delete(ctx)
+	_, err := s.client.Collection(s.config.CollectionReservations).Doc(id).Delete(ctx)
 	if err != nil {
 		s.logger.Error(err)
 	}

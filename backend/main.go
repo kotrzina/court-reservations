@@ -9,14 +9,12 @@ func main() {
 	l := logrus.New()
 	l.SetOutput(os.Stdout)
 
-	project := os.Getenv("PROJECT")
-
-	s, err := NewStorage(project, l)
+	c, err := LoadConfig()
 	if err != nil {
 		l.Fatal(err.Error())
 	}
 
-	c, err := LoadConfig()
+	s, err := NewStorage(c, l)
 	if err != nil {
 		l.Fatal(err.Error())
 	}

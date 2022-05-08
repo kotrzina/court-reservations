@@ -11,12 +11,13 @@ import (
 
 type Storage struct {
 	client *firestore.Client
+	config *Config
 	logger *logrus.Logger
 }
 
-func NewStorage(project string, logger *logrus.Logger) (*Storage, error) {
+func NewStorage(c *Config, logger *logrus.Logger) (*Storage, error) {
 	ctx := context.Background()
-	client, err := firestore.NewClient(ctx, project)
+	client, err := firestore.NewClient(ctx, c.GoogleProjectId)
 
 	if value := os.Getenv("FIRESTORE_EMULATOR_HOST"); value != "" {
 		log.Printf("Using Firestore Emulator: %s", value)
@@ -27,5 +28,5 @@ func NewStorage(project string, logger *logrus.Logger) (*Storage, error) {
 		return nil, fmt.Errorf("could not connect to firestore: %w", err)
 	}
 
-	return &Storage{client: client, logger: logger}, nil
+	return &Storage{client: client, config: c, logger: logger}, nil
 }

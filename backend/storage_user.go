@@ -5,8 +5,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-const colUser = "createUser"
-
 type User struct {
 	Username string
 	Hash     string // password hash
@@ -15,7 +13,7 @@ type User struct {
 
 func (s *Storage) GetUserByUsername(username string) (*User, error) {
 	ctx := context.Background()
-	doc, err := s.client.Collection(colUser).Doc(username).Get(ctx)
+	doc, err := s.client.Collection(s.config.CollectionUsers).Doc(username).Get(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +39,7 @@ func (s *Storage) CreateUser(username, password, name string) error {
 	}
 
 	ctx := context.Background()
-	_, err = s.client.Collection(colUser).Doc(username).Set(ctx, u)
+	_, err = s.client.Collection(s.config.CollectionUsers).Doc(username).Set(ctx, u)
 	if err != nil {
 		s.logger.Error(err)
 	}
@@ -51,7 +49,7 @@ func (s *Storage) CreateUser(username, password, name string) error {
 
 func (s *Storage) GetUsers() ([]User, error) {
 	ctx := context.Background()
-	docs, err := s.client.Collection(colUser).Documents(ctx).GetAll()
+	docs, err := s.client.Collection(s.config.CollectionUsers).Documents(ctx).GetAll()
 	if err != nil {
 		s.logger.Error(err)
 		return nil, err
@@ -72,7 +70,7 @@ func (s *Storage) GetUsers() ([]User, error) {
 
 func (s *Storage) DeleteUser(username string) error {
 	ctx := context.Background()
-	_, err := s.client.Collection(colUser).Doc(username).Delete(ctx)
+	_, err := s.client.Collection(s.config.CollectionUsers).Doc(username).Delete(ctx)
 	if err != nil {
 		s.logger.Error(err)
 	}

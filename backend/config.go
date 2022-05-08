@@ -8,17 +8,35 @@ import (
 )
 
 type Config struct {
-	MaxDays          int // you can do a reservation MaxDays ahead
-	MaxFrames        int // one frame = 15 min; e.g. when MaxFrames is 8 that means maximal reservation frame could be two hours
-	StartingSlot     int // first slot of the day
-	EndingSlot       int // last slot of the day
-	JwtSigningKey    string
-	RegistrationCode string
-	Admins           []string
+	GoogleProjectId        string // firestore collection
+	CollectionReservations string // firestore collection
+	CollectionUsers        string // firestore collection
+	MaxDays                int    // you can do a reservation MaxDays ahead
+	MaxFrames              int    // one frame = 15 min; e.g. when MaxFrames is 8 that means maximal reservation frame could be two hours
+	StartingSlot           int    // first slot of the day
+	EndingSlot             int    // last slot of the day
+	JwtSigningKey          string
+	RegistrationCode       string
+	Admins                 []string
 }
 
 func LoadConfig() (*Config, error) {
 	var err error
+
+	googleProjectId := os.Getenv("GOOGLE_PROJECT_ID")
+	if googleProjectId == "" {
+		googleProjectId = "test" // default  value for local development
+	}
+
+	colReservations := os.Getenv("FIRESTORE_COLLECTION_RESERVATIONS")
+	if colReservations == "" {
+		colReservations = "reservations" // default  value
+	}
+
+	colUsers := os.Getenv("FIRESTORE_COLLECTION_USERS")
+	if colUsers == "" {
+		colUsers = "users" // default  value
+	}
 
 	maxDaysEnv := os.Getenv("MAX_DAYS")
 	maxDays := 14 // default value
@@ -75,12 +93,15 @@ func LoadConfig() (*Config, error) {
 	}
 
 	return &Config{
-		MaxDays:          maxDays,
-		MaxFrames:        maxFrames,
-		StartingSlot:     startingSlot,
-		EndingSlot:       endingSlot,
-		JwtSigningKey:    jwt,
-		RegistrationCode: registrationCode,
-		Admins:           admins,
+		GoogleProjectId:        googleProjectId,
+		CollectionReservations: colReservations,
+		CollectionUsers:        colUsers,
+		MaxDays:                maxDays,
+		MaxFrames:              maxFrames,
+		StartingSlot:           startingSlot,
+		EndingSlot:             endingSlot,
+		JwtSigningKey:          jwt,
+		RegistrationCode:       registrationCode,
+		Admins:                 admins,
 	}, nil
 }
