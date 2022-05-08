@@ -16,9 +16,6 @@ type ReservationOutput struct {
 	Username string `json:"username,omitempty"`
 }
 
-const startingSlot = 12 // 6:00
-const endingSlot = 43   // 21:45
-
 func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		type slotOutput struct {
@@ -48,7 +45,7 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 		current := start
 		for d := 0; d < srv.config.MaxDays-1; d++ {
 			slots := []slotOutput{}
-			for s := startingSlot; s <= endingSlot; s++ {
+			for s := srv.config.StartingSlot; s <= srv.config.EndingSlot; s++ {
 				status := MapSlotStatus(SlotStatusFree)
 				if d == 0 && s <= currentSlot {
 					// today in pass
@@ -84,8 +81,8 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 
 					// update all slots
 					for s := r.SlotFrom; s <= r.SlotTo; s++ {
-						days[dayIdx].Slots[s-startingSlot].Status = MapSlotStatus(r.Status)
-						days[dayIdx].Slots[s-startingSlot].Owner = name
+						days[dayIdx].Slots[s-srv.config.StartingSlot].Status = MapSlotStatus(r.Status)
+						days[dayIdx].Slots[s-srv.config.StartingSlot].Owner = name
 
 					}
 				}
@@ -159,7 +156,7 @@ func (srv *Server) getAvailable(c *gin.Context) {
 	}
 
 	ress := []ReservationOutput{}
-	for s := slot; s <= endingSlot && s < slot+maxDelta; s++ {
+	for s := slot; s <= srv.config.EndingSlot && s < slot+maxDelta; s++ {
 		ress = append(ress, ReservationOutput{
 			Date:     date.Format(dateFormat),
 			SlotFrom: slot,
