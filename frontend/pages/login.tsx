@@ -1,4 +1,4 @@
-import React, {FC, useContext, useState} from "react";
+import React, { useContext, useState} from "react";
 import {Button, Col, Form, Row} from "react-bootstrap";
 import {useFlash} from "../src/useFlash";
 import {Flash} from "../components/Flash";
@@ -6,8 +6,9 @@ import {postLogin} from "../src/api";
 import {User} from "../src/user";
 import {useRouter} from "next/router";
 import {UserContext} from "../src/UserContext";
+import {NextPage} from "next";
 
-const Login: FC = () => {
+const Login: NextPage = () => {
 
     const {login} = useContext(UserContext)
     const router = useRouter()

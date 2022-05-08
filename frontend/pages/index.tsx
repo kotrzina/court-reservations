@@ -22,7 +22,7 @@ const Home: NextPage = () => {
     function fetchData() {
         fetchTimeTable().then(data => {
             setTable(data)
-        }).catch(error => {
+        }).catch(() => {
             updateFlash("error", "Nelze načíst rezervace ze serveru. Zkus to prosím později.")
         })
     }
@@ -33,11 +33,20 @@ const Home: NextPage = () => {
 
             <Row>
                 <Col md={6} style={{marginTop: "20px"}}>
-                    <ReservationsList title={"Vaše rezervace:"} reservations={table.userReservations}/>
+                    <ReservationsList
+                        title={"Dnešní rezervace:"}
+                        reservations={table.todayReservations}
+                        reload={fetchData}
+                        setFlash={updateFlash}
+                    />
                 </Col>
-
                 <Col md={6} style={{marginTop: "20px"}}>
-                    <ReservationsList title={"Dnešní rezervace:"} reservations={table.todayReservations}/>
+                    <ReservationsList
+                        title={"Vaše rezervace:"}
+                        reservations={table.userReservations}
+                        reload={fetchData}
+                        setFlash={updateFlash}
+                    />
                 </Col>
             </Row>
 

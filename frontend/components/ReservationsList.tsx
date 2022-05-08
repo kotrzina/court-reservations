@@ -1,13 +1,19 @@
-import React, {FC} from "react";
-import {Reservation} from "../src/api";
+import React, {FC, useContext} from "react";
+import {deleteReservation, Reservation} from "../src/api";
 import {Badge, ListGroup} from "react-bootstrap";
-import {formatDate, indexToTime, slotsToDuration} from "../src/utils";
+import {formatDate, getDayInWeek, indexToTime, slotsToDuration} from "../src/utils";
+import {UserContext} from "../src/UserContext";
+import {FlashVariant} from "./Flash";
 
 type Props = {
     title: string;
     reservations: Reservation[];
+    setFlash(variant: FlashVariant, message: string): void;
+    reload(): void;
 };
 export const ReservationsList: FC<Props> = (props: Props) => {
+
+    const {user} = useContext(UserContext)
 
     function title(): JSX.Element {
         if (props.reservations.length > 0) {
@@ -17,6 +23,36 @@ export const ReservationsList: FC<Props> = (props: Props) => {
         }
 
         return <></>
+    }
+
+    function onDelete(r: Reservation) {
+        const y = confirm(`Opravdu chcete smazat rezervaci ${getDayInWeek(r.date)} ${formatDate(r.date)} - ${indexToTime(r.slotFrom)}-${indexToTime(r.slotTo + 1)}`)
+        if (y) {
+            deleteReservation(r.date, r.slotFrom).then(() => {
+                props.reload()
+                props.setFlash("ok", "Rezervace smazána.")
+                window.scrollTo(0, 0)
+            }).catch(() => {
+                props.setFlash("error", "Rezervaci nelze smazat.")
+            })
+        }
+    }
+
+    function deleteBadge(r: Reservation): JSX.Element {
+        if (user.username === r.username) {
+            return (
+                <Badge bg="danger" pill style={{cursor: "pointer"}} onClick={() => {
+                    onDelete(r)
+                }}>
+                    ×
+                </Badge>
+            )
+
+        }
+
+        return (
+            <></>
+        )
     }
 
     return (
@@ -33,11 +69,9 @@ export const ReservationsList: FC<Props> = (props: Props) => {
                             <div className="fw-bold">
                                 {formatDate(r.date)} 🕜 {indexToTime(r.slotFrom)} - {indexToTime(r.slotTo + 1)}
                             </div>
-                            {r.owner}
+                            {r.username}
                         </div>
-                        <Badge bg="success" pill>
-                            {slotsToDuration(r.slotFrom, r.slotTo)}
-                        </Badge>
+                        {deleteBadge(r)}
                     </ListGroup.Item>
                 )
             })}
