@@ -6,7 +6,9 @@ require (
 	cloud.google.com/go/firestore v1.6.1
 	github.com/gin-gonic/gin v1.7.7
 	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.7.0
+	github.com/toorop/gin-logrus v0.0.0-20210225092905-2c785434f26f
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 )
 

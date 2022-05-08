@@ -1,25 +1,28 @@
 package main
 
 import (
+	"github.com/sirupsen/logrus"
 	"os"
 )
 
 func main() {
-	project := os.Getenv("PROJECT")
-	project = "asd"
+	l := logrus.New()
+	l.SetOutput(os.Stdout)
 
-	s, err := NewStorage(project)
+	project := os.Getenv("PROJECT")
+
+	s, err := NewStorage(project, l)
 	if err != nil {
-		panic(err)
+		l.Fatal(err.Error())
 	}
 
 	c, err := LoadConfig()
 	if err != nil {
-		panic(err)
+		l.Fatal(err.Error())
 	}
 
 	us := NewUserService(c.JwtSigningKey, c.Admins)
 
-	server := NewServer(s, c, us, 8081)
+	server := NewServer(s, c, us, l, 8081)
 	server.StartServer()
 }

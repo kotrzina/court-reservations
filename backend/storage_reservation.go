@@ -39,6 +39,9 @@ func (s *Storage) CreateReservation(date time.Time, slotFrom, slotTo, status int
 	ctx := context.Background()
 	id := calculateReservationId(date, slotFrom)
 	_, err := s.client.Collection(colReservation).Doc(id).Set(ctx, data)
+	if err != nil {
+		s.logger.Error(err)
+	}
 
 	return err
 }
@@ -48,6 +51,7 @@ func (s *Storage) GetReservation(date time.Time, slotFrom int) (Reservation, err
 	ctx := context.Background()
 	doc, err := s.client.Collection(colReservation).Doc(id).Get(ctx)
 	if err != nil {
+		s.logger.Error(err)
 		return Reservation{}, err
 	}
 	return mapReservation(doc.Data()), nil
@@ -62,6 +66,7 @@ func (s *Storage) GetReservationsBetween(from, to time.Time) ([]Reservation, err
 		GetAll()
 
 	if err != nil {
+		s.logger.Error(err)
 		return nil, err
 	}
 
@@ -100,6 +105,7 @@ func (s *Storage) GetUserActiveReservations(username string) ([]Reservation, err
 		GetAll()
 
 	if err != nil {
+		s.logger.Error(err)
 		return nil, err
 	}
 
@@ -137,6 +143,7 @@ func (s *Storage) GetAllActiveReservations() ([]Reservation, error) {
 		GetAll()
 
 	if err != nil {
+		s.logger.Error(err)
 		return nil, err
 	}
 
@@ -169,6 +176,9 @@ func (s *Storage) DeleteReservation(date time.Time, slotFrom int) error {
 	id := calculateReservationId(date, slotFrom)
 	ctx := context.Background()
 	_, err := s.client.Collection(colReservation).Doc(id).Delete(ctx)
+	if err != nil {
+		s.logger.Error(err)
+	}
 	return err
 }
 

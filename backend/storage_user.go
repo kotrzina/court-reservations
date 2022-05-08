@@ -42,25 +42,9 @@ func (s *Storage) CreateUser(username, password, name string) error {
 
 	ctx := context.Background()
 	_, err = s.client.Collection(colUser).Doc(username).Set(ctx, u)
-
-	return err
-}
-
-func (s *Storage) ChangeUserRole(username string) error {
-	ctx := context.Background()
-	doc, err := s.client.Collection(colUser).Doc(username).Get(ctx)
 	if err != nil {
-		return err
+		s.logger.Error(err)
 	}
-
-	data := doc.Data()
-	u := map[string]interface{}{
-		"username": data["username"].(string),
-		"hash":     data["hash"].(string),
-		"name":     data["name"].(string),
-	}
-
-	_, err = s.client.Collection(colUser).Doc(username).Set(ctx, u)
 
 	return err
 }
@@ -69,6 +53,7 @@ func (s *Storage) GetUsers() ([]User, error) {
 	ctx := context.Background()
 	docs, err := s.client.Collection(colUser).Documents(ctx).GetAll()
 	if err != nil {
+		s.logger.Error(err)
 		return nil, err
 	}
 
@@ -88,6 +73,9 @@ func (s *Storage) GetUsers() ([]User, error) {
 func (s *Storage) DeleteUser(username string) error {
 	ctx := context.Background()
 	_, err := s.client.Collection(colUser).Doc(username).Delete(ctx)
+	if err != nil {
+		s.logger.Error(err)
+	}
 	return err
 }
 

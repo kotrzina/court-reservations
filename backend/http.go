@@ -5,7 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"log"
+	"github.com/sirupsen/logrus"
+	"github.com/toorop/gin-logrus"
 	"net/http"
 	"os"
 	"os/signal"
@@ -18,15 +19,17 @@ type Server struct {
 	storage     *Storage
 	config      *Config
 	userService *UserService
+	logger      *logrus.Logger
 	port        int
 }
 
-func NewServer(s *Storage, c *Config, us *UserService, port int) *Server {
+func NewServer(s *Storage, c *Config, us *UserService, l *logrus.Logger, port int) *Server {
 	return &Server{
 		storage:     s,
 		config:      c,
 		userService: us,
 		port:        port,
+		logger:      l,
 	}
 }
 
@@ -38,29 +41,29 @@ func (srv *Server) StartServer() {
 
 	go func() {
 		if err := apiSrv.ListenAndServe(); err != nil && errors.Is(err, http.ErrServerClosed) {
-			log.Printf("listen: %s\n", err)
+			srv.logger.Printf("listen: %s\n", err)
 		}
 	}()
 
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
-	log.Println("Shutting down server...")
+	srv.logger.Println("Shutting down server...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 
 	if err := apiSrv.Shutdown(ctx); err != nil {
-		log.Fatal("Server forced to shutdown:", err)
+		srv.logger.Fatal("Server forced to shutdown:", err)
 	}
 
-	log.Println("Server exiting")
+	srv.logger.Println("Server exiting")
 }
 
 func (srv *Server) createRouter() *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Recovery())
-	router.Use(gin.Logger())
+	router.Use(ginlogrus.Logger(srv.logger))
 	router.Use(CORSMiddleware())
 
 	public := router.Group("/api/public")
