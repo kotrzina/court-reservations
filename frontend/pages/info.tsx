@@ -16,9 +16,9 @@ const Login: NextPage = () => {
                 </p>
                 <p>
                     Asi si dokážete přestavit, že se s někým domluvíte třeba na tenis na určitou hodinu a na místě se
-                    sejdete. Kurt však bude obsazený a vám nezbude nic jiného než čekat. Právě tento rezervační systém
-                    by měl tento problém vyřešit. Bohužel nejde nijak vymáhat, aby lidé striktně dodržovali kalendář,
-                    ale doufáme, že lidé budou i ve svém vlastím zájmu tyto &ldquo;pravidla&ldquo; dodržovat.
+                    sejdete. Kurt však bude obsazený a vám nezbude nic jiného než čekat. Tento rezervační systém
+                    by měl tento problém řešit. Bohužel nejde nijak vymáhat, aby lidé striktně dodržovali kalendář.
+                    Ale doufáme, že lidé budou i ve svém vlastím zájmu tyto &ldquo;pravidla&ldquo; dodržovat.
                 </p>
 
                 <h3>Registrace</h3>
@@ -40,6 +40,7 @@ const Login: NextPage = () => {
 
                 <h3>Pravidla rezervace</h3>
                 <ol>
+                    <li>Rezervace je možná jen od 6:00 do 22:00</li>
                     <li>Maximální doba rezervace je 2 hodiny</li>
                     <li>Osoba by měla provést maximálně jedu rezervaci za jeden den (pravidlo není vynuceno rezervačním
                         systémem)
@@ -97,13 +98,12 @@ const Login: NextPage = () => {
 
                 <h3>Otevřený zdrojový kód:</h3>
                 <p>
-                    Kompletní zdrojové kódy aplikace jsou k dispozici na
-                    <a href={"https://github.com/kotrzina/court-reservations"}
-                       rel={"noreferrer"}
-                       target={"_blank"}
-                    >
-                        https://github.com/kotrzina/court-reservations</a> pod
-                    WTFPL licencí. Změny jsou vítány.
+                    Kompletní zdrojové kódy aplikace jsou k dispozici na <a
+                    href={"https://github.com/kotrzina/court-reservations"}
+                    rel={"noreferrer"}
+                    target={"_blank"}
+                >https://github.com/kotrzina/court-reservations</a> pod
+                    WTFPL licencí. Pull requesty jsou vítány.
                 </p>
             </Col>
         </Row>

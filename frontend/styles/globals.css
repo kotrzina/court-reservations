@@ -6,13 +6,17 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
 * {
     box-sizing: border-box;
+}
+
+a {
+    color: #0c4b5e;
+    text-decoration: underline;
+}
+
+a:hover {
+    text-decoration: none;
 }
 
 ol, ul {
@@ -53,7 +57,7 @@ table.tableView tr td.taken {
     cursor: not-allowed;
 }
 
-table.tableView tr td.history, table.tableView tr td.maintenance  {
+table.tableView tr td.history, table.tableView tr td.maintenance {
     background-color: #555;
     cursor: not-allowed;
 }
