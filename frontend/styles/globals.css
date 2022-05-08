@@ -15,6 +15,10 @@ a {
     box-sizing: border-box;
 }
 
+ul {
+    padding-left: 16px;
+}
+
 table.tableView tr th {
     padding-bottom: 4px;
     padding-left: 0;
