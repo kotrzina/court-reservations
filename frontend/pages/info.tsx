@@ -54,11 +54,23 @@ const Login: NextPage = () => {
                     tlačítko rezervovat.
                 </p>
 
+                <ul>
+                    <li><span style={{color: "#176910", fontSize: "140%"}}>■</span> - volný interval</li>
+                    <li><span style={{color: "#751222", fontSize: "140%"}}>■</span> - obsazeno</li>
+                    <li><span style={{color: "#555", fontSize: "140%"}}>■</span> - udržba / delší akce</li>
+                </ul>
+
                 <h3>Storno rezervace</h3>
                 <p>
                     Na hlavní stránce můžete vidět svůj seznam rezervací. Zrušit ji můžete pomocí červeného křížku v
                     pravém horním rohu. Pokud víte, že svoji rezervaci nevyužiteje, zrušte ji prosím co nejdříve, aby se
                     termín uvolnil dalším potencionální uživatelům.
+                </p>
+
+                <h3>Problémy:</h3>
+                <p>
+                    Pokud budete mít s aplikací jakékoliv problémy (technické, zapomenuté heslo) prosím kontaktujte
+                    Tomáše Kozáka (tel. 730996957, email: kozak@talko.cz). To platí také pro návrhy úprav a vylepšení.
                 </p>
 
                 <h3>Podmínky registrace/rezervace:</h3>
@@ -71,9 +83,29 @@ const Login: NextPage = () => {
                     jejich zpracováním může kdykoliv písemně odvolat na adrese sídla.
                 </p>
 
+                <h3>Bezpečnost aplikace:</h3>
+                <p>
+                    Všechny vaše údaje včetně přihlašovacího hesla jsou bezpečně uloženy. Databázi a aplikační servery
+                    provozuje společnost Google. Technické detaily:
+                </p>
+                <ul>
+                    <li>Frontend - CloudFlare pages</li>
+                    <li>Backend - Google Cloud Run</li>
+                    <li>Databáze - Google Firestore</li>
+                    <li>Heslo jsou ukládany pomocí hashovací funkce bcrypt s cenou 14</li>
+                    <li>Přihlašovací session je implementovaná pomocí JWT tokenu s podpisovou metodou HS256</li>
+                </ul>
+
+                <h3>Otevřený zdrojový kód:</h3>
+                <p>
+                    Kompletní zdrojové kódy aplikace jsou k dispozici na
+                    <a href={"https://github.com/kotrzina/court-reservations"} target={"_blank"}>
+                        https://github.com/kotrzina/court-reservations</a> pod
+                    WTFPL licencí. Změny jsou vítány.
+                </p>
             </Col>
         </Row>
-    );
+    )
 };
 
 export default Login;

@@ -130,7 +130,7 @@ func (srv *Server) getAvailable(c *gin.Context) {
 		return
 	}
 	slot, err := strconv.Atoi(c.Param("firstSlot"))
-	if err != nil || slot < 0 || slot > 47 {
+	if err != nil || slot < srv.config.StartingSlot || slot > srv.config.EndingSlot {
 		c.JSON(createHttpError(http.StatusBadRequest, "could not parse slot parameter"))
 		return
 	}
@@ -188,13 +188,13 @@ func (srv *Server) postReservation(c *gin.Context) {
 	}
 
 	// validate slot from
-	if request.SlotFrom < 0 || request.SlotFrom > 47 {
+	if request.SlotFrom < srv.config.StartingSlot || request.SlotFrom > srv.config.EndingSlot {
 		c.JSON(createHttpError(http.StatusBadRequest, "invalid input for slotFrom"))
 		return
 	}
 
 	// validate to
-	if request.SlotTo < 0 || request.SlotTo > 47 {
+	if request.SlotTo < srv.config.StartingSlot || request.SlotTo > srv.config.EndingSlot {
 		c.JSON(createHttpError(http.StatusBadRequest, "invalid input for SlotTo"))
 		return
 	}
@@ -254,6 +254,47 @@ func (srv *Server) postReservation(c *gin.Context) {
 	c.JSON(http.StatusOK, struct{}{})
 }
 
+func (srv *Server) postReservationMaintenance(c *gin.Context) {
+	type input struct {
+		Date     string `json:"date"`
+		SlotFrom int    `json:"slotFrom"`
+		SlotTo   int    `json:"slotTo"`
+		Reason   string `json:"reason"`
+	}
+
+	user, err := srv.GetLoggedUser(c)
+	if err != nil {
+		c.JSON(createHttpError(http.StatusInternalServerError, err.Error()))
+		return
+	}
+
+	if !user.IsAdmin {
+		c.JSON(createHttpError(http.StatusForbidden, "insufficient permissions"))
+		return
+	}
+
+	var request input
+	err = c.BindJSON(&request)
+	if err != nil {
+		c.JSON(createHttpError(http.StatusBadRequest, "could not parse input json"))
+		return
+	}
+
+	date, err := time.ParseInLocation(dateFormat, request.Date, getPrague())
+	if err != nil {
+		c.JSON(createHttpError(http.StatusBadRequest, "could not parse reservation date"))
+		return
+	}
+
+	err = srv.storage.CreateReservation(date, request.SlotFrom, request.SlotTo, SlotStatusMaintenance, user.Username, request.Reason)
+	if err != nil {
+		c.JSON(createHttpError(http.StatusInternalServerError, err.Error()))
+		return
+	}
+
+	c.JSON(http.StatusOK, struct{}{})
+}
+
 func (srv *Server) getAllReservations(c *gin.Context) {
 	user, err := srv.GetLoggedUser(c)
 	if err != nil {
@@ -288,7 +329,7 @@ func (srv *Server) deleteReservation(c *gin.Context) {
 	}
 
 	slotFrom, err := strconv.Atoi(c.Param("slotFrom"))
-	if err != nil || slotFrom < 0 || slotFrom > 47 {
+	if err != nil || slotFrom < srv.config.StartingSlot || slotFrom > srv.config.EndingSlot {
 		c.JSON(createHttpError(http.StatusBadRequest, "could not parse slot parameter"))
 		return
 	}

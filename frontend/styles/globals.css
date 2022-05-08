@@ -53,8 +53,8 @@ table.tableView tr td.taken {
     cursor: not-allowed;
 }
 
-table.tableView tr td.history, table.tableView tr td.maintenance {
-    background-color: #666;
+table.tableView tr td.history, table.tableView tr td.maintenance  {
+    background-color: #555;
     cursor: not-allowed;
 }
 
@@ -86,7 +86,12 @@ table.accordionView tr td.taken {
     cursor: not-allowed;
 }
 
-table.accordionView tr td.history, table.accordionView tr td.maintenance {
+table.accordionView tr td.maintenance {
+    background-color: #555;
+    cursor: not-allowed;
+}
+
+table.accordionView tr td.history {
     display: none;
 }
 
