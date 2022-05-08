@@ -1,7 +1,7 @@
 import React, {FC, useContext} from "react";
 import {deleteReservation, Reservation} from "../src/api";
 import {Badge, ListGroup} from "react-bootstrap";
-import {formatDate, getDayInWeek, indexToTime, slotsToDuration} from "../src/utils";
+import {formatDate, getDayInWeek, indexToTime} from "../src/utils";
 import {UserContext} from "../src/UserContext";
 import {FlashVariant} from "./Flash";
 

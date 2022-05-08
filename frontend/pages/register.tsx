@@ -3,6 +3,7 @@ import {Button, Col, Form, Row} from "react-bootstrap";
 import {useFlash} from "../src/useFlash";
 import {Flash} from "../components/Flash";
 import {postRegister} from "../src/api";
+import Link from "next/link";
 
 const Register: FC = () => {
 
@@ -12,6 +13,7 @@ const Register: FC = () => {
     const [password, setPassword] = useState<string>("")
     const [passwordCheck, setPasswordCheck] = useState<string>("")
     const [code, setCode] = useState<string>("")
+    const [rights, setRights] = useState<boolean>(true)
 
     const [nameValid, setNameValid] = useState<boolean>(false)
     const [usernameValid, setUsernameValid] = useState<boolean>(false)
@@ -22,7 +24,7 @@ const Register: FC = () => {
 
     useEffect(() => {
         revalidate()
-    }, [name, username, password, passwordCheck, code])
+    }, [name, username, password, passwordCheck, code, rights])
 
     function revalidate(): void {
         setNameValid(name.length >= 5)
@@ -31,7 +33,7 @@ const Register: FC = () => {
         setPasswordSame(passwordCheck == password && passwordCheck.length > 0)
         setCodeValid(code.length > 0)
 
-        setAllValid(nameValid && usernameValid && passwordValid && passwordSame && codeValid)
+        setAllValid(nameValid && usernameValid && passwordValid && passwordSame && codeValid && rights)
     }
 
     function onRegister() {
@@ -45,6 +47,14 @@ const Register: FC = () => {
         }).catch(() => {
             setFlash("error", "Chyba registrace")
         })
+    }
+
+    function rightsLabel(): JSX.Element {
+        return (
+            <>
+                Souhlasím s <Link href={"/info"}>podmínkami registrace</Link>
+            </>
+        )
     }
 
     return (
@@ -112,6 +122,17 @@ const Register: FC = () => {
                             Tajný kód neleznete na vstupu do kurtu nebo vám ho řekne kdokoliv z Veselice. Takže úplně
                             tajný není. :)
                         </Form.Text>
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <Form.Check
+                            type="checkbox"
+                            label={rightsLabel()}
+                            checked={rights}
+                            isInvalid={!rights}
+                            onChange={(e) => {
+                                setRights(e.target.checked)
+                            }}/>
                     </Form.Group>
 
                     <Button variant="success" type="submit" disabled={!allValid} onClick={e => {

@@ -17,9 +17,12 @@ const Menu: FC<Props> = (props: Props) => {
                     <Link href={"/"} passHref>
                         <Navbar.Brand>Hřiště Veselice</Navbar.Brand>
                     </Link>
-                    <Nav className="me-auto" hidden={!props.user.isAdmin}>
+                    <Nav className="me-auto">
                         <Link href={"/admin"} passHref>
-                            <Nav.Link>Admin</Nav.Link>
+                            <Nav.Link hidden={!props.user.isAdmin}>Admin</Nav.Link>
+                        </Link>
+                        <Link href={"/info"} passHref>
+                            <Nav.Link>Info</Nav.Link>
                         </Link>
                     </Nav>
                     <Navbar.Toggle/>

@@ -4,7 +4,7 @@ import {Alert, Button, Col, Form, Row, Spinner} from "react-bootstrap";
 import {Flash} from "../../../components/Flash";
 import {useFlash} from "../../../src/useFlash";
 import {fetchAvailable, postReservation, Reservation} from "../../../src/api";
-import {formatDate, getDayInWeek, getFullDayInWeek, indexToTime} from "../../../src/utils";
+import {formatDate, getDayInWeek, getFullDayInWeek, indexToTime, slotsToDuration} from "../../../src/utils";
 import Link from "next/link";
 import {UserContext} from "../../../src/UserContext";
 
@@ -54,6 +54,14 @@ const Available: FC = () => {
         })
     }
 
+    function label(r: Reservation) {
+        return (
+            <>
+                <strong>{slotsToDuration(r.slotFrom, r.slotTo)}</strong> ({indexToTime(r.slotFrom)} - {indexToTime(r.slotTo + 1)})
+            </>
+        )
+    }
+
     return (
         <>
             <Flash flash={flash}/>
@@ -65,7 +73,7 @@ const Available: FC = () => {
                         <li><strong>Kdo:</strong> {userContextData.user.name}</li>
                         <li><strong>Kde:</strong> Hřiště Veselice</li>
                     </ul>
-                    <h4>Časové okno:</h4>
+                    <h4>Délka rezervace:</h4>
                     <Alert hidden={!(!showSpinner && available.length == 0)} variant={"danger"}>
                         Žádné termíny nejsou k dispozici
                     </Alert>
@@ -78,7 +86,7 @@ const Available: FC = () => {
                                     disabled={done}
                                     type={'radio'}
                                     id={`radio-${r.date}-${r.slotFrom}-${r.slotTo}`}
-                                    label={`${indexToTime(r.slotFrom)} - ${indexToTime(r.slotTo + 1)}`}
+                                    label={label(r)}
                                     name={'day'}
                                     onClick={() => {
                                         setSelectedSlot(r.slotTo)

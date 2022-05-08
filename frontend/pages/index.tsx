@@ -34,7 +34,7 @@ const Home: NextPage = () => {
             <Row>
                 <Col md={6} style={{marginTop: "20px"}}>
                     <ReservationsList
-                        title={"Dnešní rezervace:"}
+                        title={"DNES:"}
                         reservations={table.todayReservations}
                         reload={fetchData}
                         setFlash={updateFlash}
@@ -42,7 +42,7 @@ const Home: NextPage = () => {
                 </Col>
                 <Col md={6} style={{marginTop: "20px"}}>
                     <ReservationsList
-                        title={"Vaše rezervace:"}
+                        title={"MOJE REZERVACE:"}
                         reservations={table.userReservations}
                         reload={fetchData}
                         setFlash={updateFlash}
