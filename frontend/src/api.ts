@@ -12,17 +12,10 @@ export type Day = {
     slots: Slot[]; // always 96 slots
 }
 
-export type ReservationItem = {
-    date: string;
-    slotFrom: number;
-    slotTo: number;
-    owner: string;
-}
-
 export type TimeTable = {
     timeTable: Day[];
-    todayReservations: ReservationItem[];
-    userReservations: ReservationItem[];
+    todayReservations: Reservation[];
+    userReservations: Reservation[];
 }
 
 export type Reservation = {
@@ -33,10 +26,6 @@ export type Reservation = {
     username?: string;
 }
 
-export type AvailableReservations = {
-    possibilities: Reservation[];
-}
-
 export type LoginResponse = {
     name: string;
     username: string;
@@ -44,7 +33,7 @@ export type LoginResponse = {
     jwt: string;
 }
 
-export type User = {
+export type UserListItem = {
     username: string;
     name: string;
 }
@@ -69,7 +58,7 @@ export async function fetchTimeTable(): Promise<TimeTable> {
     return await res.json()
 }
 
-export async function fetchAvailable(date: string, firstSlot: number): Promise<AvailableReservations> {
+export async function fetchAvailable(date: string, firstSlot: number): Promise<Reservation[]> {
     const user = getUserFromStorage()
     const res = await fetch(`http://192.168.0.107:8081/api/private/v1/available/${date}/${firstSlot}`, {
         headers: {
@@ -147,7 +136,7 @@ export async function postRegister(username: string, password: string, name: str
     return true
 }
 
-export async function fetchAllReservations(): Promise<ReservationItem[]> {
+export async function fetchAllReservations(): Promise<Reservation[]> {
     const user = getUserFromStorage()
     const res = await fetch("http://192.168.0.107:8081/api/private/v1/admin/reservation", {
         headers: {
@@ -163,7 +152,7 @@ export async function fetchAllReservations(): Promise<ReservationItem[]> {
     return await res.json()
 }
 
-export async function deleteReservation(date: string, slotFrom: number): Promise<ReservationItem[]> {
+export async function deleteReservation(date: string, slotFrom: number): Promise<Reservation[]> {
     const user = getUserFromStorage()
     const res = await fetch(`http://192.168.0.107:8081/api/private/v1/reservation/${date}/${slotFrom}`, {
         method: "DELETE",
@@ -180,7 +169,7 @@ export async function deleteReservation(date: string, slotFrom: number): Promise
     return await res.json()
 }
 
-export async function fetchUsers(): Promise<User[]> {
+export async function fetchUsers(): Promise<UserListItem[]> {
     const user = getUserFromStorage()
     const res = await fetch("http://192.168.0.107:8081/api/private/v1/admin/user", {
         headers: {

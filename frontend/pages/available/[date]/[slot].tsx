@@ -36,7 +36,7 @@ const Available: FC = () => {
         setSlot(querySlot)
 
         fetchAvailable(queryDate, querySlot).then(data => {
-            setAvailable(data.possibilities)
+            setAvailable(data)
         }).catch((e) => {
             setFlash("error", "Chyba! Zkuste to prosim pozdeji")
         }).finally(() => {

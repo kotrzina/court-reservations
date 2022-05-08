@@ -8,11 +8,12 @@ import (
 	"time"
 )
 
-type reservationItem struct {
+type ReservationOutput struct {
 	Date     string `json:"date"`
 	SlotFrom int    `json:"slotFrom,omitempty"`
 	SlotTo   int    `json:"slotTo,omitempty"`
-	Owner    string `json:"owner"`
+	Name     string `json:"user,omitempty"`
+	Username string `json:"username,omitempty"`
 }
 
 const startingSlot = 12 // 6:00
@@ -33,9 +34,9 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 		}
 
 		type output struct {
-			TimeTable         []dayOutput       `json:"timeTable"`
-			TodayReservations []reservationItem `json:"todayReservations"`
-			UserReservations  []reservationItem `json:"userReservations"`
+			TimeTable         []dayOutput         `json:"timeTable"`
+			TodayReservations []ReservationOutput `json:"todayReservations"`
+			UserReservations  []ReservationOutput `json:"userReservations"`
 		}
 
 		now := time.Now()
@@ -91,16 +92,16 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 			}
 		}
 
-		today := []reservationItem{}
+		today := []ReservationOutput{}
 		if includeDetails {
 			for _, r := range reservations {
 				if r.Date.Equal(start) && currentSlot <= r.SlotTo {
-					today = append(today, mapReservationItem(r))
+					today = append(today, mapReservationOutput(r))
 				}
 			}
 		}
 
-		userRes := []reservationItem{}
+		userRes := []ReservationOutput{}
 		if includeDetails {
 			user, err := srv.GetLoggedUser(c)
 			if err != nil {
@@ -113,7 +114,7 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 				return
 			}
 			for _, ur := range userReservations {
-				userRes = append(userRes, mapReservationItem(ur))
+				userRes = append(userRes, mapReservationOutput(ur))
 			}
 		}
 
@@ -126,16 +127,6 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 }
 
 func (srv *Server) getAvailable(c *gin.Context) {
-	type reservationOutput struct {
-		Date     string `json:"date"`
-		SlotFrom int    `json:"slotFrom"`
-		SlotTo   int    `json:"slotTo"`
-	}
-
-	type output struct {
-		Possibilities []reservationOutput `json:"possibilities"`
-	}
-
 	date, err := time.ParseInLocation("2006-01-02", c.Param("date"), getPrague())
 	if err != nil {
 		c.JSON(createHttpError(http.StatusBadRequest, "could not parse date parameter"))
@@ -167,16 +158,16 @@ func (srv *Server) getAvailable(c *gin.Context) {
 		}
 	}
 
-	ress := []reservationOutput{}
+	ress := []ReservationOutput{}
 	for s := slot; s <= endingSlot && s < slot+maxDelta; s++ {
-		ress = append(ress, reservationOutput{
+		ress = append(ress, ReservationOutput{
 			Date:     date.Format(dateFormat),
 			SlotFrom: slot,
 			SlotTo:   s,
 		})
 	}
 
-	c.JSON(http.StatusOK, output{Possibilities: ress})
+	c.JSON(http.StatusOK, ress)
 }
 
 func (srv *Server) postReservation(c *gin.Context) {
@@ -284,9 +275,9 @@ func (srv *Server) getAllReservations(c *gin.Context) {
 		return
 	}
 
-	items := []reservationItem{}
+	items := []ReservationOutput{}
 	for _, r := range res {
-		items = append(items, mapReservationItem(r))
+		items = append(items, mapReservationOutput(r))
 	}
 
 	c.JSON(http.StatusOK, items)
@@ -332,12 +323,13 @@ func (srv *Server) deleteReservation(c *gin.Context) {
 	c.JSON(http.StatusOK, struct{}{})
 }
 
-func mapReservationItem(r Reservation) reservationItem {
-	return reservationItem{
+func mapReservationOutput(r Reservation) ReservationOutput {
+	return ReservationOutput{
 		Date:     r.Date.Format(dateFormat),
 		SlotFrom: r.SlotFrom,
 		SlotTo:   r.SlotTo,
-		Owner:    r.Name,
+		Name:     r.Name,
+		Username: r.Username,
 	}
 }
 

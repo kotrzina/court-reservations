@@ -1,7 +1,7 @@
 import React, {FC, useContext, useEffect, useState} from "react";
 import {UserContext} from "../src/UserContext";
 import {Button, Col, Row, Table} from "react-bootstrap";
-import {deleteReservation, deleteUser, fetchAllReservations, fetchUsers, ReservationItem, User} from "../src/api";
+import {deleteReservation, deleteUser, fetchAllReservations, fetchUsers, Reservation, UserListItem} from "../src/api";
 import {useRouter} from "next/router";
 import {formatDate, indexToTime, slotsToDuration} from "../src/utils";
 
@@ -11,8 +11,8 @@ const Admin: FC = () => {
     const {user} = useContext(UserContext)
     const router = useRouter()
 
-    const [reservations, setReservations] = useState<ReservationItem[]>([])
-    const [users, setUsers] = useState<User[]>([])
+    const [reservations, setReservations] = useState<Reservation[]>([])
+    const [users, setUsers] = useState<UserListItem[]>([])
 
     useEffect(() => {
         if (!user.logged || !user.isAdmin) {
@@ -37,7 +37,7 @@ const Admin: FC = () => {
         })
     }
 
-    function onDeleteReservation(r: ReservationItem) {
+    function onDeleteReservation(r: Reservation) {
         const y = confirm(`Opravdu smazat rezervaci ${r.date} ${indexToTime(r.slotFrom)} - ${indexToTime(r.slotTo + 1)}?`)
         if (y) {
             deleteReservation(r.date, r.slotFrom).then(() => {
@@ -48,7 +48,7 @@ const Admin: FC = () => {
         }
     }
 
-    function onDeleteUser(u: User) {
+    function onDeleteUser(u: UserListItem) {
         const y = confirm(`Opravdu smazat uzivatele ${u.name} (${u.username})?`)
         if (y) {
             deleteUser(u.username).then(() => {

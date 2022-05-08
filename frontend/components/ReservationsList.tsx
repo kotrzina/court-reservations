@@ -1,11 +1,11 @@
 import React, {FC} from "react";
-import {ReservationItem} from "../src/api";
+import {Reservation} from "../src/api";
 import {Badge, ListGroup} from "react-bootstrap";
 import {formatDate, indexToTime, slotsToDuration} from "../src/utils";
 
 type Props = {
     title: string;
-    reservations: ReservationItem[];
+    reservations: Reservation[];
 };
 export const ReservationsList: FC<Props> = (props: Props) => {
 
