@@ -12,7 +12,7 @@ type ReservationOutput struct {
 	Date     string `json:"date"`
 	SlotFrom int    `json:"slotFrom,omitempty"`
 	SlotTo   int    `json:"slotTo,omitempty"`
-	Name     string `json:"user,omitempty"`
+	Name     string `json:"name,omitempty"`
 	Username string `json:"username,omitempty"`
 }
 
