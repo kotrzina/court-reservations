@@ -10,7 +10,7 @@ func TestCheckMaxDays(t *testing.T) {
 	s := NewServer(nil, &Config{
 		MaxDays:   14, // max 14 days ahead
 		MaxFrames: 0,
-	}, 1234)
+	}, nil, nil, 1234)
 	now := time.Date(2000, 1, 1, 12, 0, 0, 0, getPrague())
 
 	assert.Nil(t, s.checkMaxDays(now, time.Date(2000, 1, 2, 12, 0, 0, 0, getPrague())))

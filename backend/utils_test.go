@@ -9,8 +9,8 @@ import (
 func TestTimeToSlot(t *testing.T) {
 	assert.Equal(t, 0, TimeToSlot(time.Date(2000, 1, 1, 0, 0, 0, 0, getPrague())))
 	assert.Equal(t, 0, TimeToSlot(time.Date(2000, 1, 1, 0, 14, 0, 0, getPrague())))
-	assert.Equal(t, 1, TimeToSlot(time.Date(2000, 1, 1, 0, 15, 0, 0, getPrague())))
-	assert.Equal(t, 95, TimeToSlot(time.Date(2000, 1, 1, 23, 59, 0, 0, getPrague())))
+	assert.Equal(t, 1, TimeToSlot(time.Date(2000, 1, 1, 0, 30, 0, 0, getPrague())))
+	assert.Equal(t, 47, TimeToSlot(time.Date(2000, 1, 1, 23, 59, 0, 0, getPrague())))
 }
 
 func TestRoundDay(t *testing.T) {

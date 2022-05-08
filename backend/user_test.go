@@ -7,7 +7,7 @@ import (
 )
 
 func TestSuccessLogin(t *testing.T) {
-	svc := NewUserService("test_token")
+	svc := NewUserService("test_token", []string{})
 
 	name := "test_name"
 	username := "test_username"
@@ -20,7 +20,7 @@ func TestSuccessLogin(t *testing.T) {
 }
 
 func TestInvalidToken(t *testing.T) {
-	svc := NewUserService("test_token")
+	svc := NewUserService("test_token", []string{})
 
 	name := "test_name"
 	username := "test_username"
@@ -30,4 +30,17 @@ func TestInvalidToken(t *testing.T) {
 	_, err := svc.VerifyJwt(token)
 
 	assert.Error(t, err)
+}
+
+func TestIsAdmin(t *testing.T) {
+	svc := NewUserService("test_token", []string{"u1", "u4"})
+
+	assert.True(t, svc.IsAdmin("u1"))
+	assert.True(t, svc.IsAdmin("u4"))
+
+	assert.False(t, svc.IsAdmin("u1u"))
+	assert.False(t, svc.IsAdmin("uu1"))
+	assert.False(t, svc.IsAdmin("u3"))
+	assert.False(t, svc.IsAdmin(""))
+	assert.False(t, svc.IsAdmin(":)"))
 }
