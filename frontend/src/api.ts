@@ -38,6 +38,7 @@ export type LoginResponse = {
 export type UserListItem = {
     username: string;
     name: string;
+    city: string;
 }
 
 export async function fetchTimeTable(): Promise<TimeTable> {
@@ -116,7 +117,7 @@ export async function postLogin(username: string, password: string): Promise<Log
     return await res.json()
 }
 
-export async function postRegister(username: string, password: string, name: string, code: string): Promise<boolean> {
+export async function postRegister(username: string, password: string, name: string, city: string, code: string): Promise<boolean> {
     const res = await fetch(`${BACKEND_URL}/api/public/v1/user/register`, {
         method: "POST",
         headers: {
@@ -127,6 +128,7 @@ export async function postRegister(username: string, password: string, name: str
             name: name,
             username: username,
             password: password,
+            city: city,
             code: code,
         })
     })

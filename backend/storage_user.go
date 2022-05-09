@@ -9,6 +9,7 @@ type User struct {
 	Username string
 	Hash     string // password hash
 	Name     string // real name
+	City     string
 }
 
 func (s *Storage) GetUserByUsername(username string) (*User, error) {
@@ -23,10 +24,11 @@ func (s *Storage) GetUserByUsername(username string) (*User, error) {
 		Username: data["username"].(string),
 		Hash:     data["hash"].(string),
 		Name:     data["name"].(string),
+		City:     data["city"].(string),
 	}, nil
 }
 
-func (s *Storage) CreateUser(username, password, name string) error {
+func (s *Storage) CreateUser(username, password, name, city string) error {
 	hash, err := hashPassword(password)
 	if err != nil {
 		return err
@@ -36,6 +38,7 @@ func (s *Storage) CreateUser(username, password, name string) error {
 		"username": username,
 		"hash":     hash,
 		"name":     name,
+		"city":     city,
 	}
 
 	ctx := context.Background()
@@ -62,6 +65,7 @@ func (s *Storage) GetUsers() ([]User, error) {
 			Username: data["username"].(string),
 			Hash:     data["hash"].(string),
 			Name:     data["name"].(string),
+			City:     data["city"].(string),
 		})
 	}
 

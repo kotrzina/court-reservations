@@ -99,6 +99,7 @@ const Admin: FC = () => {
                     <tr>
                         <th>Jmeno</th>
                         <th>Uzivatelske jmeno</th>
+                        <th>Obec</th>
                         <th>Smazat</th>
                     </tr>
                     </thead>
@@ -108,6 +109,7 @@ const Admin: FC = () => {
                             <tr key={u.username}>
                                 <td>{u.name}</td>
                                 <td>{u.username}</td>
+                                <td>{u.city}</td>
                                 <td>
                                     <Button variant={"danger"} onClick={() => onDeleteUser(user)}>
                                         Smazat

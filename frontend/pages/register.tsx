@@ -12,6 +12,7 @@ const Register: FC = () => {
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const [passwordCheck, setPasswordCheck] = useState<string>("")
+    const [city, setCity] = useState<string>("")
     const [code, setCode] = useState<string>("")
     const [rights, setRights] = useState<boolean>(true)
 
@@ -19,30 +20,33 @@ const Register: FC = () => {
     const [usernameValid, setUsernameValid] = useState<boolean>(false)
     const [passwordValid, setPasswordValid] = useState<boolean>(false)
     const [passwordSame, setPasswordSame] = useState<boolean>(false)
+    const [cityValid, setCityValid] = useState<boolean>(false)
     const [codeValid, setCodeValid] = useState<boolean>(false)
     const [allValid, setAllValid] = useState<boolean>(false)
 
     useEffect(() => {
         revalidate()
-    }, [name, username, password, passwordCheck, code, rights])
+    }, [name, username, password, passwordCheck, city, code, rights])
 
     function revalidate(): void {
         setNameValid(name.length >= 5)
         setUsernameValid(username.length >= 3)
         setPasswordValid(password.length >= 5)
         setPasswordSame(passwordCheck == password && passwordCheck.length > 0)
+        setCityValid(city.length > 2)
         setCodeValid(code.length > 0)
 
         setAllValid(nameValid && usernameValid && passwordValid && passwordSame && codeValid && rights)
     }
 
     function onRegister() {
-        postRegister(username, password, name, code).then(data => {
+        postRegister(username, password, name, city, code).then(data => {
             setFlash("ok", "Registrace proběhla úspěšně. Můžete se přihlásit")
             setName("")
             setUsername("")
             setPassword("")
             setPasswordCheck("")
+            setCity("")
             setCode("")
         }).catch(() => {
             setFlash("error", "Chyba registrace")
@@ -109,6 +113,18 @@ const Register: FC = () => {
                                 setPasswordCheck(e.target.value)
                             }}
                         />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <Form.Control
+                            value={city}
+                            isInvalid={!cityValid}
+                            placeholder="Obec"
+                            onChange={e => setCity(e.target.value)}
+                        />
+                        <Form.Text className="text-muted">
+                            Veselice, Suchdol,...
+                        </Form.Text>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
