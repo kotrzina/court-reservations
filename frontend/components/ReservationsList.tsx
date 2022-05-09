@@ -69,7 +69,7 @@ export const ReservationsList: FC<Props> = (props: Props) => {
                             <div className="fw-bold">
                                 {formatDate(r.date)} 🕜 {indexToTime(r.slotFrom)} - {indexToTime(r.slotTo + 1)}
                             </div>
-                            {r.username}
+                            {r.name}
                         </div>
                         {deleteBadge(r)}
                     </ListGroup.Item>
