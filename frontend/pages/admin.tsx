@@ -111,7 +111,7 @@ const Admin: FC = () => {
                                 <td>{u.username}</td>
                                 <td>{u.city}</td>
                                 <td>
-                                    <Button variant={"danger"} onClick={() => onDeleteUser(user)}>
+                                    <Button variant={"danger"} onClick={() => onDeleteUser(u)}>
                                         Smazat
                                     </Button>
                                 </td>
