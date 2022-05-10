@@ -20,12 +20,8 @@ func (s *Storage) GetUserByUsername(username string) (*User, error) {
 	}
 
 	data := doc.Data()
-	return &User{
-		Username: data["username"].(string),
-		Hash:     data["hash"].(string),
-		Name:     data["name"].(string),
-		City:     data["city"].(string),
-	}, nil
+	user := mapUser(data)
+	return &user, nil
 }
 
 func (s *Storage) CreateUser(username, password, name, city string) error {
@@ -61,12 +57,7 @@ func (s *Storage) GetUsers() ([]User, error) {
 	users := []User{}
 	for _, doc := range docs {
 		data := doc.Data()
-		users = append(users, User{
-			Username: data["username"].(string),
-			Hash:     data["hash"].(string),
-			Name:     data["name"].(string),
-			City:     data["city"].(string),
-		})
+		users = append(users, mapUser(data))
 	}
 
 	return users, nil
@@ -79,6 +70,15 @@ func (s *Storage) DeleteUser(username string) error {
 		s.logger.Error(err)
 	}
 	return err
+}
+
+func mapUser(data map[string]interface{}) User {
+	return User{
+		Username: data["username"].(string),
+		Hash:     data["hash"].(string),
+		Name:     data["name"].(string),
+		City:     data["city"].(string),
+	}
 }
 
 func isPasswordValid(password, hash string) bool {
