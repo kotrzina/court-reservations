@@ -32,6 +32,7 @@ func (s *Storage) CreateReservation(date time.Time, slotFrom, slotTo, status int
 		"status":   status,
 		"username": username,
 		"name":     name,
+		"created":  time.Now(),
 	}
 
 	ctx := context.Background()

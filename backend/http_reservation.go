@@ -124,7 +124,7 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 }
 
 func (srv *Server) getAvailable(c *gin.Context) {
-	date, err := time.ParseInLocation("2006-01-02", c.Param("date"), getPrague())
+	date, err := time.ParseInLocation(dateFormat, c.Param("date"), getPrague())
 	if err != nil {
 		c.JSON(createHttpError(http.StatusBadRequest, "could not parse date parameter"))
 		return
@@ -322,7 +322,7 @@ func (srv *Server) getAllReservations(c *gin.Context) {
 }
 
 func (srv *Server) deleteReservation(c *gin.Context) {
-	date, err := time.ParseInLocation("2006-01-02", c.Param("date"), getPrague())
+	date, err := time.ParseInLocation(dateFormat, c.Param("date"), getPrague())
 	if err != nil {
 		c.JSON(createHttpError(http.StatusBadRequest, "could not parse date parameter"))
 		return

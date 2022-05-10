@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"golang.org/x/crypto/bcrypt"
+	"time"
 )
 
 type User struct {
@@ -35,6 +36,7 @@ func (s *Storage) CreateUser(username, password, name, city string) error {
 		"hash":     hash,
 		"name":     name,
 		"city":     city,
+		"created":  time.Now(),
 	}
 
 	ctx := context.Background()
