@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"golang.org/x/crypto/bcrypt"
+	"strings"
 	"time"
 )
 
@@ -15,7 +16,7 @@ type User struct {
 
 func (s *Storage) GetUserByUsername(username string) (*User, error) {
 	ctx := context.Background()
-	doc, err := s.client.Collection(s.config.CollectionUsers).Doc(username).Get(ctx)
+	doc, err := s.client.Collection(s.config.CollectionUsers).Doc(strings.ToLower(username)).Get(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -32,7 +33,7 @@ func (s *Storage) CreateUser(username, password, name, city string) error {
 	}
 
 	u := map[string]interface{}{
-		"username": username,
+		"username": strings.ToLower(username),
 		"hash":     hash,
 		"name":     name,
 		"city":     city,
@@ -40,7 +41,7 @@ func (s *Storage) CreateUser(username, password, name, city string) error {
 	}
 
 	ctx := context.Background()
-	_, err = s.client.Collection(s.config.CollectionUsers).Doc(username).Set(ctx, u)
+	_, err = s.client.Collection(s.config.CollectionUsers).Doc(strings.ToLower(username)).Set(ctx, u)
 	if err != nil {
 		s.logger.Error(err)
 	}
@@ -67,7 +68,7 @@ func (s *Storage) GetUsers() ([]User, error) {
 
 func (s *Storage) DeleteUser(username string) error {
 	ctx := context.Background()
-	_, err := s.client.Collection(s.config.CollectionUsers).Doc(username).Delete(ctx)
+	_, err := s.client.Collection(s.config.CollectionUsers).Doc(strings.ToLower(username)).Delete(ctx)
 	if err != nil {
 		s.logger.Error(err)
 	}
@@ -76,7 +77,7 @@ func (s *Storage) DeleteUser(username string) error {
 
 func mapUser(data map[string]interface{}) User {
 	return User{
-		Username: data["username"].(string),
+		Username: strings.ToLower(data["username"].(string)),
 		Hash:     data["hash"].(string),
 		Name:     data["name"].(string),
 		City:     data["city"].(string),
