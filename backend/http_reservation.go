@@ -152,6 +152,7 @@ func (srv *Server) getAvailable(c *gin.Context) {
 
 		if placedReservation.SlotFrom >= slot && slot+srv.config.MaxFrames >= placedReservation.SlotFrom {
 			maxDelta = placedReservation.SlotFrom - slot
+			break
 		}
 	}
 
@@ -231,8 +232,7 @@ func (srv *Server) postReservation(c *gin.Context) {
 	placedReservations, err := srv.storage.GetReservationsBetween(date, date)
 	for _, pr := range placedReservations {
 		// check if reservation request is between any existing reservation
-		if request.SlotFrom >= pr.SlotFrom && request.SlotFrom <= pr.SlotTo ||
-			request.SlotTo >= pr.SlotFrom && request.SlotTo <= pr.SlotTo {
+		if request.SlotFrom <= pr.SlotTo && request.SlotTo >= pr.SlotFrom {
 			c.JSON(createHttpError(http.StatusConflict, "conflict in reservations"))
 			return
 		}
