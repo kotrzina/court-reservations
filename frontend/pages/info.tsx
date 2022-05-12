@@ -92,7 +92,7 @@ const Info: NextPage = () => {
                     <li>Frontend - CloudFlare pages</li>
                     <li>Backend - Google Cloud Run</li>
                     <li>Databáze - Google Firestore</li>
-                    <li>Heslo jsou ukládány pomocí hashovací funkce bcrypt s cenou 14</li>
+                    <li>Hesla jsou ukládány pomocí hashovací funkce bcrypt s cenou 14</li>
                     <li>Přihlašovací session je implementovaná pomocí JWT tokenu s podpisovou metodou HS256</li>
                 </ul>
 
