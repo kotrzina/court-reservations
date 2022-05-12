@@ -10,15 +10,15 @@ const Login: NextPage = () => {
                 <h1>Informace</h1>
                 <p>
                     <strong>
-                        Rezervační systém vzniknul za účelem zefektivnění využitelnosti našeho hřiště. Rozhodně
-                        není jeho účelem nějak zvýhoďnovat určitou skupinu uživatelů.
+                        Rezervační systém vznikl za účelem zefektivnění využitelnosti našeho hřiště. Rozhodně
+                        není jeho účelem nějak zvýhodňovat určitou skupinu uživatelů.
                     </strong>
                 </p>
                 <p>
                     Asi si dokážete přestavit, že se s někým domluvíte třeba na tenis na určitou hodinu a na místě se
                     sejdete. Kurt však bude obsazený a vám nezbude nic jiného než čekat. Tento rezervační systém
                     by měl tento problém řešit. Bohužel nejde nijak vymáhat, aby lidé striktně dodržovali kalendář.
-                    Ale doufáme, že lidé budou i ve svém vlastím zájmu tyto &ldquo;pravidla&ldquo; dodržovat.
+                    Ale doufáme, že lidé budou i ve svém vlastním zájmu tyto &ldquo;pravidla&ldquo; dodržovat.
                 </p>
 
                 <h3>Registrace</h3>
@@ -42,7 +42,7 @@ const Login: NextPage = () => {
                 <ol>
                     <li>Rezervace je možná jen od 6:00 do 22:00</li>
                     <li>Maximální doba rezervace je 2 hodiny</li>
-                    <li>Osoba by měla provést maximálně jedu rezervaci za jeden den (pravidlo není vynuceno rezervačním
+                    <li>Osoba by měla provést maximálně jednu rezervaci za jeden den (pravidlo není vynuceno rezervačním
                         systémem)
                     </li>
                     <li>Osoba je povinna rezervaci využít, popř. rezervaci zrušit</li>
@@ -57,7 +57,7 @@ const Login: NextPage = () => {
                 <ul>
                     <li><span style={{color: "#176910", fontSize: "140%"}}>■</span> - volný interval</li>
                     <li><span style={{color: "#751222", fontSize: "140%"}}>■</span> - obsazeno</li>
-                    <li><span style={{color: "#555", fontSize: "140%"}}>■</span> - udržba / delší akce</li>
+                    <li><span style={{color: "#555", fontSize: "140%"}}>■</span> - údržba / delší akce</li>
                 </ul>
 
                 <h3>Storno rezervace</h3>
@@ -92,7 +92,7 @@ const Login: NextPage = () => {
                     <li>Frontend - CloudFlare pages</li>
                     <li>Backend - Google Cloud Run</li>
                     <li>Databáze - Google Firestore</li>
-                    <li>Heslo jsou ukládany pomocí hashovací funkce bcrypt s cenou 14</li>
+                    <li>Heslo jsou ukládány pomocí hashovací funkce bcrypt s cenou 14</li>
                     <li>Přihlašovací session je implementovaná pomocí JWT tokenu s podpisovou metodou HS256</li>
                 </ul>
 
