@@ -1,12 +1,13 @@
-import React, {FC, useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {UserContext} from "../src/UserContext";
 import {Button, Col, Row, Table} from "react-bootstrap";
 import {deleteReservation, deleteUser, fetchAllReservations, fetchUsers, Reservation, UserListItem} from "../src/api";
 import {useRouter} from "next/router";
 import {formatDate, indexToTime, slotsToDuration} from "../src/utils";
+import {NextPage} from "next";
 
 
-const Admin: FC = () => {
+const Admin: NextPage = () => {
 
     const {user} = useContext(UserContext)
     const router = useRouter()

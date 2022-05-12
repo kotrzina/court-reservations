@@ -1,11 +1,12 @@
-import React, {FC, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Col, Form, Row} from "react-bootstrap";
 import {useFlash} from "../src/useFlash";
 import {Flash} from "../components/Flash";
 import {postRegister} from "../src/api";
 import Link from "next/link";
+import {NextPage} from "next";
 
-const Register: FC = () => {
+const Register: NextPage = () => {
 
     const [flash, setFlash] = useFlash()
     const [name, setName] = useState<string>("")

@@ -1,4 +1,4 @@
-import React, {FC, useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {useRouter} from 'next/router'
 import {Alert, Button, Col, Form, Row, Spinner} from "react-bootstrap";
 import {Flash} from "../../../components/Flash";
@@ -7,8 +7,9 @@ import {fetchAvailable, postReservation, Reservation} from "../../../src/api";
 import {formatDate, getDayInWeek, getFullDayInWeek, indexToTime, slotsToDuration} from "../../../src/utils";
 import Link from "next/link";
 import {UserContext} from "../../../src/UserContext";
+import {NextPage} from "next";
 
-const Available: FC = () => {
+const Available: NextPage = () => {
 
     const router = useRouter()
     const userContextData = useContext(UserContext)

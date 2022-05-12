@@ -2,7 +2,7 @@ import {Col, Row} from "react-bootstrap";
 import {NextPage} from "next";
 import Link from "next/link";
 
-const Login: NextPage = () => {
+const Info: NextPage = () => {
 
     return (
         <Row>
@@ -110,4 +110,4 @@ const Login: NextPage = () => {
     )
 };
 
-export default Login;
+export default Info;
