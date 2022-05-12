@@ -1,6 +1,6 @@
 import type {NextPage} from 'next'
 import React, {useEffect, useState} from "react";
-import {Col, Row, Table} from "react-bootstrap";
+import {Col, Row, Spinner, Table} from "react-bootstrap";
 import {fetchTimeTable, TimeTable} from "../src/api";
 import {TableHead} from "../components/TableHead";
 import {TableBody} from "../components/TableBody";
@@ -13,6 +13,7 @@ const Home: NextPage = () => {
 
     const [table, setTable] = useState<TimeTable>({timeTable: [], todayReservations: [], userReservations: []})
     const [flash, updateFlash] = useFlash()
+    const [loading, setLoading] = useState<boolean>(true)
 
 
     useEffect(() => {
@@ -20,10 +21,13 @@ const Home: NextPage = () => {
     }, [])
 
     function fetchData() {
+        setLoading(true)
         fetchTimeTable().then(data => {
             setTable(data)
         }).catch(() => {
             updateFlash("error", "Nelze načíst rezervace ze serveru. Zkus to prosím později.")
+        }).finally(() => {
+            setLoading(false)
         })
     }
 
@@ -51,6 +55,8 @@ const Home: NextPage = () => {
             </Row>
 
             <Row>
+                <Spinner animation={"border"} variant={"success"} style={{margin: "0 auto"}} hidden={!loading}/>
+
                 <Col className={'d-none d-sm-none d-md-block d-lg-block d-xl-block'} md={12}
                      style={{marginTop: "30px"}}>
                     <Table className={'tableView'} responsive={true}>
