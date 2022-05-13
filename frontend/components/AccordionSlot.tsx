@@ -3,6 +3,7 @@ import {Slot} from "../src/api";
 import {useRouter} from "next/router";
 import {formatDate, getDayInWeek, indexToTime} from "../src/utils";
 import {UserContext} from "../src/UserContext";
+import {Clock} from "./Clock";
 
 type Props = {
     slot: Slot;
@@ -23,7 +24,7 @@ export const AccordionSlot: FC<Props> = (props: Props) => {
         <td className={props.slot.status}
             onClick={() => onSlotClicked()}
         >
-            {getDayInWeek(props.slot.date)} {formatDate(props.slot.date)} 🕜 {indexToTime(props.slot.index)}
+            {getDayInWeek(props.slot.date)} {formatDate(props.slot.date)} <Clock slot={props.slot.index}/> {indexToTime(props.slot.index)}
         </td>
     )
 };
