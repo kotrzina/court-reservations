@@ -4,6 +4,7 @@ import {Badge, ListGroup} from "react-bootstrap";
 import {formatDate, getDayInWeek, indexToTime} from "../src/utils";
 import {UserContext} from "../src/UserContext";
 import {FlashVariant} from "./Flash";
+import {Clock} from "./Clock";
 
 type Props = {
     title: string;
@@ -67,7 +68,7 @@ export const ReservationsList: FC<Props> = (props: Props) => {
                     >
                         <div className="ms-2 me-auto">
                             <div className="fw-bold">
-                                {formatDate(r.date)} 🕜 {indexToTime(r.slotFrom)} - {indexToTime(r.slotTo + 1)}
+                                {formatDate(r.date)} <Clock slot={r.slotFrom}/> {indexToTime(r.slotFrom)} - {indexToTime(r.slotTo + 1)}
                             </div>
                             {r.name}
                         </div>

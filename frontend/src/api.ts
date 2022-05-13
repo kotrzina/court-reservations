@@ -4,7 +4,7 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL as string
 
 export type Slot = {
     date: string; // date in format Y-m-d
-    index: number; // slot index 0-95
+    index: number; // slot index 0-47
     status: "free" | "taken" | "maintenance" | "history";
     owner?: string;
 }

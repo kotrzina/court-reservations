@@ -6,6 +6,7 @@ import {useRouter} from "next/router";
 import {formatDate, indexToTime, slotsToDuration} from "../src/utils";
 import {NextPage} from "next";
 import Head from "next/head";
+import {Clock} from "../components/Clock";
 
 
 const Admin: NextPage = () => {
@@ -84,7 +85,7 @@ const Admin: NextPage = () => {
                         return (
                             <tr key={`${r.date}-${r.slotFrom}`}>
                                 <td>{formatDate(r.date)}</td>
-                                <td>{indexToTime(r.slotFrom)}&nbsp;-&nbsp;{indexToTime(r.slotTo + 1)}</td>
+                                <td><Clock slot={r.slotFrom}/> {indexToTime(r.slotFrom)}&nbsp;-&nbsp;{indexToTime(r.slotTo + 1)}</td>
                                 <td>{slotsToDuration(r.slotFrom, r.slotTo)}</td>
                                 <td>{r.name} ({r.username})</td>
                                 <td>
