@@ -5,6 +5,7 @@ import {Flash} from "../components/Flash";
 import {postRegister} from "../src/api";
 import Link from "next/link";
 import {NextPage} from "next";
+import Head from "next/head";
 
 const Register: NextPage = () => {
 
@@ -64,6 +65,10 @@ const Register: NextPage = () => {
 
     return (
         <Row>
+            <Head>
+                <title>Registrace - Hřiště Veselice</title>
+            </Head>
+
             <Col md={4}>
                 <h2>Registrace:</h2>
                 <Flash flash={flash}/>

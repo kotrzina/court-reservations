@@ -1,11 +1,17 @@
 import {Col, Row} from "react-bootstrap";
 import {NextPage} from "next";
 import Link from "next/link";
+import Head from "next/head";
+import React from "react";
 
 const Info: NextPage = () => {
 
     return (
         <Row>
+            <Head>
+                <title>Informace - Hřiště Veselice</title>
+            </Head>
+
             <Col md={12}>
                 <h1>Informace</h1>
                 <p>

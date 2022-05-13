@@ -8,6 +8,7 @@ import {useFlash} from "../src/useFlash";
 import {Flash} from "../components/Flash";
 import {ReservationsList} from "../components/ReservationsList";
 import {AccordionBody} from "../components/AccordionBody";
+import Head from "next/head";
 
 const Home: NextPage = () => {
 
@@ -33,8 +34,11 @@ const Home: NextPage = () => {
 
     return (
         <>
-            <Flash flash={flash}/>
+            <Head>
+                <title>Rezervace - Hřiště Veselice</title>
+            </Head>
 
+            <Flash flash={flash}/>
             <Row>
                 <Col md={6} style={{marginTop: "20px"}}>
                     <ReservationsList

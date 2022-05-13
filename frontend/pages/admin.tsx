@@ -5,6 +5,7 @@ import {deleteReservation, deleteUser, fetchAllReservations, fetchUsers, Reserva
 import {useRouter} from "next/router";
 import {formatDate, indexToTime, slotsToDuration} from "../src/utils";
 import {NextPage} from "next";
+import Head from "next/head";
 
 
 const Admin: NextPage = () => {
@@ -62,6 +63,10 @@ const Admin: NextPage = () => {
 
     return (
         <Row>
+            <Head>
+                <title>Admin - Hřiště Veselice</title>
+            </Head>
+
             <Col md={12}>
                 <h2>Rezervace</h2>
                 <Table bordered={true}>

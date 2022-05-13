@@ -8,6 +8,7 @@ import {formatDate, getDayInWeek, getFullDayInWeek, indexToTime, slotsToDuration
 import Link from "next/link";
 import {UserContext} from "../../../src/UserContext";
 import {NextPage} from "next";
+import Head from "next/head";
 
 const Available: NextPage = () => {
 
@@ -65,6 +66,10 @@ const Available: NextPage = () => {
 
     return (
         <>
+            <Head>
+                <title>Výběr termínu - Hřiště Veselice</title>
+            </Head>
+
             <Flash flash={flash}/>
             <Row>
                 <Col md={12}>

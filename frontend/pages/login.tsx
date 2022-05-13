@@ -7,6 +7,7 @@ import {User} from "../src/user";
 import {useRouter} from "next/router";
 import {UserContext} from "../src/UserContext";
 import {NextPage} from "next";
+import Head from "next/head";
 
 const Login: NextPage = () => {
 
@@ -35,6 +36,10 @@ const Login: NextPage = () => {
 
     return (
         <Row>
+            <Head>
+                <title>Přihlášení - Hřiště Veselice</title>
+            </Head>
+
             <Col md={4}>
                 <h2>Přihlášení:</h2>
                 <Flash flash={flash}/>
