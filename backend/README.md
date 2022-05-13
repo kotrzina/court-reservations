@@ -17,18 +17,19 @@ docker run \
 
 ## Configuration
 
-|              Environment variable | Description                      | Type   | Required | Default      |
-|----------------------------------:|----------------------------------|--------|----------|--------------|
-|                 GOOGLE_PROJECT_ID | Google Project ID                | string | false    | test         |
-|                          MAX_DAYS | Max registration ahead in days   | int    | false    | 14           |
-|                        MAX_FRAMES | Max possible registration length | int    | false    | 4            |
-|                        SLOT_START | Index of first registration slot | int    | false    | 12           |
-|                          SLOT_END | Index of last registration slot  | int    | false    | 43           |
-|                   JWT_SIGNING_KEY | JWT signing key                  | string | false    | test         |
-|                 REGISTRATION_CODE | Password used for registration   | string | false    | test         |
-|                            ADMINS | List of users separated by comma | string | false    |              |
+| Environment variable              | Description                      | Type   | Required | Default      |
+|-----------------------------------|----------------------------------|--------|----------|--------------|
+| PORT                              | Application port                 | int    | false    | 8081         |
+| GOOGLE_PROJECT_ID                 | Google Project ID                | string | false    | test         |
+| MAX_DAYS                          | Max registration ahead in days   | int    | false    | 14           |
+| MAX_FRAMES                        | Max possible registration length | int    | false    | 4            |
+| SLOT_START                        | Index of first registration slot | int    | false    | 12           |
+| SLOT_END                          | Index of last registration slot  | int    | false    | 43           |
+| JWT_SIGNING_KEY                   | JWT signing key                  | string | false    | test         |
+| REGISTRATION_CODE                 | Password used for registration   | string | false    | test         |
+| ADMINS                            | List of users separated by comma | string | false    |              |
 | FIRESTORE_COLLECTION_RESERVATIONS | Name of reservation collection   | string | false    | reservations |
-|        FIRESTORE_COLLECTION_USERS | Name of user collection          | string | false    | users        |
+| FIRESTORE_COLLECTION_USERS        | Name of user collection          | string | false    | users        |
 
 ```bash
 # Development variables

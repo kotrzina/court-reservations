@@ -23,12 +23,12 @@ type Server struct {
 	port        int
 }
 
-func NewServer(s *Storage, c *Config, us *UserService, l *logrus.Logger, port int) *Server {
+func NewServer(s *Storage, c *Config, us *UserService, l *logrus.Logger) *Server {
 	return &Server{
 		storage:     s,
 		config:      c,
 		userService: us,
-		port:        port,
+		port:        c.Port,
 		logger:      l,
 	}
 }

@@ -21,6 +21,6 @@ func main() {
 
 	us := NewUserService(c.JwtSigningKey, c.Admins)
 
-	server := NewServer(s, c, us, l, 8081)
+	server := NewServer(s, c, us, l)
 	server.StartServer()
 }

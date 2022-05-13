@@ -8,6 +8,7 @@ import (
 )
 
 type Config struct {
+	Port                   int    //application port
 	GoogleProjectId        string // firestore collection
 	CollectionReservations string // firestore collection
 	CollectionUsers        string // firestore collection
@@ -22,6 +23,15 @@ type Config struct {
 
 func LoadConfig() (*Config, error) {
 	var err error
+
+	portEnv := os.Getenv("PORT")
+	port := 8081 // default value
+	if portEnv != "" {
+		port, err = strconv.Atoi(portEnv)
+		if err != nil {
+			return nil, fmt.Errorf("could not parse PORT environment variable: %w", err)
+		}
+	}
 
 	googleProjectId := os.Getenv("GOOGLE_PROJECT_ID")
 	if googleProjectId == "" {
@@ -93,6 +103,7 @@ func LoadConfig() (*Config, error) {
 	}
 
 	return &Config{
+		Port:                   port,
 		GoogleProjectId:        googleProjectId,
 		CollectionReservations: colReservations,
 		CollectionUsers:        colUsers,
