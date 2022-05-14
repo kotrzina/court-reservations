@@ -16,20 +16,22 @@ import (
 )
 
 type Server struct {
-	storage     *Storage
-	config      *Config
-	userService *UserService
-	logger      *logrus.Logger
-	port        int
+	storage             *Storage
+	config              *Config
+	userService         *UserService
+	notificationService *NotificationService
+	logger              *logrus.Logger
+	port                int
 }
 
-func NewServer(s *Storage, c *Config, us *UserService, l *logrus.Logger) *Server {
+func NewServer(s *Storage, c *Config, us *UserService, ns *NotificationService, l *logrus.Logger) *Server {
 	return &Server{
-		storage:     s,
-		config:      c,
-		userService: us,
-		port:        c.Port,
-		logger:      l,
+		storage:             s,
+		config:              c,
+		userService:         us,
+		port:                c.Port,
+		logger:              l,
+		notificationService: ns,
 	}
 }
 

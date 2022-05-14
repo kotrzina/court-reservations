@@ -1,6 +1,9 @@
 package main
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 const dateFormat = "2006-01-02"
 
@@ -29,6 +32,13 @@ func MapSlotStatus(status int) string {
 
 func RoundDay(t time.Time) time.Time {
 	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, getPrague())
+}
+
+func SlotToTime(idx int) string {
+	h := idx / 2
+	m := (idx % 2) * 30
+
+	return fmt.Sprintf("%02d:%02d", h, m)
 }
 
 func getPrague() *time.Location {

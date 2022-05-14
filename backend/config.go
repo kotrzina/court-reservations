@@ -19,6 +19,7 @@ type Config struct {
 	JwtSigningKey          string
 	RegistrationCode       string
 	Admins                 []string
+	NotificationDiscord    string
 }
 
 func LoadConfig() (*Config, error) {
@@ -114,5 +115,6 @@ func LoadConfig() (*Config, error) {
 		JwtSigningKey:          jwt,
 		RegistrationCode:       registrationCode,
 		Admins:                 admins,
+		NotificationDiscord:    os.Getenv("NOTIFICATION_DISCORD"),
 	}, nil
 }

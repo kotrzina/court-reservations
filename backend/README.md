@@ -30,6 +30,7 @@ docker run \
 | ADMINS                            | List of users separated by comma | string | false    |              |
 | FIRESTORE_COLLECTION_RESERVATIONS | Name of reservation collection   | string | false    | reservations |
 | FIRESTORE_COLLECTION_USERS        | Name of user collection          | string | false    | users        |
+| NOTIFICATION_DISCORD              | Notification webhook             | string | false    |              |
 
 ```bash
 # Development variables

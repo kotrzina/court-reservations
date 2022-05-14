@@ -251,6 +251,8 @@ func (srv *Server) postReservation(c *gin.Context) {
 		return
 	}
 
+	srv.notificationService.ReservationCreated(date, request.SlotFrom, request.SlotTo, user.Name)
+
 	c.JSON(http.StatusOK, struct{}{})
 }
 
@@ -291,6 +293,8 @@ func (srv *Server) postReservationMaintenance(c *gin.Context) {
 		c.JSON(createHttpError(http.StatusInternalServerError, err.Error()))
 		return
 	}
+
+	srv.notificationService.ReservationCreated(date, request.SlotFrom, request.SlotTo, user.Name)
 
 	c.JSON(http.StatusOK, struct{}{})
 }
@@ -357,6 +361,8 @@ func (srv *Server) deleteReservation(c *gin.Context) {
 		c.JSON(createHttpError(http.StatusInternalServerError, "could not delete reservation"))
 		return
 	}
+
+	srv.notificationService.ReservationDeleted(reservation.Date, reservation.SlotFrom, reservation.SlotTo, user.Name)
 
 	c.JSON(http.StatusOK, struct{}{})
 }

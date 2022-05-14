@@ -17,3 +17,10 @@ func TestRoundDay(t *testing.T) {
 	assert.Equal(t, time.Date(2000, 9, 25, 0, 0, 0, 0, getPrague()), RoundDay(time.Date(2000, 9, 25, 23, 4, 12, 7, getPrague())))
 	assert.Equal(t, time.Date(2010, 9, 25, 0, 0, 0, 0, getPrague()), RoundDay(time.Date(2010, 9, 25, 0, 0, 0, 0, getPrague())))
 }
+
+func TestSlotToTime(t *testing.T) {
+	assert.Equal(t, "00:00", SlotToTime(0))
+	assert.Equal(t, "00:30", SlotToTime(1))
+	assert.Equal(t, "01:00", SlotToTime(2))
+	assert.Equal(t, "01:30", SlotToTime(3))
+}
