@@ -9,10 +9,7 @@ func main() {
 	l := logrus.New()
 	l.SetOutput(os.Stdout)
 
-	c, err := LoadConfig()
-	if err != nil {
-		l.Fatal(err.Error())
-	}
+	c := LoadConfig()
 
 	s, err := NewStorage(c, l)
 	if err != nil {
