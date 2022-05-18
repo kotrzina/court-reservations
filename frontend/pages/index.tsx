@@ -12,7 +12,12 @@ import Head from "next/head";
 
 const Home: NextPage = () => {
 
-    const [table, setTable] = useState<TimeTable>({timeTable: [], todayReservations: [], userReservations: []})
+    const [table, setTable] = useState<TimeTable>({
+        timeTable: [],
+        reservations: [],
+        todayReservations: [],
+        userReservations: []
+    })
     const [flash, updateFlash] = useFlash()
     const [loading, setLoading] = useState<boolean>(true)
 
@@ -40,18 +45,28 @@ const Home: NextPage = () => {
 
             <Flash flash={flash}/>
             <Row>
-                <Col md={6} style={{marginTop: "20px"}}>
+                <Col md={4} style={{marginTop: "20px"}}>
                     <ReservationsList
                         title={"DNES:"}
-                        reservations={table.todayReservations}
+                        reservations={table.todayReservations.reverse()}
                         reload={fetchData}
                         setFlash={updateFlash}
                     />
                 </Col>
-                <Col md={6} style={{marginTop: "20px"}}>
+                <Col md={4} style={{marginTop: "20px"}}>
                     <ReservationsList
                         title={"MOJE REZERVACE:"}
                         reservations={table.userReservations}
+                        reload={fetchData}
+                        setFlash={updateFlash}
+                    />
+                </Col>
+                <Col md={4} style={{marginTop: "20px"}}>
+                    <ReservationsList
+                        title={"VEŘEJNÉ UDÁLOSTI:"}
+                        reservations={table.reservations.filter(r => {
+                            return r.note && r.note.length > 0
+                        }).reverse()}
                         reload={fetchData}
                         setFlash={updateFlash}
                     />

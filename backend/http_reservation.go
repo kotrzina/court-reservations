@@ -34,6 +34,7 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 
 		type output struct {
 			TimeTable         []dayOutput         `json:"timeTable"`
+			Reservations      []ReservationOutput `json:"reservations"`
 			TodayReservations []ReservationOutput `json:"todayReservations"`
 			UserReservations  []ReservationOutput `json:"userReservations"`
 		}
@@ -93,6 +94,13 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 			}
 		}
 
+		res := []ReservationOutput{}
+		if includeDetails {
+			for _, r := range reservations {
+				res = append(res, mapReservationOutput(r))
+			}
+		}
+
 		today := []ReservationOutput{}
 		if includeDetails {
 			for _, r := range reservations {
@@ -121,6 +129,7 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 
 		c.JSON(http.StatusOK, output{
 			TimeTable:         days,
+			Reservations:      res,
 			TodayReservations: today,
 			UserReservations:  userRes,
 		})

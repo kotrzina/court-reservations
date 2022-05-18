@@ -17,6 +17,7 @@ export type Day = {
 
 export type TimeTable = {
     timeTable: Day[];
+    reservations: Reservation[];
     todayReservations: Reservation[];
     userReservations: Reservation[];
 }
