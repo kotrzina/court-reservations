@@ -38,7 +38,7 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 			UserReservations  []ReservationOutput `json:"userReservations"`
 		}
 
-		now := time.Now().In(getPrague())
+		now := time.Now().In(getLocation())
 		currentSlot := TimeToSlot(now)
 		start := RoundDay(now)
 		end := start.Add((time.Duration(srv.config.MaxDays) - 1) * 24 * time.Hour)
@@ -128,7 +128,7 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 }
 
 func (srv *Server) getAvailable(c *gin.Context) {
-	date, err := time.ParseInLocation(dateFormat, c.Param("date"), getPrague())
+	date, err := time.ParseInLocation(dateFormat, c.Param("date"), getLocation())
 	if err != nil {
 		c.JSON(createHttpError(http.StatusBadRequest, "could not parse date parameter"))
 		return
@@ -139,7 +139,7 @@ func (srv *Server) getAvailable(c *gin.Context) {
 		return
 	}
 
-	if err = srv.checkMaxDays(time.Now().In(getPrague()), date); err != nil {
+	if err = srv.checkMaxDays(time.Now().In(getLocation()), date); err != nil {
 		c.JSON(createHttpError(http.StatusBadRequest, "day is unavailable"))
 		return
 	}
@@ -188,7 +188,7 @@ func (srv *Server) postReservation(c *gin.Context) {
 		return
 	}
 
-	date, err := time.ParseInLocation(dateFormat, request.Date, getPrague())
+	date, err := time.ParseInLocation(dateFormat, request.Date, getLocation())
 	if err != nil {
 		c.JSON(createHttpError(http.StatusBadRequest, "could not parse reservation date"))
 		return
@@ -219,13 +219,13 @@ func (srv *Server) postReservation(c *gin.Context) {
 	}
 
 	// check current day
-	if err = srv.checkMaxDays(time.Now().In(getPrague()), date); err != nil {
+	if err = srv.checkMaxDays(time.Now().In(getLocation()), date); err != nil {
 		c.JSON(createHttpError(http.StatusBadRequest, "day is unavailable"))
 		return
 	}
 
 	// check historical slots
-	now := time.Now().In(getPrague())
+	now := time.Now().In(getLocation())
 	if RoundDay(now).After(date) {
 		c.JSON(createHttpError(http.StatusBadRequest, "could not reserve historic slot"))
 		return
@@ -309,7 +309,7 @@ func (srv *Server) postReservationMaintenance(c *gin.Context) {
 		return
 	}
 
-	date, err := time.ParseInLocation(dateFormat, request.Date, getPrague())
+	date, err := time.ParseInLocation(dateFormat, request.Date, getLocation())
 	if err != nil {
 		c.JSON(createHttpError(http.StatusBadRequest, "could not parse reservation date"))
 		return
@@ -363,7 +363,7 @@ func (srv *Server) getAllReservations(c *gin.Context) {
 }
 
 func (srv *Server) deleteReservation(c *gin.Context) {
-	date, err := time.ParseInLocation(dateFormat, c.Param("date"), getPrague())
+	date, err := time.ParseInLocation(dateFormat, c.Param("date"), getLocation())
 	if err != nil {
 		c.JSON(createHttpError(http.StatusBadRequest, "could not parse date parameter"))
 		return

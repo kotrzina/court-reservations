@@ -35,7 +35,7 @@ func (s *Storage) CreateReservation(r Reservation) error {
 		"username": r.Username,
 		"name":     r.Name,
 		"note":     r.Note,
-		"created":  time.Now().In(getPrague()),
+		"created":  time.Now().In(getLocation()),
 	}
 
 	ctx := context.Background()
@@ -99,7 +99,7 @@ func (s *Storage) GetReservationsBetween(from, to time.Time) ([]Reservation, err
 
 func (s *Storage) GetUserActiveReservations(username string) ([]Reservation, error) {
 	ctx := context.Background()
-	today := RoundDay(time.Now().In(getPrague()))
+	today := RoundDay(time.Now().In(getLocation()))
 	docs, err := s.client.Collection(s.config.CollectionReservations).
 		Where("username", "==", username).
 		Where("date", ">=", today).
@@ -138,7 +138,7 @@ func (s *Storage) GetUserActiveReservations(username string) ([]Reservation, err
 
 func (s *Storage) GetAllActiveReservations() ([]Reservation, error) {
 	ctx := context.Background()
-	today := RoundDay(time.Now().In(getPrague()))
+	today := RoundDay(time.Now().In(getLocation()))
 	docs, err := s.client.Collection(s.config.CollectionReservations).
 		Where("date", ">=", today).
 		Documents(ctx).
@@ -190,7 +190,7 @@ func calculateReservationId(date time.Time, slotFrom int) string {
 
 func mapReservation(data map[string]interface{}) Reservation {
 	return Reservation{
-		Date:     data["date"].(time.Time).In(getPrague()),
+		Date:     data["date"].(time.Time).In(getLocation()),
 		SlotFrom: int(data["slotFrom"].(int64)),
 		SlotTo:   int(data["slotTo"].(int64)),
 		Status:   int(data["status"].(int64)),

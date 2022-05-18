@@ -32,7 +32,7 @@ func MapSlotStatus(status int) string {
 }
 
 func RoundDay(t time.Time) time.Time {
-	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, getPrague())
+	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, getLocation())
 }
 
 func SlotToTime(idx int) string {
@@ -42,7 +42,7 @@ func SlotToTime(idx int) string {
 	return fmt.Sprintf("%02d:%02d", h, m)
 }
 
-func getPrague() *time.Location {
+func getLocation() *time.Location {
 	prg, _ := time.LoadLocation("Europe/Prague")
 	return prg
 }
