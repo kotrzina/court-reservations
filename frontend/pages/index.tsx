@@ -48,7 +48,7 @@ const Home: NextPage = () => {
                 <Col md={4} style={{marginTop: "20px"}}>
                     <ReservationsList
                         title={"DNES:"}
-                        reservations={table.todayReservations.reverse()}
+                        reservations={table.todayReservations}
                         reload={fetchData}
                         setFlash={updateFlash}
                     />
@@ -66,7 +66,7 @@ const Home: NextPage = () => {
                         title={"VEŘEJNÉ UDÁLOSTI:"}
                         reservations={table.reservations.filter(r => {
                             return r.note && r.note.length > 0
-                        }).reverse()}
+                        })}
                         reload={fetchData}
                         setFlash={updateFlash}
                     />
