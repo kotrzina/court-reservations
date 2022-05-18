@@ -12,7 +12,8 @@ const (
 	SlotStatusTaken       = 1
 	SlotStatusMaintenance = 2
 	SlotStatusHistory     = 3
-	SlotStatusUnknown     = 4
+	SlotStatusPublic      = 4
+	SlotStatusUnknown     = 5
 )
 
 type Reservation struct {
@@ -22,21 +23,23 @@ type Reservation struct {
 	Status   int // reservation status
 	Username string
 	Name     string
+	Note     string
 }
 
-func (s *Storage) CreateReservation(date time.Time, slotFrom, slotTo, status int, username, name string) error {
+func (s *Storage) CreateReservation(r Reservation) error {
 	data := map[string]interface{}{
-		"date":     date,
-		"slotFrom": slotFrom,
-		"slotTo":   slotTo,
-		"status":   status,
-		"username": username,
-		"name":     name,
+		"date":     r.Date,
+		"slotFrom": r.SlotFrom,
+		"slotTo":   r.SlotTo,
+		"status":   r.Status,
+		"username": r.Username,
+		"name":     r.Name,
+		"note":     r.Note,
 		"created":  time.Now(),
 	}
 
 	ctx := context.Background()
-	id := calculateReservationId(date, slotFrom)
+	id := calculateReservationId(r.Date, r.SlotFrom)
 	_, err := s.client.Collection(s.config.CollectionReservations).Doc(id).Set(ctx, data)
 	if err != nil {
 		s.logger.Error(err)
@@ -193,5 +196,6 @@ func mapReservation(data map[string]interface{}) Reservation {
 		Status:   int(data["status"].(int64)),
 		Username: data["username"].(string),
 		Name:     data["name"].(string),
+		Note:     mapStringDefault(data, "note", ""),
 	}
 }

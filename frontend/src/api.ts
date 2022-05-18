@@ -7,6 +7,7 @@ export type Slot = {
     index: number; // slot index 0-47
     status: "free" | "taken" | "maintenance" | "history";
     owner?: string;
+    note?: string;
 }
 
 export type Day = {
@@ -26,6 +27,7 @@ export type Reservation = {
     slotTo: number;
     name?: string;
     username?: string;
+    note?: string;
 }
 
 export type LoginResponse = {
@@ -76,7 +78,7 @@ export async function fetchAvailable(date: string, firstSlot: number): Promise<R
     return await res.json()
 }
 
-export async function postReservation(date: string, slotFrom: number, slotTo: number): Promise<void> {
+export async function postReservation(date: string, slotFrom: number, slotTo: number, isPublic: boolean, note: string): Promise<void> {
     const user = getUserFromStorage()
     const res = await fetch(`${BACKEND_URL}/api/private/v1/reservation`, {
         method: "POST",
@@ -89,6 +91,8 @@ export async function postReservation(date: string, slotFrom: number, slotTo: nu
             date: date,
             slotFrom: slotFrom,
             slotTo: slotTo,
+            isPublic: isPublic,
+            note: note,
         })
     })
 

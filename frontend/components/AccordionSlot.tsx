@@ -20,11 +20,41 @@ export const AccordionSlot: FC<Props> = (props: Props) => {
         }
     }
 
+    function publicHeader(): JSX.Element {
+        if (props.slot.note && props.slot.note.length > 0) {
+            return (
+                <strong>
+                    VEŘEJNÁ UDÁLOST
+                    <br/>
+                </strong>
+            )
+        }
+
+        return <></>
+    }
+
+    function note(): JSX.Element {
+        if (props.slot.note && props.slot.note.length > 0) {
+            return (
+                <>
+                    &nbsp;-&nbsp;{props.slot.note.toLowerCase()}
+                </>
+            )
+        }
+
+        return <></>
+    }
+
     return (
         <td className={props.slot.status}
             onClick={() => onSlotClicked()}
         >
-            {getDayInWeek(props.slot.date)} {formatDate(props.slot.date)} <Clock slot={props.slot.index}/> {indexToTime(props.slot.index)}
+            {publicHeader()}
+            {getDayInWeek(props.slot.date)}&nbsp;
+            {formatDate(props.slot.date)}&nbsp;
+            <Clock slot={props.slot.index}/>&nbsp;
+            {indexToTime(props.slot.index)}
+            {note()}
         </td>
     )
 };

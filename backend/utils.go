@@ -20,6 +20,7 @@ func MapSlotStatus(status int) string {
 		SlotStatusTaken:       "taken",
 		SlotStatusMaintenance: "maintenance",
 		SlotStatusHistory:     "history",
+		SlotStatusPublic:      "public",
 	}
 
 	res, found := mapping[status]
@@ -44,4 +45,13 @@ func SlotToTime(idx int) string {
 func getPrague() *time.Location {
 	prg, _ := time.LoadLocation("Europe/Prague")
 	return prg
+}
+
+func mapStringDefault(data map[string]interface{}, key, defaultValue string) string {
+	value, found := data[key]
+	if found {
+		return value.(string)
+	}
+
+	return defaultValue
 }

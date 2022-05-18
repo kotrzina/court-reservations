@@ -12,12 +12,21 @@ import Head from "next/head";
 
 const Available: NextPage = () => {
 
+    const sports = [
+        "Volejbal",
+        "Nohejbal",
+        "Děti",
+        "Ostatní",
+    ]
+
     const router = useRouter()
     const userContextData = useContext(UserContext)
     const [flash, setFlash] = useFlash()
 
     const [date, setDate] = useState<string>("")
     const [slot, setSlot] = useState<number>(-1)
+    const [isPublic, setIsPublic] = useState<boolean>(false)
+    const [sport, setSport] = useState<string>(sports[0])
 
     const [available, setAvailable] = useState<Array<Reservation>>([])
     const [showSpinner, setShowSpinner] = useState<boolean>(true)
@@ -48,7 +57,11 @@ const Available: NextPage = () => {
     }, [router.isReady])
 
     function onReserve() {
-        postReservation(date, slot, selectedSlot).then(() => {
+        let note = ""
+        if (isPublic) {
+            note = sport
+        }
+        postReservation(date, slot, selectedSlot, isPublic, note).then(() => {
             setDone(true)
             setFlash("ok", "Rezervace byla úspěšně vytvořena.")
         }).catch(() => {
@@ -72,19 +85,46 @@ const Available: NextPage = () => {
 
             <Flash flash={flash}/>
             <Row>
-                <Col md={12}>
+                <Col md={5}>
                     <h3>Rezervace</h3>
                     <ul>
                         <li><strong>Kdy:</strong> {getFullDayInWeek(date)} {formatDate(date)}</li>
                         <li><strong>Kdo:</strong> {userContextData.user.name}</li>
                         <li><strong>Kde:</strong> Hřiště Veselice</li>
                     </ul>
-                    <h4>Délka rezervace:</h4>
+                    <h4>Typ rezervace:</h4>
                     <Alert hidden={!(!showSpinner && available.length == 0)} variant={"danger"}>
                         Žádné termíny nejsou k dispozici
                     </Alert>
                     <Spinner hidden={!showSpinner} animation="border" variant="success"/>
                     <Form>
+
+                        <Form.Check
+                            type="checkbox"
+                            id={"isPublicCheckbox"}
+                            label={"Veřejná událost"}
+                            checked={isPublic}
+                            onChange={(e) => {
+                                setIsPublic(e.target.checked)
+                            }}/>
+                        <Form.Select
+                            hidden={!isPublic}
+                            value={sport}
+                            onChange={e => {
+                                setSport(e.target.value)
+                            }}>
+                            {sports.map(s => {
+                                return (
+                                    <option value={s} key={s}>{s}</option>
+                                )
+                            })}
+                        </Form.Select>
+
+                        <Form.Text className="text-muted">
+                            Dejte ostatním vědět, že se k Vám mohou přidat.
+                        </Form.Text>
+
+                        <h4>Délka rezervace:</h4>
                         {available.map((r) => (
                             <div key={`default-${r.date}-${r.slotFrom}-${r.slotTo}`}>
                                 <Form.Check
@@ -100,14 +140,17 @@ const Available: NextPage = () => {
                                 />
                             </div>
                         ))}
+
                         <Form.Text className="text-muted">
                             Pokud je zrovna volno, můžete vytvořit až <strong>dvouhodinovou</strong> rezervaci.
                         </Form.Text>
+
                         <div style={{marginTop: "10px"}}>
-                            <Button disabled={selectedSlot === -1}
-                                    variant={"success"}
-                                    onClick={onReserve}
-                                    hidden={done}
+                            <Button
+                                disabled={selectedSlot === -1}
+                                variant={"success"}
+                                onClick={onReserve}
+                                hidden={done}
                             >Rezervovat</Button>
                             <Link href={"/"} passHref>
                                 <Button variant={"dark"}

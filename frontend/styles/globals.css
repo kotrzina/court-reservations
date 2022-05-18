@@ -15,6 +15,10 @@ a {
     text-decoration: underline;
 }
 
+h4 {
+    margin: 18px 0 6px;
+}
+
 a:hover {
     text-decoration: none;
 }
@@ -57,6 +61,11 @@ table.tableView tr td.taken {
     cursor: not-allowed;
 }
 
+table.tableView tr td.public {
+    background-color: #bf8c00;
+    cursor: not-allowed;
+}
+
 table.tableView tr td.history, table.tableView tr td.maintenance {
     background-color: #555;
     cursor: not-allowed;
@@ -87,6 +96,11 @@ table.accordionView tr td.free {
 
 table.accordionView tr td.taken {
     background-color: #751222;
+    cursor: not-allowed;
+}
+
+table.accordionView tr td.public {
+    background-color: #bf8c00;
     cursor: not-allowed;
 }
 

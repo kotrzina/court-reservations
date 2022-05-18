@@ -14,6 +14,7 @@ type ReservationOutput struct {
 	SlotTo   int    `json:"slotTo,omitempty"`
 	Name     string `json:"name,omitempty"`
 	Username string `json:"username,omitempty"`
+	Note     string `json:"note"`
 }
 
 func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc {
@@ -23,6 +24,7 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 			Index  int    `json:"index"`
 			Status string `json:"status"`
 			Owner  string `json:"owner"`
+			Note   string `json:"note"`
 		}
 
 		type dayOutput struct {
@@ -57,6 +59,7 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 					Index:  s,
 					Status: status,
 					Owner:  "",
+					Note:   "",
 				})
 			}
 
@@ -83,6 +86,7 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 					for s := r.SlotFrom; s <= r.SlotTo; s++ {
 						days[dayIdx].Slots[s-srv.config.StartingSlot].Status = MapSlotStatus(r.Status)
 						days[dayIdx].Slots[s-srv.config.StartingSlot].Owner = name
+						days[dayIdx].Slots[s-srv.config.StartingSlot].Note = r.Note
 
 					}
 				}
@@ -173,6 +177,8 @@ func (srv *Server) postReservation(c *gin.Context) {
 		Date     string `json:"date"`
 		SlotFrom int    `json:"slotFrom"`
 		SlotTo   int    `json:"slotTo"`
+		IsPublic bool   `json:"isPublic"`
+		Note     string `json:"note"`
 	}
 
 	var request input
@@ -197,6 +203,12 @@ func (srv *Server) postReservation(c *gin.Context) {
 	// validate to
 	if request.SlotTo < srv.config.StartingSlot || request.SlotTo > srv.config.EndingSlot {
 		c.JSON(createHttpError(http.StatusBadRequest, "invalid input for SlotTo"))
+		return
+	}
+
+	// validate note
+	if len(request.Note) > 150 {
+		c.JSON(createHttpError(http.StatusBadRequest, "note is too long"))
 		return
 	}
 
@@ -245,7 +257,22 @@ func (srv *Server) postReservation(c *gin.Context) {
 		return
 	}
 
-	err = srv.storage.CreateReservation(date, request.SlotFrom, request.SlotTo, SlotStatusTaken, user.Username, user.Name)
+	status := SlotStatusTaken
+	if request.IsPublic {
+		status = SlotStatusPublic
+	}
+
+	reservation := Reservation{
+		Date:     date,
+		SlotFrom: request.SlotFrom,
+		SlotTo:   request.SlotTo,
+		Status:   status,
+		Note:     request.Note,
+		Username: user.Username,
+		Name:     user.Name,
+	}
+
+	err = srv.storage.CreateReservation(reservation)
 	if err != nil {
 		c.JSON(createHttpError(http.StatusInternalServerError, "could not create reservation"))
 		return
@@ -288,7 +315,17 @@ func (srv *Server) postReservationMaintenance(c *gin.Context) {
 		return
 	}
 
-	err = srv.storage.CreateReservation(date, request.SlotFrom, request.SlotTo, SlotStatusMaintenance, user.Username, request.Reason)
+	reservation := Reservation{
+		Date:     date,
+		SlotFrom: request.SlotFrom,
+		SlotTo:   request.SlotTo,
+		Status:   SlotStatusMaintenance,
+		Username: user.Username,
+		Name:     user.Name,
+		Note:     "",
+	}
+
+	err = srv.storage.CreateReservation(reservation)
 	if err != nil {
 		c.JSON(createHttpError(http.StatusInternalServerError, err.Error()))
 		return
@@ -374,6 +411,7 @@ func mapReservationOutput(r Reservation) ReservationOutput {
 		SlotTo:   r.SlotTo,
 		Name:     r.Name,
 		Username: r.Username,
+		Note:     r.Note,
 	}
 }
 

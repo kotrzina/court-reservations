@@ -17,6 +17,9 @@ export const TableSlot: FC<Props> = (props: Props) => {
         if (props.slot.owner) {
             title += ` ${props.slot.owner}`
         }
+        if (props.slot.note && props.slot.note.length > 0) {
+            title += ` - ${props.slot.note.toLowerCase()}`
+        }
 
         return title
     }

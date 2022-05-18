@@ -63,8 +63,16 @@ const Info: NextPage = () => {
                 <ul>
                     <li><span style={{color: "#176910", fontSize: "140%"}}>■</span> - volný interval</li>
                     <li><span style={{color: "#751222", fontSize: "140%"}}>■</span> - obsazeno</li>
+                    <li><span style={{color: "#bf8c00", fontSize: "140%"}}>■</span> - veřejná událost</li>
                     <li><span style={{color: "#555", fontSize: "140%"}}>■</span> - údržba / delší akce</li>
                 </ul>
+
+                <h3>Veřejná událost</h3>
+                <p>
+                    Tímto způsobem můžete dát ostatním vědět, že klidně mohou přijít a přidat se k vám. Při potvrzení
+                    časového okna jen zaškrtněte pole <strong>veřejná událost</strong> a vyberte si ze seznamu sportů.
+                    Seznam sportů v nabídce budeme rozšiřovat dle potřeb.
+                </p>
 
                 <h3>Storno rezervace</h3>
                 <p>

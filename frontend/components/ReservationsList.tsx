@@ -56,6 +56,22 @@ export const ReservationsList: FC<Props> = (props: Props) => {
         )
     }
 
+    function isReservationPublic(r: Reservation): boolean {
+        return !!(r.note && r.note.length > 0);
+    }
+
+    function publicHeader(r: Reservation): JSX.Element {
+        if (r.note && isReservationPublic(r)) {
+            return (
+                <>
+                    📢&nbsp;&nbsp;VEŘEJNÁ UDÁLOST&nbsp;-&nbsp;{r.note.toLowerCase()}&nbsp;&nbsp;📢<br/>
+                </>
+            )
+        }
+
+        return <></>
+    }
+
     return (
         <ListGroup as="ul">
             {title()}
@@ -64,11 +80,17 @@ export const ReservationsList: FC<Props> = (props: Props) => {
                     <ListGroup.Item
                         as="li"
                         className="d-flex justify-content-between align-items-start"
+                        style={{backgroundColor: isReservationPublic(r) ? "#fcf4dc" : "inherit"}}
                         key={`${r.date}-${r.slotFrom}`}
                     >
                         <div className="ms-2 me-auto">
                             <div className="fw-bold">
-                                {formatDate(r.date)} <Clock slot={r.slotFrom}/> {indexToTime(r.slotFrom)} - {indexToTime(r.slotTo + 1)}
+                                {publicHeader(r)}
+                                {formatDate(r.date)}&nbsp;
+                                <Clock slot={r.slotFrom}/>&nbsp;
+                                {indexToTime(r.slotFrom)}&nbsp;-&nbsp;
+                                {indexToTime(r.slotTo + 1)}
+
                             </div>
                             {r.name}
                         </div>
