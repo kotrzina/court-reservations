@@ -38,7 +38,7 @@ func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc 
 			UserReservations  []ReservationOutput `json:"userReservations"`
 		}
 
-		now := time.Now()
+		now := time.Now().In(getPrague())
 		currentSlot := TimeToSlot(now)
 		start := RoundDay(now)
 		end := start.Add((time.Duration(srv.config.MaxDays) - 1) * 24 * time.Hour)
@@ -139,7 +139,7 @@ func (srv *Server) getAvailable(c *gin.Context) {
 		return
 	}
 
-	if err = srv.checkMaxDays(time.Now(), date); err != nil {
+	if err = srv.checkMaxDays(time.Now().In(getPrague()), date); err != nil {
 		c.JSON(createHttpError(http.StatusBadRequest, "day is unavailable"))
 		return
 	}
@@ -219,13 +219,13 @@ func (srv *Server) postReservation(c *gin.Context) {
 	}
 
 	// check current day
-	if err = srv.checkMaxDays(time.Now(), date); err != nil {
+	if err = srv.checkMaxDays(time.Now().In(getPrague()), date); err != nil {
 		c.JSON(createHttpError(http.StatusBadRequest, "day is unavailable"))
 		return
 	}
 
 	// check historical slots
-	now := time.Now()
+	now := time.Now().In(getPrague())
 	if RoundDay(now).After(date) {
 		c.JSON(createHttpError(http.StatusBadRequest, "could not reserve historic slot"))
 		return

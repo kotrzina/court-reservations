@@ -37,7 +37,7 @@ func (s *Storage) CreateUser(username, password, name, city string) error {
 		"hash":     hash,
 		"name":     name,
 		"city":     city,
-		"created":  time.Now(),
+		"created":  time.Now().In(getPrague()),
 	}
 
 	ctx := context.Background()

@@ -35,7 +35,7 @@ func (s *Storage) CreateReservation(r Reservation) error {
 		"username": r.Username,
 		"name":     r.Name,
 		"note":     r.Note,
-		"created":  time.Now(),
+		"created":  time.Now().In(getPrague()),
 	}
 
 	ctx := context.Background()
@@ -99,7 +99,7 @@ func (s *Storage) GetReservationsBetween(from, to time.Time) ([]Reservation, err
 
 func (s *Storage) GetUserActiveReservations(username string) ([]Reservation, error) {
 	ctx := context.Background()
-	today := RoundDay(time.Now())
+	today := RoundDay(time.Now().In(getPrague()))
 	docs, err := s.client.Collection(s.config.CollectionReservations).
 		Where("username", "==", username).
 		Where("date", ">=", today).
@@ -138,7 +138,7 @@ func (s *Storage) GetUserActiveReservations(username string) ([]Reservation, err
 
 func (s *Storage) GetAllActiveReservations() ([]Reservation, error) {
 	ctx := context.Background()
-	today := RoundDay(time.Now())
+	today := RoundDay(time.Now().In(getPrague()))
 	docs, err := s.client.Collection(s.config.CollectionReservations).
 		Where("date", ">=", today).
 		Documents(ctx).
