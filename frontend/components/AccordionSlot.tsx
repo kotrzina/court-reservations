@@ -16,7 +16,7 @@ export const AccordionSlot: FC<Props> = (props: Props) => {
 
     function onSlotClicked() {
         if (userContext.user.logged && props.slot.status === "free") {
-            router.push(`/available/${props.slot.date}/${props.slot.index}`)
+            router.push(`/available?date=${props.slot.date}&slot=${props.slot.index}`)
         }
     }
 
