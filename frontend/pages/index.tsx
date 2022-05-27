@@ -1,7 +1,7 @@
 import type {NextPage} from 'next'
 import React, {useEffect, useState} from "react";
 import {Col, Row, Spinner, Table} from "react-bootstrap";
-import {fetchTimeTable, TimeTable} from "../src/api";
+import {fetchTimeTable, fetchUsers, TimeTable} from "../src/api";
 import {TableHead} from "../components/TableHead";
 import {TableBody} from "../components/TableBody";
 import {useFlash} from "../src/useFlash";
@@ -24,6 +24,10 @@ const Home: NextPage = () => {
 
     useEffect(() => {
         fetchData()
+        window.addEventListener("focus", fetchData)
+        return () => {
+            window.removeEventListener("focus", fetchData)
+        }
     }, [])
 
     function fetchData() {
