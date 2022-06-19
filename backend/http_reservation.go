@@ -15,6 +15,7 @@ type ReservationOutput struct {
 	Name     string `json:"name,omitempty"`
 	Username string `json:"username,omitempty"`
 	Note     string `json:"note"`
+	IsActive bool   `json:"isActive"`
 }
 
 func (srv *Server) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc {
@@ -414,6 +415,7 @@ func (srv *Server) deleteReservation(c *gin.Context) {
 }
 
 func mapReservationOutput(r Reservation) ReservationOutput {
+
 	return ReservationOutput{
 		Date:     r.Date.Format(dateFormat),
 		SlotFrom: r.SlotFrom,
@@ -421,6 +423,7 @@ func mapReservationOutput(r Reservation) ReservationOutput {
 		Name:     r.Name,
 		Username: r.Username,
 		Note:     r.Note,
+		IsActive: r.IsActive(),
 	}
 }
 

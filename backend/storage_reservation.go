@@ -26,6 +26,17 @@ type Reservation struct {
 	Note     string
 }
 
+func (r *Reservation) IsActive() bool {
+	now := time.Now().In(getLocation())
+	currentSlot := TimeToSlot(now)
+
+	if RoundDay(r.Date).Equal(RoundDay(now)) && currentSlot >= r.SlotTo {
+		return false
+	}
+
+	return true
+}
+
 func (s *Storage) CreateReservation(r Reservation) error {
 	data := map[string]interface{}{
 		"date":     r.Date,

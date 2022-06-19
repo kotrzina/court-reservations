@@ -29,6 +29,7 @@ export type Reservation = {
     name?: string;
     username?: string;
     note?: string;
+    isActive: boolean;
 }
 
 export type LoginResponse = {

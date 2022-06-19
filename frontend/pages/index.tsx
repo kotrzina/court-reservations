@@ -60,7 +60,9 @@ const Home: NextPage = () => {
                 <Col md={4} style={{marginTop: "20px"}}>
                     <ReservationsList
                         title={"MOJE REZERVACE:"}
-                        reservations={table.userReservations}
+                        reservations={table.userReservations.filter(r => {
+                            return r.isActive
+                        })}
                         reload={fetchData}
                         setFlash={updateFlash}
                     />
@@ -69,7 +71,7 @@ const Home: NextPage = () => {
                     <ReservationsList
                         title={"VEŘEJNÉ UDÁLOSTI:"}
                         reservations={table.reservations.filter(r => {
-                            return r.note && r.note.length > 0
+                            return r.isActive && r.note && r.note.length > 0
                         })}
                         reload={fetchData}
                         setFlash={updateFlash}

@@ -1,5 +1,3 @@
-import React from "react";
-
 /**
  * Converts slot index to exact time slot
  * @example:
