@@ -5,7 +5,7 @@ import {Flash} from "../components/Flash";
 import {postLogin} from "../src/api";
 import {User} from "../src/user";
 import {useRouter} from "next/router";
-import {UserContext} from "../src/UserContext";
+import {UserContext} from "../src/userContext";
 import {NextPage} from "next";
 import Head from "next/head";
 

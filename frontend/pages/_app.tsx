@@ -5,7 +5,7 @@ import Head from "next/head";
 import {Container} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import {emptyUser, getUserFromStorage, setUserToStorage, User} from "../src/user";
-import {UserContext} from "../src/UserContext";
+import {UserContext} from "../src/userContext";
 import Menu from "../components/Menu";
 
 function MyApp({Component, pageProps}: AppProps) {

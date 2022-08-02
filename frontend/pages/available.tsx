@@ -6,7 +6,7 @@ import {useFlash} from "../src/useFlash";
 import {fetchAvailable, postReservation, Reservation} from "../src/api";
 import {formatDate, getFullDayInWeek, indexToTime, slotsToDuration} from "../src/utils";
 import Link from "next/link";
-import {UserContext} from "../src/UserContext";
+import {UserContext} from "../src/userContext";
 import {NextPage} from "next";
 import Head from "next/head";
 

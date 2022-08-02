@@ -2,7 +2,7 @@ import React, {FC, useContext} from "react";
 import {Slot} from "../src/api";
 import {useRouter} from "next/router";
 import {formatDate, getDayInWeek, indexToTime} from "../src/utils";
-import {UserContext} from "../src/UserContext";
+import {UserContext} from "../src/userContext";
 import {Clock} from "./Clock";
 
 type Props = {

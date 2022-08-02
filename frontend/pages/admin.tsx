@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {UserContext} from "../src/UserContext";
+import {UserContext} from "../src/userContext";
 import {Button, Col, Row, Table} from "react-bootstrap";
 import {deleteReservation, deleteUser, fetchAllReservations, fetchUsers, Reservation, UserListItem} from "../src/api";
 import {useRouter} from "next/router";
