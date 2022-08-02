@@ -78,7 +78,7 @@ const Available: NextPage = () => {
     }
 
     return (
-        <>
+        <React.StrictMode>
             <Head>
                 <title>Výběr termínu - Hřiště Veselice</title>
             </Head>
@@ -161,7 +161,7 @@ const Available: NextPage = () => {
                 </Col>
             </Row>
 
-        </>
+        </React.StrictMode>
     );
 };
 
