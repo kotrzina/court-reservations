@@ -15,17 +15,17 @@ import (
 	"time"
 )
 
-type Server struct {
-	storage             *Storage
-	config              *Config
+type app struct {
+	storage             *storage
+	config              *config
 	userService         *UserService
 	notificationService *NotificationService
 	logger              *logrus.Logger
 	port                int
 }
 
-func NewServer(s *Storage, c *Config, us *UserService, ns *NotificationService, l *logrus.Logger) *Server {
-	return &Server{
+func NewApp(s *storage, c *config, us *UserService, ns *NotificationService, l *logrus.Logger) *app {
+	return &app{
 		storage:             s,
 		config:              c,
 		userService:         us,
@@ -35,58 +35,58 @@ func NewServer(s *Storage, c *Config, us *UserService, ns *NotificationService, 
 	}
 }
 
-func (srv *Server) StartServer() {
+func (app *app) StartServer() {
 	apiSrv := &http.Server{
-		Handler: srv.createRouter(),
-		Addr:    fmt.Sprintf(":%d", srv.port),
+		Handler: app.newRouter(),
+		Addr:    fmt.Sprintf(":%d", app.port),
 	}
 
 	go func() {
 		if err := apiSrv.ListenAndServe(); err != nil && errors.Is(err, http.ErrServerClosed) {
-			srv.logger.Printf("listen: %s\n", err)
+			app.logger.Printf("listen: %s\n", err)
 		}
 	}()
 
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
-	srv.logger.Println("Shutting down server...")
+	app.logger.Println("Shutting down server...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 
 	if err := apiSrv.Shutdown(ctx); err != nil {
-		srv.logger.Fatal("Server forced to shutdown:", err)
+		app.logger.Fatal("app forced to shutdown:", err)
 	}
 
-	srv.logger.Println("Server exiting")
+	app.logger.Println("app exiting")
 }
 
-func (srv *Server) createRouter() *gin.Engine {
+func (app *app) newRouter() *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Recovery())
-	router.Use(ginlogrus.Logger(srv.logger))
+	router.Use(ginlogrus.Logger(app.logger))
 	router.Use(CORSMiddleware())
 
 	public := router.Group("/api/public")
 	{
-		public.GET("/v1/time-table", srv.createTimeTableEndpoint(false))
-		public.POST("/v1/user/register", srv.registerUser)
-		public.POST("/v1/user/login", srv.loginUser)
+		public.GET("/v1/time-table", app.createTimeTableEndpoint(false))
+		public.POST("/v1/user/register", app.registerUser)
+		public.POST("/v1/user/login", app.loginUser)
 	}
 
 	private := router.Group("/api/private")
-	private.Use(srv.AuthMiddleware())
+	private.Use(app.AuthMiddleware())
 	{
-		private.GET("/v1/time-table", srv.createTimeTableEndpoint(true))
-		private.GET("/v1/available/:date/:firstSlot", srv.getAvailable)
-		private.DELETE("/v1/reservation/:date/:slotFrom", srv.deleteReservation)
-		private.POST("/v1/reservation", srv.postReservation)
+		private.GET("/v1/time-table", app.createTimeTableEndpoint(true))
+		private.GET("/v1/available/:date/:firstSlot", app.getAvailable)
+		private.DELETE("/v1/reservation/:date/:slotFrom", app.deleteReservation)
+		private.POST("/v1/reservation", app.postReservation)
 
-		private.GET("/v1/admin/reservation", srv.getAllReservations)
-		private.POST("/v1/admin/reservation", srv.postReservationMaintenance)
-		private.GET("/v1/admin/user", srv.getAllUsers)
-		private.DELETE("/v1/admin/user/:username", srv.deleteUser)
+		private.GET("/v1/admin/reservation", app.getAllReservations)
+		private.POST("/v1/admin/reservation", app.postReservationMaintenance)
+		private.GET("/v1/admin/user", app.getAllUsers)
+		private.DELETE("/v1/admin/user/:username", app.deleteUser)
 	}
 
 	router.GET("/", func(c *gin.Context) {
@@ -100,9 +100,9 @@ func (srv *Server) createRouter() *gin.Engine {
 	return router
 }
 
-func (srv *Server) AuthMiddleware() gin.HandlerFunc {
+func (app *app) AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		_, err := srv.GetLoggedUser(c)
+		_, err := app.GetLoggedUser(c)
 		if err != nil {
 			c.AbortWithStatusJSON(createHttpError(http.StatusUnauthorized, "invalid JWT token"))
 		}
@@ -110,19 +110,26 @@ func (srv *Server) AuthMiddleware() gin.HandlerFunc {
 	}
 }
 
-func (srv *Server) GetLoggedUser(c *gin.Context) (*LoggedUser, error) {
+func (app *app) GetLoggedUser(c *gin.Context) (*LoggedUser, error) {
 	reqToken := c.GetHeader("Authorization")
 	splitToken := strings.Split(reqToken, "Bearer ")
 	if len(splitToken) != 2 {
 		return nil, fmt.Errorf("could not read bearer token")
 	}
 	token := splitToken[1]
-	user, err := srv.userService.VerifyJwt(token)
+	user, err := app.userService.VerifyJwt(token)
 	if err != nil {
 		return nil, fmt.Errorf("invalid jwt token")
 	}
 
 	return user, nil
+}
+
+func (app *app) checkMaxDays(now, reservation time.Time) error {
+	if RoundDay(now).Add((time.Duration(app.config.MaxDays) - 1) * 24 * time.Hour).Before(RoundDay(reservation)) {
+		return fmt.Errorf("max days check failed")
+	}
+	return nil
 }
 
 func CORSMiddleware() gin.HandlerFunc {

@@ -15,7 +15,7 @@ type NotificationService struct {
 	logger   *logrus.Logger
 }
 
-func NewNotificationService(c *Config, l *logrus.Logger) *NotificationService {
+func NewNotificationService(c *config, l *logrus.Logger) *NotificationService {
 	return &NotificationService{
 		channels: BuildNotifications(c),
 		logger:   l,
@@ -39,7 +39,7 @@ func (n *NotificationService) ReservationDeleted(date time.Time, slotFrom, slotT
 	}
 }
 
-func BuildNotifications(c *Config) []Notification {
+func BuildNotifications(c *config) []Notification {
 	n := []Notification{}
 
 	if c.NotificationDiscord != "" {

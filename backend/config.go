@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-type Config struct {
+type config struct {
 	Port                   int    //application port
 	GoogleProjectId        string // firestore collection
 	CollectionReservations string // firestore collection
@@ -22,14 +22,14 @@ type Config struct {
 	NotificationDiscord    string
 }
 
-func LoadConfig() *Config {
+func loadConfig() *config {
 	admins := []string{}
 	adminsEnv := os.Getenv("ADMINS") // comma separated list of usernames
 	if adminsEnv != "" {
 		admins = strings.Split(adminsEnv, ",")
 	}
 
-	return &Config{
+	return &config{
 		Port:                   getEnvIntWithDefault("PORT", 8081),
 		GoogleProjectId:        getEnvStringWithDefault("GOOGLE_PROJECT_ID", "test"),
 		CollectionReservations: getEnvStringWithDefault("FIRESTORE_COLLECTION_RESERVATIONS", "reservations"),

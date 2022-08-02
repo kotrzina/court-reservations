@@ -9,13 +9,13 @@ import (
 	"os"
 )
 
-type Storage struct {
+type storage struct {
 	client *firestore.Client
-	config *Config
+	config *config
 	logger *logrus.Logger
 }
 
-func NewStorage(c *Config, logger *logrus.Logger) (*Storage, error) {
+func newStorage(c *config, logger *logrus.Logger) (*storage, error) {
 	ctx := context.Background()
 	client, err := firestore.NewClient(ctx, c.GoogleProjectId)
 
@@ -28,5 +28,5 @@ func NewStorage(c *Config, logger *logrus.Logger) (*Storage, error) {
 		return nil, fmt.Errorf("could not connect to firestore: %w", err)
 	}
 
-	return &Storage{client: client, config: c, logger: logger}, nil
+	return &storage{client: client, config: c, logger: logger}, nil
 }

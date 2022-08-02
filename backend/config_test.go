@@ -8,7 +8,7 @@ import (
 
 func TestLoadConfig(t *testing.T) {
 	_ = os.Setenv("REGISTRATION_CODE", "my_registration_code")
-	c := LoadConfig()
+	c := loadConfig()
 
 	assert.Equal(t, 8081, c.Port)
 	assert.Equal(t, "test", c.JwtSigningKey)

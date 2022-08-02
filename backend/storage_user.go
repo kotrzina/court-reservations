@@ -14,7 +14,7 @@ type User struct {
 	City     string
 }
 
-func (s *Storage) GetUserByUsername(username string) (*User, error) {
+func (s *storage) GetUserByUsername(username string) (*User, error) {
 	ctx := context.Background()
 	doc, err := s.client.Collection(s.config.CollectionUsers).Doc(strings.ToLower(username)).Get(ctx)
 	if err != nil {
@@ -26,7 +26,7 @@ func (s *Storage) GetUserByUsername(username string) (*User, error) {
 	return &user, nil
 }
 
-func (s *Storage) CreateUser(username, password, name, city string) error {
+func (s *storage) CreateUser(username, password, name, city string) error {
 	hash, err := hashPassword(password)
 	if err != nil {
 		return err
@@ -49,7 +49,7 @@ func (s *Storage) CreateUser(username, password, name, city string) error {
 	return err
 }
 
-func (s *Storage) GetUsers() ([]User, error) {
+func (s *storage) GetUsers() ([]User, error) {
 	ctx := context.Background()
 	docs, err := s.client.Collection(s.config.CollectionUsers).Documents(ctx).GetAll()
 	if err != nil {
@@ -66,7 +66,7 @@ func (s *Storage) GetUsers() ([]User, error) {
 	return users, nil
 }
 
-func (s *Storage) DeleteUser(username string) error {
+func (s *storage) DeleteUser(username string) error {
 	ctx := context.Background()
 	_, err := s.client.Collection(s.config.CollectionUsers).Doc(strings.ToLower(username)).Delete(ctx)
 	if err != nil {

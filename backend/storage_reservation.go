@@ -37,7 +37,7 @@ func (r *Reservation) IsActive() bool {
 	return true
 }
 
-func (s *Storage) CreateReservation(r Reservation) error {
+func (s *storage) CreateReservation(r Reservation) error {
 	data := map[string]interface{}{
 		"date":     r.Date,
 		"slotFrom": r.SlotFrom,
@@ -59,7 +59,7 @@ func (s *Storage) CreateReservation(r Reservation) error {
 	return err
 }
 
-func (s *Storage) GetReservation(date time.Time, slotFrom int) (Reservation, error) {
+func (s *storage) GetReservation(date time.Time, slotFrom int) (Reservation, error) {
 	id := calculateReservationId(date, slotFrom)
 	ctx := context.Background()
 	doc, err := s.client.Collection(s.config.CollectionReservations).Doc(id).Get(ctx)
@@ -70,7 +70,7 @@ func (s *Storage) GetReservation(date time.Time, slotFrom int) (Reservation, err
 	return mapReservation(doc.Data()), nil
 }
 
-func (s *Storage) GetReservationsBetween(from, to time.Time) ([]Reservation, error) {
+func (s *storage) GetReservationsBetween(from, to time.Time) ([]Reservation, error) {
 	ctx := context.Background()
 	docs, err := s.client.Collection(s.config.CollectionReservations).
 		Where("date", ">=", from).
@@ -108,7 +108,7 @@ func (s *Storage) GetReservationsBetween(from, to time.Time) ([]Reservation, err
 	return reservations, nil
 }
 
-func (s *Storage) GetUserActiveReservations(username string) ([]Reservation, error) {
+func (s *storage) GetUserActiveReservations(username string) ([]Reservation, error) {
 	ctx := context.Background()
 	today := RoundDay(time.Now().In(getLocation()))
 	docs, err := s.client.Collection(s.config.CollectionReservations).
@@ -147,7 +147,7 @@ func (s *Storage) GetUserActiveReservations(username string) ([]Reservation, err
 	return reservations, nil
 }
 
-func (s *Storage) GetAllActiveReservations() ([]Reservation, error) {
+func (s *storage) GetAllActiveReservations() ([]Reservation, error) {
 	ctx := context.Background()
 	today := RoundDay(time.Now().In(getLocation()))
 	docs, err := s.client.Collection(s.config.CollectionReservations).
@@ -185,7 +185,7 @@ func (s *Storage) GetAllActiveReservations() ([]Reservation, error) {
 	return reservations, nil
 }
 
-func (s *Storage) DeleteReservation(date time.Time, slotFrom int) error {
+func (s *storage) DeleteReservation(date time.Time, slotFrom int) error {
 	id := calculateReservationId(date, slotFrom)
 	ctx := context.Background()
 	_, err := s.client.Collection(s.config.CollectionReservations).Doc(id).Delete(ctx)

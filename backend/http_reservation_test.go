@@ -7,7 +7,7 @@ import (
 )
 
 func TestCheckMaxDays(t *testing.T) {
-	s := NewServer(nil, &Config{
+	s := NewApp(nil, &config{
 		MaxDays:   14, // max 14 days ahead
 		MaxFrames: 0,
 	}, nil, nil, nil)

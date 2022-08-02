@@ -6,16 +6,16 @@ import (
 )
 
 func main() {
-	config := LoadConfig()
+	config := loadConfig()
 	logs := logrus.New()
 	logs.SetOutput(os.Stdout)
-	storage, err := NewStorage(config, logs)
+	storage, err := newStorage(config, logs)
 	if err != nil {
 		logs.Fatal(err.Error())
 	}
 	userService := NewUserService(config.JwtSigningKey, config.Admins)
 	ns := NewNotificationService(config, logs)
 
-	server := NewServer(storage, config, userService, ns, logs)
+	server := NewApp(storage, config, userService, ns, logs)
 	server.StartServer()
 }

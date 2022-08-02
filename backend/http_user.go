@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func (srv *Server) loginUser(c *gin.Context) {
+func (app *app) loginUser(c *gin.Context) {
 	type input struct {
 		Username string `json:"username"`
 		Password string `json:"password"`
@@ -25,7 +25,7 @@ func (srv *Server) loginUser(c *gin.Context) {
 		return
 	}
 
-	user, err := srv.storage.GetUserByUsername(request.Username)
+	user, err := app.storage.GetUserByUsername(request.Username)
 	if err != nil {
 		c.JSON(createHttpError(400, "user does not exist"))
 		return
@@ -36,7 +36,7 @@ func (srv *Server) loginUser(c *gin.Context) {
 		return
 	}
 
-	jwt, err := srv.userService.GenerateJwt(user.Name, user.Username)
+	jwt, err := app.userService.GenerateJwt(user.Name, user.Username)
 	if err != nil {
 		c.JSON(createHttpError(http.StatusInternalServerError, "could not generate JWT token"))
 		return
@@ -45,14 +45,14 @@ func (srv *Server) loginUser(c *gin.Context) {
 	response := output{
 		Name:     user.Name,
 		Username: user.Username,
-		IsAdmin:  srv.userService.IsAdmin(user.Username),
+		IsAdmin:  app.userService.IsAdmin(user.Username),
 		Jwt:      jwt,
 	}
 
 	c.JSON(http.StatusOK, response)
 }
 
-func (srv *Server) registerUser(c *gin.Context) {
+func (app *app) registerUser(c *gin.Context) {
 	type input struct {
 		Name     string `json:"name"`
 		Username string `json:"username"`
@@ -68,13 +68,13 @@ func (srv *Server) registerUser(c *gin.Context) {
 		return
 	}
 
-	if request.Code != srv.config.RegistrationCode {
+	if request.Code != app.config.RegistrationCode {
 		c.JSON(createHttpError(http.StatusBadRequest, "invalid registration code"))
 		return
 	}
 
 	// check if user exists - error expected
-	_, err = srv.storage.GetUserByUsername(request.Username)
+	_, err = app.storage.GetUserByUsername(request.Username)
 	if err == nil {
 		c.JSON(createHttpError(http.StatusBadRequest, "user already exists"))
 		return
@@ -85,7 +85,7 @@ func (srv *Server) registerUser(c *gin.Context) {
 		return
 	}
 
-	err = srv.storage.CreateUser(request.Username, request.Password, request.Name, request.City)
+	err = app.storage.CreateUser(request.Username, request.Password, request.Name, request.City)
 	if err != nil {
 		c.JSON(createHttpError(http.StatusBadRequest, "could not create new user"))
 		return
@@ -94,20 +94,20 @@ func (srv *Server) registerUser(c *gin.Context) {
 	c.JSON(http.StatusOK, struct{}{})
 }
 
-func (srv *Server) getAllUsers(c *gin.Context) {
+func (app *app) getAllUsers(c *gin.Context) {
 	type output struct {
 		Username string `json:"username"`
 		Name     string `json:"name"`
 		City     string `json:"city"`
 	}
 
-	loggedUser, err := srv.GetLoggedUser(c)
+	loggedUser, err := app.GetLoggedUser(c)
 	if err != nil || !loggedUser.IsAdmin {
 		c.JSON(createHttpError(http.StatusForbidden, "insufficient permissions"))
 		return
 	}
 
-	users, err := srv.storage.GetUsers()
+	users, err := app.storage.GetUsers()
 	if err != nil {
 		c.JSON(createHttpError(http.StatusInternalServerError, "could not load list of users"))
 		return
@@ -125,8 +125,8 @@ func (srv *Server) getAllUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-func (srv *Server) deleteUser(c *gin.Context) {
-	loggedUser, err := srv.GetLoggedUser(c)
+func (app *app) deleteUser(c *gin.Context) {
+	loggedUser, err := app.GetLoggedUser(c)
 	if err != nil || !loggedUser.IsAdmin {
 		c.JSON(createHttpError(http.StatusForbidden, "insufficient permissions"))
 		return
@@ -138,7 +138,7 @@ func (srv *Server) deleteUser(c *gin.Context) {
 		return
 	}
 
-	err = srv.storage.DeleteUser(username)
+	err = app.storage.DeleteUser(username)
 	if err != nil {
 		c.JSON(createHttpError(http.StatusInternalServerError, "could not delete user"))
 		return
