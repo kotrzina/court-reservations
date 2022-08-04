@@ -1,10 +1,12 @@
-import React, {FC, useContext} from "react";
+import React, {FC} from "react";
 import {deleteReservation, Reservation} from "../src/api";
-import {Badge, ListGroup} from "react-bootstrap";
-import {formatDate, getDayInWeek, indexToTime} from "../src/utils";
-import {UserContext} from "../src/userContext";
+import {ListGroup} from "react-bootstrap";
+import {formatDate, getDayInWeek, indexToTime, isReservationPublic} from "../src/utils";
 import {FlashVariant} from "./Flash";
 import {Clock} from "./Clock";
+import {ReservationsListHeader} from "./ReservationsListHeader";
+import {ReservationsListDeleteBadge} from "./ReservationsListDeleteBadge";
+import {ReservationsListTitle} from "./ReservationsListTitle";
 
 type Props = {
     title: string;
@@ -12,19 +14,8 @@ type Props = {
     setFlash(variant: FlashVariant, message: string): void;
     reload(): void;
 };
+
 export const ReservationsList: FC<Props> = (props: Props) => {
-
-    const {user} = useContext(UserContext)
-
-    function title(): JSX.Element {
-        if (props.reservations.length > 0) {
-            return (
-                <h3>{props.title}</h3>
-            )
-        }
-
-        return <></>
-    }
 
     function onDelete(r: Reservation) {
         const y = confirm(`Opravdu chcete smazat rezervaci ${getDayInWeek(r.date)} ${formatDate(r.date)} - ${indexToTime(r.slotFrom)}-${indexToTime(r.slotTo + 1)}`)
@@ -39,42 +30,9 @@ export const ReservationsList: FC<Props> = (props: Props) => {
         }
     }
 
-    function deleteBadge(r: Reservation): JSX.Element {
-        if (user.username === r.username) {
-            return (
-                <Badge bg="danger" pill style={{cursor: "pointer"}} onClick={() => {
-                    onDelete(r)
-                }}>
-                    ×
-                </Badge>
-            )
-
-        }
-
-        return (
-            <></>
-        )
-    }
-
-    function isReservationPublic(r: Reservation): boolean {
-        return !!(r.note && r.note.length > 0);
-    }
-
-    function publicHeader(r: Reservation): JSX.Element {
-        if (r.note && isReservationPublic(r)) {
-            return (
-                <>
-                    📢&nbsp;&nbsp;VEŘEJNÁ UDÁLOST&nbsp;-&nbsp;{r.note.toLowerCase()}&nbsp;&nbsp;📢<br/>
-                </>
-            )
-        }
-
-        return <></>
-    }
-
     return (
-        <ListGroup as="ul">
-            {title()}
+        <ListGroup as="ul" hidden={props.reservations.length === 0}>
+            <ReservationsListTitle title={props.title} display={props.reservations.length > 0}/>
             {props.reservations.map(r => {
                 return (
                     <ListGroup.Item
@@ -85,7 +43,7 @@ export const ReservationsList: FC<Props> = (props: Props) => {
                     >
                         <div className="ms-2 me-auto">
                             <div className="fw-bold">
-                                {publicHeader(r)}
+                                <ReservationsListHeader reservation={r}/>
                                 {formatDate(r.date)}&nbsp;
                                 <Clock slot={r.slotFrom}/>&nbsp;
                                 {indexToTime(r.slotFrom)}&nbsp;-&nbsp;
@@ -94,7 +52,7 @@ export const ReservationsList: FC<Props> = (props: Props) => {
                             </div>
                             {r.name}
                         </div>
-                        {deleteBadge(r)}
+                        <ReservationsListDeleteBadge reservation={r} deleteReservation={onDelete}/>
                     </ListGroup.Item>
                 )
             })}

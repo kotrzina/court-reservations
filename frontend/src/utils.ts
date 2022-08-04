@@ -1,3 +1,5 @@
+import {Reservation} from "./api";
+
 /**
  * Converts slot index to exact time slot
  * @example:
@@ -64,4 +66,8 @@ const fullDays = [
 export function getFullDayInWeek(date: string): string {
     const d = new Date(date)
     return fullDays[d.getDay()]
+}
+
+export function isReservationPublic(r: Reservation): boolean {
+    return !!(r.note && r.note.length > 0);
 }
