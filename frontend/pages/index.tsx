@@ -1,7 +1,7 @@
 import type {NextPage} from 'next'
 import React, {useEffect, useState} from "react";
 import {Col, Row, Spinner, Table} from "react-bootstrap";
-import {fetchTimeTable, fetchUsers, TimeTable} from "../src/api";
+import {fetchTimeTable, Reservation, TimeTable} from "../src/api";
 import {TableHead} from "../components/TableHead";
 import {TableBody} from "../components/TableBody";
 import {useFlash} from "../src/useFlash";
@@ -41,6 +41,14 @@ const Home: NextPage = () => {
         })
     }
 
+    function myReservationFilter(r: Reservation): boolean {
+        return r.isActive
+    }
+
+    function publicEventFilter(r: Reservation): boolean {
+        return !!(r.isActive && r.note && r.note.length > 0)
+    }
+
     return (
         <>
             <Head>
@@ -49,7 +57,10 @@ const Home: NextPage = () => {
 
             <Flash flash={flash}/>
             <Row>
-                <Col md={4} style={{marginTop: "20px"}}>
+                <Col md={4}
+                     style={{marginTop: "20px"}}
+                     hidden={table.todayReservations.length === 0}
+                >
                     <ReservationsList
                         title={"DNES:"}
                         reservations={table.todayReservations}
@@ -57,22 +68,24 @@ const Home: NextPage = () => {
                         setFlash={updateFlash}
                     />
                 </Col>
-                <Col md={4} style={{marginTop: "20px"}}>
+                <Col md={4}
+                     style={{marginTop: "20px"}}
+                     hidden={table.userReservations.filter(myReservationFilter).length === 0}
+                >
                     <ReservationsList
                         title={"MOJE REZERVACE:"}
-                        reservations={table.userReservations.filter(r => {
-                            return r.isActive
-                        })}
+                        reservations={table.userReservations.filter(myReservationFilter)}
                         reload={fetchData}
                         setFlash={updateFlash}
                     />
                 </Col>
-                <Col md={4} style={{marginTop: "20px"}}>
+                <Col md={4}
+                     style={{marginTop: "20px"}}
+                     hidden={table.userReservations.filter(publicEventFilter).length === 0}
+                >
                     <ReservationsList
                         title={"VEŘEJNÉ UDÁLOSTI:"}
-                        reservations={table.reservations.filter(r => {
-                            return r.isActive && r.note && r.note.length > 0
-                        })}
+                        reservations={table.reservations.filter(publicEventFilter)}
                         reload={fetchData}
                         setFlash={updateFlash}
                     />
