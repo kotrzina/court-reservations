@@ -58,7 +58,7 @@ const Register: NextPage = () => {
     function rightsLabel(): JSX.Element {
         return (
             <>
-                Souhlasím s <Link href={"/info"}>podmínkami registrace</Link>
+                Souhlasím s <Link legacyBehavior={true} href={"/info"}>podmínkami registrace</Link>
             </>
         )
     }

@@ -14,14 +14,14 @@ const Menu: FC<Props> = (props: Props) => {
         <Container>
             <Navbar bg="light" expand="lg">
                 <Container>
-                    <Link href={"/"} passHref>
+                    <Link legacyBehavior={true} href={"/"} passHref>
                         <Navbar.Brand>Hřiště Veselice</Navbar.Brand>
                     </Link>
                     <Nav className="me-auto">
-                        <Link href={"/admin"} passHref>
+                        <Link legacyBehavior={true} href={"/admin"} passHref>
                             <Nav.Link hidden={!props.user.isAdmin}>Admin</Nav.Link>
                         </Link>
-                        <Link href={"/info"} passHref>
+                        <Link legacyBehavior={true} href={"/info"} passHref>
                             <Nav.Link>Info</Nav.Link>
                         </Link>
                     </Nav>
@@ -29,11 +29,11 @@ const Menu: FC<Props> = (props: Props) => {
                     <Navbar.Collapse className="justify-content-end">
                         <LoggedUser user={props.user}/>
 
-                        <Link href={"/login"} passHref>
+                        <Link legacyBehavior={true} href={"/login"} passHref>
                             <Button hidden={props.user.logged} variant={"success"}>Přihlásit</Button>
                         </Link>
 
-                        <Link href={"/register"} passHref>
+                        <Link legacyBehavior={true} href={"/register"} passHref>
                             <Button hidden={props.user.logged} variant={"warning"}
                                     style={{marginLeft: "5px"}}>Registrovat</Button>
                         </Link>

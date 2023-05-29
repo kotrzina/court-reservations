@@ -152,7 +152,7 @@ const Available: NextPage = () => {
                                 onClick={onReserve}
                                 hidden={done}
                             >Rezervovat</Button>
-                            <Link href={"/"} passHref>
+                            <Link legacyBehavior={true} href={"/"} passHref>
                                 <Button variant={"dark"}
                                         style={{marginLeft: "5px"}}>Zpět</Button>
                             </Link>

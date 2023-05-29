@@ -29,7 +29,7 @@ const Info: NextPage = () => {
 
                 <h3>Registrace</h3>
                 <p>
-                    <Link href={"/register"}>Zaregistrovat</Link> se může <strong>kdokoliv</strong>, kdo
+                    <Link legacyBehavior={true} href={"/register"}>Zaregistrovat</Link> se může <strong>kdokoliv</strong>, kdo
                     zná <strong>&ldquo;tajný kód&ldquo;</strong>. Ten můžete najít na cedulce při vstupu na hřiště.
                     Tento tajný kód má zabránit registraci zcela náhodných lidi. Dále je nutné zadat svoje přihlašovací
                     údaje (uživatelské jméno a heslo). Také je nutné uvést vaše celé jméno a obec. Vyhrazujeme si právo
@@ -40,7 +40,7 @@ const Info: NextPage = () => {
 
                 <h3>Přihlášení</h3>
                 <p>
-                    Po úspěšné registraci se rovnou můžete <Link href={"/login"}>přihlásit</Link> pomocí zvoleného
+                    Po úspěšné registraci se rovnou můžete <Link legacyBehavior={true} href={"/login"}>přihlásit</Link> pomocí zvoleného
                     uživatelského jména a hesla. A je to! Můžete rezervovat.
                 </p>
 
