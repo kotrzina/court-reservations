@@ -8,7 +8,7 @@ database][2].
 Firebase emulator will be running on localhost on port 8080.
 
 ```bash
-docker run \     
+docker run \
   --env "FIRESTORE_PROJECT_ID=court" \
   --env "PORT=8080" \
   --publish 8080:8080 \
