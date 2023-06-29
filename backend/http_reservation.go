@@ -110,6 +110,8 @@ func (app *app) createTimeTableEndpoint(includeDetails bool) gin.HandlerFunc {
 }
 
 func (app *app) getAvailable(c *gin.Context) {
+	res := []ReservationOutput{}
+
 	date, err := time.ParseInLocation(dateFormat, c.Param("date"), getLocation())
 	if err != nil {
 		c.JSON(createHttpError(http.StatusBadRequest, "could not parse date parameter"))
@@ -124,6 +126,18 @@ func (app *app) getAvailable(c *gin.Context) {
 	if err = app.checkMaxDays(time.Now().In(getLocation()), date); err != nil {
 		c.JSON(createHttpError(http.StatusBadRequest, "day is unavailable"))
 		return
+	}
+
+	// check today's historical slot
+	now := time.Now().In(getLocation())
+	if RoundDay(now).Equal(date) {
+		currentSlot := TimeToSlot(now)
+		if slot < currentSlot {
+			// request is ok, but no available slots
+			// return empty array
+			c.JSON(http.StatusOK, res)
+			return
+		}
 	}
 
 	maxDelta := app.config.MaxFrames
@@ -142,16 +156,15 @@ func (app *app) getAvailable(c *gin.Context) {
 		}
 	}
 
-	ress := []ReservationOutput{}
 	for s := slot; s <= app.config.EndingSlot && s < slot+maxDelta; s++ {
-		ress = append(ress, ReservationOutput{
+		res = append(res, ReservationOutput{
 			Date:     date.Format(dateFormat),
 			SlotFrom: slot,
 			SlotTo:   s,
 		})
 	}
 
-	c.JSON(http.StatusOK, ress)
+	c.JSON(http.StatusOK, res)
 }
 
 func (app *app) postReservation(c *gin.Context) {

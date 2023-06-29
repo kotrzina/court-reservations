@@ -41,6 +41,15 @@ const Available: NextPage = () => {
             router.push("/login")
         }
 
+        void fetchData()
+        window.addEventListener("focus", fetchData)
+        return () => {
+            window.removeEventListener("focus", fetchData)
+        }
+    }, [router.isReady])
+
+    async function fetchData() {
+        setShowSpinner(true)
         const queryDate = router.query.date as string
         const querySlot = parseInt(router.query.slot as string, 10)
 
@@ -54,7 +63,7 @@ const Available: NextPage = () => {
         }).finally(() => {
             setShowSpinner(false)
         })
-    }, [router.isReady])
+    }
 
     function onReserve() {
         let note = ""
@@ -104,6 +113,7 @@ const Available: NextPage = () => {
                             id={"isPublicCheckbox"}
                             label={"Veřejná událost"}
                             checked={isPublic}
+                            disabled={available.length === 0}
                             onChange={(e) => {
                                 setIsPublic(e.target.checked)
                             }}/>
@@ -120,11 +130,11 @@ const Available: NextPage = () => {
                             })}
                         </Form.Select>
 
-                        <Form.Text className="text-muted">
+                        <Form.Text className="text-muted" hidden={available.length === 0}>
                             Dejte ostatním vědět, že se k Vám mohou přidat.
                         </Form.Text>
 
-                        <h4>Délka rezervace:</h4>
+                        <h4 hidden={available.length === 0}>Délka rezervace:</h4>
                         {available.map((r) => (
                             <div key={`default-${r.date}-${r.slotFrom}-${r.slotTo}`}>
                                 <Form.Check
@@ -141,11 +151,11 @@ const Available: NextPage = () => {
                             </div>
                         ))}
 
-                        <Form.Text className="text-muted">
+                        <Form.Text className="text-muted" hidden={available.length === 0}>
                             Pokud je zrovna volno, můžete vytvořit až <strong>dvouhodinovou</strong> rezervaci.
                         </Form.Text>
 
-                        <div style={{marginTop: "10px"}}>
+                        <div style={{marginTop: "10px"}} >
                             <Button
                                 disabled={selectedSlot === -1}
                                 variant={"success"}
