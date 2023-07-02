@@ -11,7 +11,7 @@ export const ReservationsListDeleteBadge: FC<Props> = (props: Props) => {
 
     const {user} = useContext(UserContext)
 
-    if (user.username === props.reservation.username) {
+    if (user.username.toLowerCase() === props.reservation.username?.toLowerCase()) {
         return (
             <Badge bg="danger" pill style={{cursor: "pointer"}} onClick={() => {
                 props.deleteReservation(props.reservation)
@@ -19,7 +19,6 @@ export const ReservationsListDeleteBadge: FC<Props> = (props: Props) => {
                 ×
             </Badge>
         )
-
     }
 
     return (

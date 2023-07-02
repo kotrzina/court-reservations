@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -383,7 +384,7 @@ func (app *app) deleteReservation(c *gin.Context) {
 	}
 
 	// owner of the reservation or admin
-	if reservation.Username != user.Username && !user.IsAdmin {
+	if strings.ToLower(reservation.Username) != strings.ToLower(user.Username) && !user.IsAdmin {
 		c.JSON(createHttpError(http.StatusForbidden, "insufficient permissions"))
 		return
 	}
