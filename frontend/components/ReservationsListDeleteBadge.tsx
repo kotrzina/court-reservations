@@ -1,6 +1,5 @@
 import React, {FC, useContext} from "react";
 import {Reservation} from "../src/api";
-import {isReservationPublic} from "../src/utils";
 import {Badge} from "react-bootstrap";
 import {UserContext} from "../src/userContext";
 
@@ -11,7 +10,7 @@ type Props = {
 export const ReservationsListDeleteBadge: FC<Props> = (props: Props) => {
 
     const {user} = useContext(UserContext)
-    
+
     if (user.username === props.reservation.username) {
         return (
             <Badge bg="danger" pill style={{cursor: "pointer"}} onClick={() => {
