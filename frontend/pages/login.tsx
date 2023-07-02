@@ -23,7 +23,7 @@ const Login: NextPage = () => {
             const u: User = {
                 logged: true,
                 name: data.name,
-                username: username,
+                username: data.username,
                 isAdmin: data.isAdmin,
                 jwt: data.jwt,
             }

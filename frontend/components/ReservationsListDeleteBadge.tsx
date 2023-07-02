@@ -11,7 +11,7 @@ type Props = {
 export const ReservationsListDeleteBadge: FC<Props> = (props: Props) => {
 
     const {user} = useContext(UserContext)
-
+    
     if (user.username === props.reservation.username) {
         return (
             <Badge bg="danger" pill style={{cursor: "pointer"}} onClick={() => {
