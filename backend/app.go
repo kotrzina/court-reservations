@@ -82,6 +82,7 @@ func (app *app) newRouter() *gin.Engine {
 		private.GET("/v1/available/:date/:firstSlot", app.getAvailable)
 		private.DELETE("/v1/reservation/:date/:slotFrom", app.deleteReservation)
 		private.POST("/v1/reservation", app.postReservation)
+		private.POST("/v1/alert-notification", app.alertNotification)
 
 		private.GET("/v1/admin/reservation", app.getAllReservations)
 		private.POST("/v1/admin/reservation", app.postReservationMaintenance)

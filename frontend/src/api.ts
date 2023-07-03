@@ -211,3 +211,22 @@ export async function deleteUser(username: string): Promise<boolean> {
 
     return true
 }
+
+export async function postAlertNotification(title, message: string): Promise<void> {
+    const user = getUserFromStorage()
+    const res = await fetch(`${BACKEND_URL}/api/private/v1/alert-notification`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${user.jwt}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            title: title,
+            message: message,
+        })
+    })
+
+    if (res.status !== 200) {
+        throw Error("could not send alert notification")
+    }
+}

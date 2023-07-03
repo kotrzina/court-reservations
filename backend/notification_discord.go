@@ -23,6 +23,11 @@ func (d *Discord) ReservationDeleted(date time.Time, slotFrom, slotTo int, name 
 	return d.sendWebhook(msg)
 }
 
+func (d *Discord) Alert(title, message string) error {
+	msg := fmt.Sprintf("__**%s**__\n%s", title, message)
+	return d.sendWebhook(msg)
+}
+
 func (d *Discord) sendWebhook(message string) error {
 	body := struct {
 		Content string `json:"content"`

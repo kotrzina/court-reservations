@@ -8,6 +8,7 @@ import (
 type Notification interface {
 	ReservationCreated(date time.Time, slotFrom, slotTo int, name string) error
 	ReservationDeleted(date time.Time, slotFrom, slotTo int, name string) error
+	Alert(title, message string) error
 }
 
 type NotificationService struct {
@@ -30,11 +31,21 @@ func (n *NotificationService) ReservationCreated(date time.Time, slotFrom, slotT
 		}
 	}
 }
+
 func (n *NotificationService) ReservationDeleted(date time.Time, slotFrom, slotTo int, name string) {
 	for _, ch := range n.channels {
 		err := ch.ReservationDeleted(date, slotFrom, slotTo, name)
 		if err != nil {
 			n.logger.Errorf("could not send notification: %s", err)
+		}
+	}
+}
+
+func (n *NotificationService) SendAlert(title, message string) {
+	for _, ch := range n.channels {
+		err := ch.Alert(title, message)
+		if err != nil {
+			n.logger.Errorf("could not send alert notification: %s", err)
 		}
 	}
 }

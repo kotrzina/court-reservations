@@ -9,6 +9,7 @@ import {Flash} from "../components/Flash";
 import {ReservationsList} from "../components/ReservationsList";
 import {AccordionBody} from "../components/AccordionBody";
 import Head from "next/head";
+import AlertBanner from "../components/AlertBanner";
 
 const Home: NextPage = () => {
 
@@ -20,9 +21,11 @@ const Home: NextPage = () => {
     })
     const [flash, updateFlash] = useFlash()
     const [loading, setLoading] = useState<boolean>(true)
-
+    const [ts, setTs] = useState<number>(0)
 
     useEffect(() => {
+        const t = new Date()
+        setTs(t.getTime())
         fetchData()
         window.addEventListener("focus", fetchData)
         return () => {
@@ -56,6 +59,12 @@ const Home: NextPage = () => {
             </Head>
 
             <Flash flash={flash}/>
+            {ts <= 1691784000000 && <AlertBanner
+                variant={"primary"}
+                title={"Tenisový turnaj čtyřher - 12. 8. 2023"}
+                linkTitle={"Více informací"}
+                linkPage={"/tour"}
+            />}
             <Row>
                 <Col md={4}
                      style={{marginTop: "20px"}}

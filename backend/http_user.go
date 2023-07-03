@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -144,5 +145,29 @@ func (app *app) deleteUser(c *gin.Context) {
 		return
 	}
 
+	c.JSON(http.StatusOK, struct{}{})
+}
+
+func (app *app) alertNotification(c *gin.Context) {
+	loggedUser, err := app.GetLoggedUser(c)
+	if err != nil {
+		c.JSON(createHttpError(http.StatusForbidden, "you have to be logged in to send alert"))
+		return
+	}
+
+	type input struct {
+		Title   string `json:"title"`
+		Message string `json:"message"`
+	}
+
+	var request input
+	err = c.BindJSON(&request)
+	if err != nil {
+		c.JSON(createHttpError(http.StatusBadRequest, "could not decode input json"))
+		return
+	}
+
+	msg := fmt.Sprintf("User `%s` sent alert: %s", loggedUser.Username, request.Message)
+	app.notificationService.SendAlert(request.Title, msg)
 	c.JSON(http.StatusOK, struct{}{})
 }
