@@ -1,12 +1,14 @@
-import {Col, Row} from "react-bootstrap";
+import {Button, Col, Row} from "react-bootstrap";
 import {NextPage} from "next";
 import Head from "next/head";
 import React, {useContext} from "react";
 import {UserContext} from "../src/userContext";
 import RegistrationForm from "../components/RegistrationForm";
+import {useRouter} from "next/router";
 
 const Tour: NextPage = () => {
 
+    const router = useRouter()
     const user = useContext(UserContext)
 
     return (
@@ -16,6 +18,12 @@ const Tour: NextPage = () => {
             </Head>
 
             <Col md={12}>
+                <Button
+                    variant={"outline-dark"}
+                    className={"mb-3"}
+                    onClick={() => {router.push("/")}}
+                >Zpět
+                </Button>
                 <h1>Tenisový turnaj čtyřher - 12.&nbsp;8.&nbsp;2023</h1>
                 <p>
                     Turnaj o přeborníky obce. Zaregistrovat se může kdokoliv. Páry jsou zaregistrovány předem a
