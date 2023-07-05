@@ -26,6 +26,7 @@ docker run \
 | SLOT_START                        | Index of first registration slot | int    | false    | 12           |
 | SLOT_END                          | Index of last registration slot  | int    | false    | 43           |
 | JWT_SIGNING_KEY                   | JWT signing key                  | string | false    | test         |
+| JWT_PASSWORD_CHANGE_KEY           | JWT for password change          | string | false    | test         |
 | REGISTRATION_CODE                 | Password used for registration   | string | false    | test         |
 | ADMINS                            | List of users separated by comma | string | false    |              |
 | FIRESTORE_COLLECTION_RESERVATIONS | Name of reservation collection   | string | false    | reservations |

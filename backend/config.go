@@ -17,6 +17,7 @@ type config struct {
 	StartingSlot           int    // first slot of the day
 	EndingSlot             int    // last slot of the day
 	JwtSigningKey          string
+	JwtPasswordChangeKey   string
 	RegistrationCode       string
 	Admins                 []string
 	NotificationDiscord    string
@@ -39,6 +40,7 @@ func loadConfig() *config {
 		StartingSlot:           getEnvIntWithDefault("SLOT_START", 12), // 6:00
 		EndingSlot:             getEnvIntWithDefault("SLOT_END", 43),   // 21:45
 		JwtSigningKey:          getEnvStringWithDefault("JWT_SIGNING_KEY", "test"),
+		JwtPasswordChangeKey:   getEnvStringWithDefault("JWT_PASSWORD_CHANGE_KEY", "test"),
 		RegistrationCode:       getEnvStringWithDefault("REGISTRATION_CODE", "test"),
 		Admins:                 admins,
 		NotificationDiscord:    os.Getenv("NOTIFICATION_DISCORD"),

@@ -1,7 +1,15 @@
 import React, {useContext, useEffect, useState} from "react";
 import {UserContext} from "../src/userContext";
 import {Button, Col, Row, Table} from "react-bootstrap";
-import {deleteReservation, deleteUser, fetchAllReservations, fetchUsers, Reservation, UserListItem} from "../src/api";
+import {
+    deleteReservation,
+    deleteUser,
+    fetchAllReservations,
+    fetchUsers,
+    generatePasswordToken, PasswordTokenResponse,
+    Reservation,
+    UserListItem
+} from "../src/api";
 import {useRouter} from "next/router";
 import {formatDate, indexToTime, slotsToDuration} from "../src/utils";
 import {NextPage} from "next";
@@ -62,6 +70,22 @@ const Admin: NextPage = () => {
         }
     }
 
+    async function onGeneratePasswordToken(u: UserListItem) {
+        const msg = `Opravdu smazat generovat token na zmenu hesla pro uzivatele ${u.name} (${u.username})?`
+        const y = confirm(msg)
+        if (y) {
+            try {
+                const ptr = await generatePasswordToken(u.username)
+                const host = location.protocol.concat("//").concat(window.location.host);
+                await void navigator.clipboard.writeText(host.concat("/pwd?token=").concat(ptr.token));
+
+                alert("Zkopírováno do schránky")
+            } catch (e: any) {
+                alert(e)
+            }
+        }
+    }
+
     return (
         <Row>
             <Head>
@@ -85,7 +109,9 @@ const Admin: NextPage = () => {
                         return (
                             <tr key={`${r.date}-${r.slotFrom}`}>
                                 <td>{formatDate(r.date)}</td>
-                                <td><Clock slot={r.slotFrom}/> {indexToTime(r.slotFrom)}&nbsp;-&nbsp;{indexToTime(r.slotTo + 1)}</td>
+                                <td><Clock
+                                    slot={r.slotFrom}/> {indexToTime(r.slotFrom)}&nbsp;-&nbsp;{indexToTime(r.slotTo + 1)}
+                                </td>
                                 <td>{slotsToDuration(r.slotFrom, r.slotTo)}</td>
                                 <td>{r.name} ({r.username})</td>
                                 <td>
@@ -107,6 +133,7 @@ const Admin: NextPage = () => {
                         <th>Jmeno</th>
                         <th>Uzivatelske jmeno</th>
                         <th>Obec</th>
+                        <th>Pwd</th>
                         <th>Smazat</th>
                     </tr>
                     </thead>
@@ -117,6 +144,11 @@ const Admin: NextPage = () => {
                                 <td>{u.name}</td>
                                 <td>{u.username}</td>
                                 <td>{u.city}</td>
+                                <td>
+                                    <Button variant={"primary"} onClick={() => onGeneratePasswordToken(u)}>
+                                        Pwd token
+                                    </Button>
+                                </td>
                                 <td>
                                     <Button variant={"danger"} onClick={() => onDeleteUser(u)}>
                                         Smazat

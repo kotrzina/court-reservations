@@ -1,6 +1,7 @@
 package main
 
 import (
+	"cloud.google.com/go/firestore"
 	"context"
 	"golang.org/x/crypto/bcrypt"
 	"strings"
@@ -69,6 +70,22 @@ func (s *storage) GetUsers() ([]User, error) {
 func (s *storage) DeleteUser(username string) error {
 	ctx := context.Background()
 	_, err := s.client.Collection(s.config.CollectionUsers).Doc(strings.ToLower(username)).Delete(ctx)
+	if err != nil {
+		s.logger.Error(err)
+	}
+	return err
+}
+
+func (s *storage) ChangePassword(username, password string) error {
+	hash, err := hashPassword(password)
+	if err != nil {
+		return err
+	}
+
+	ctx := context.Background()
+	_, err = s.client.Collection(s.config.CollectionUsers).Doc(strings.ToLower(username)).Update(ctx, []firestore.Update{
+		{Path: "hash", Value: hash},
+	})
 	if err != nil {
 		s.logger.Error(err)
 	}

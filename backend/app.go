@@ -73,6 +73,7 @@ func (app *app) newRouter() *gin.Engine {
 		public.GET("/v1/time-table", app.createTimeTableEndpoint(false))
 		public.POST("/v1/user/register", app.registerUser)
 		public.POST("/v1/user/login", app.loginUser)
+		public.POST("/v1/change-password", app.changePassword)
 	}
 
 	private := router.Group("/api/private")
@@ -88,6 +89,7 @@ func (app *app) newRouter() *gin.Engine {
 		private.POST("/v1/admin/reservation", app.postReservationMaintenance)
 		private.GET("/v1/admin/user", app.getAllUsers)
 		private.DELETE("/v1/admin/user/:username", app.deleteUser)
+		private.GET("/v1/admin/user/:username/generate-password-token", app.generatePasswordChangeToken)
 	}
 
 	router.GET("/", func(c *gin.Context) {

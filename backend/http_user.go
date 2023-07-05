@@ -148,6 +148,72 @@ func (app *app) deleteUser(c *gin.Context) {
 	c.JSON(http.StatusOK, struct{}{})
 }
 
+func (app *app) generatePasswordChangeToken(c *gin.Context) {
+	type output struct {
+		Username string `json:"username"`
+		Token    string `json:"token"`
+	}
+
+	loggedUser, err := app.GetLoggedUser(c)
+	if err != nil || !loggedUser.IsAdmin {
+		c.JSON(createHttpError(http.StatusForbidden, "insufficient permissions"))
+		return
+	}
+
+	username := c.Param("username")
+	if username == "" {
+		c.JSON(createHttpError(http.StatusNotFound, "invalid parameter username"))
+		return
+	}
+
+	token, err := app.userService.GeneratePasswordChangeToken(username)
+	if err != nil {
+		c.JSON(createHttpError(http.StatusInternalServerError, "could not generate password token"))
+		return
+	}
+
+	c.JSON(http.StatusOK, output{
+		Username: username,
+		Token:    token,
+	})
+}
+
+func (app *app) changePassword(c *gin.Context) {
+	type input struct {
+		Token    string `json:"token"`
+		Password string `json:"password"`
+	}
+
+	var request input
+	err := c.BindJSON(&request)
+	if err != nil {
+		c.JSON(createHttpError(http.StatusBadRequest, "could not decode input json"))
+		return
+	}
+
+	if len(request.Password) < 5 {
+		c.JSON(createHttpError(http.StatusBadRequest, "invalid password -> too short"))
+		return
+	}
+
+	username, err := app.userService.VerifyPasswordChangeToken(request.Token)
+	if err != nil {
+		app.logger.WithField("token", request.Token).Error("invalid password change token")
+		c.JSON(createHttpError(http.StatusBadRequest, "password change token is invalid"))
+		return
+	}
+
+	err = app.storage.ChangePassword(username, request.Password)
+	if err != nil {
+		app.logger.WithError(err).Error("could not change user password")
+		c.JSON(createHttpError(http.StatusInternalServerError, "could not change user password"))
+		return
+	}
+
+	app.logger.WithField("username", username).Info("password changed")
+	c.JSON(http.StatusOK, struct{}{})
+}
+
 func (app *app) alertNotification(c *gin.Context) {
 	loggedUser, err := app.GetLoggedUser(c)
 	if err != nil {

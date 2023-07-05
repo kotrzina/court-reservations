@@ -45,6 +45,11 @@ export type UserListItem = {
     city: string;
 }
 
+export type PasswordTokenResponse = {
+    username: string;
+    token: string;
+}
+
 export async function fetchTimeTable(): Promise<TimeTable> {
     const user = getUserFromStorage()
     let res: Response
@@ -228,5 +233,38 @@ export async function postAlertNotification(title: string, message: string): Pro
 
     if (res.status !== 200) {
         throw Error("could not send alert notification")
+    }
+}
+
+export async function generatePasswordToken(username: string): Promise<PasswordTokenResponse> {
+    const user = getUserFromStorage()
+    const res = await fetch(`${BACKEND_URL}/api/private/v1/admin/user/${username}/generate-password-token`, {
+        headers: {
+            "Authorization": `Bearer ${user.jwt}`,
+            "Accept": "application/json",
+        }
+    })
+
+    if (res.status !== 200) {
+        throw Error("could not delete user")
+    }
+
+    return await res.json()
+}
+
+export async function changePassword(token: string, password: string): Promise<void> {
+    const res = await fetch(`${BACKEND_URL}/api/public/v1/change-password`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            token: token,
+            password: password,
+        })
+    })
+
+    if (res.status !== 200) {
+        throw Error("could not change password")
     }
 }
