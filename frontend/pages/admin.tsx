@@ -6,7 +6,7 @@ import {
     deleteUser,
     fetchAllReservations,
     fetchUsers,
-    generatePasswordToken, PasswordTokenResponse,
+    generatePasswordToken,
     Reservation,
     UserListItem
 } from "../src/api";
