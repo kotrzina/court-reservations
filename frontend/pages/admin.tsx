@@ -71,7 +71,7 @@ const Admin: NextPage = () => {
     }
 
     async function onGeneratePasswordToken(u: UserListItem) {
-        const msg = `Opravdu smazat generovat token na zmenu hesla pro uzivatele ${u.name} (${u.username})?`
+        const msg = `Opravdu generovat token na zmenu hesla pro uzivatele ${u.name} (${u.username})?`
         const y = confirm(msg)
         if (y) {
             try {

@@ -246,7 +246,7 @@ export async function generatePasswordToken(username: string): Promise<PasswordT
     })
 
     if (res.status !== 200) {
-        throw Error("could not delete user")
+        throw Error("could not generate change password token")
     }
 
     return await res.json()
