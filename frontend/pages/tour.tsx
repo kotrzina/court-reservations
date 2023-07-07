@@ -20,7 +20,7 @@ const Tour: NextPage = () => {
             <Col md={12}>
                 <Button
                     variant={"outline-dark"}
-                    className={"mb-3"}
+                    className={"mb-3 mt-3"}
                     onClick={() => {router.push("/")}}
                 >Zpět
                 </Button>
