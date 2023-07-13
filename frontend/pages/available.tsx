@@ -13,8 +13,8 @@ import Head from "next/head";
 const Available: NextPage = () => {
 
     const sports = [
+        "Tenis",
         "Volejbal",
-        "Nohejbal",
         "Děti",
         "Ostatní",
     ]
