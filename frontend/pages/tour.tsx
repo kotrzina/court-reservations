@@ -5,11 +5,19 @@ import React, {useContext} from "react";
 import {UserContext} from "../src/userContext";
 import RegistrationForm from "../components/RegistrationForm";
 import {useRouter} from "next/router";
+import {Player, RegisteredPlayer} from "../components/RegisteredPlayer";
 
 const Tour: NextPage = () => {
 
     const router = useRouter()
     const user = useContext(UserContext)
+
+    const data: [Player, Player][] = [
+        [
+            {name: "Jiří Fabiánek", nation: "cze"},
+            {name: "Tomáš Kozák", nation: "cze"},
+        ],
+    ]
 
     return (
         <Row>
@@ -21,7 +29,9 @@ const Tour: NextPage = () => {
                 <Button
                     variant={"outline-dark"}
                     className={"mb-3 mt-3"}
-                    onClick={() => {router.push("/")}}
+                    onClick={() => {
+                        router.push("/")
+                    }}
                 >Zpět
                 </Button>
                 <h1>Tenisový turnaj čtyřher - 12.&nbsp;8.&nbsp;2023</h1>
@@ -41,6 +51,7 @@ const Tour: NextPage = () => {
                     rozhodující vzájemný zápas.
                 </p>
 
+                {user.user.logged && <RegisteredPlayer double={data}/>}
                 {user.user.logged && <RegistrationForm/>}
             </Col>
         </Row>
