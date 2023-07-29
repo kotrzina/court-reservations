@@ -40,8 +40,8 @@ const Tour: NextPage = () => {
                 </Button>
                 <h1>Tenisový turnaj čtyřher - 12.&nbsp;8.&nbsp;2023</h1>
                 <p>
-                    Turnaj o přeborníky obce. Zaregistrovat se může kdokoliv. Páry jsou zaregistrovány předem a
-                    během turnaje se nemohou měnit.
+                    Turnaj o přeborníky obce. Zaregistrovat se může kdokoliv. Páry jsou zaregistrovány předem pomocí
+                    rezervačního systému a během turnaje se nemohou měnit.
                 </p>
                 <ul>
                     <li><strong>Kdy:</strong> v sobotu 12.&nbsp;8.&nbsp;2023 od 8:00</li>
