@@ -33,6 +33,10 @@ const Tour: NextPage = () => {
             {name: "Martin Nečas", nation: "cze"},
             {name: "Jan Fabiánek", nation: "cze"},
         ],
+        [
+            {name: "Josef Jarůšek", nation: "cze"},
+            {name: "Marek Jarůšek", nation: "cze"},
+        ],
     ]
 
     return (

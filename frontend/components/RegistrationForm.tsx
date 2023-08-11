@@ -9,8 +9,8 @@ const RegistrationForm = (props: Props) => {
     const [player1, setPlayer1] = useState<string>("")
     const [player2, setPlayer2] = useState<string>("")
 
-    const [flash, setFlash] = useState<string>("")
-    const [flashVariant, setFlashVariant] = useState<Variant>("success")
+    const [flash, setFlash] = useState<string>("Registrace uzavřeny")
+    const [flashVariant, setFlashVariant] = useState<Variant>("warning")
 
     async function onRegister() {
         if (player1.length < 5 || player2.length < 5) {
@@ -37,7 +37,7 @@ const RegistrationForm = (props: Props) => {
             {flash && <Alert variant={flashVariant}>
                 {flash}
             </Alert>}
-            <Form>
+            <Form hidden={true}>
                 <Form.Group className="mb-3">
                     <Form.Control
                         min={4}
