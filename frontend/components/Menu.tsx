@@ -24,6 +24,9 @@ const Menu: FC<Props> = (props: Props) => {
                         <Link legacyBehavior={true} href={"/info"} passHref>
                             <Nav.Link>Info</Nav.Link>
                         </Link>
+                        <Link legacyBehavior={true} href={"/turnaj/2023-debl"} passHref>
+                            <Nav.Link>Debl 2023</Nav.Link>
+                        </Link>
                     </Nav>
                     <Navbar.Toggle/>
                     <Navbar.Collapse className="justify-content-end">

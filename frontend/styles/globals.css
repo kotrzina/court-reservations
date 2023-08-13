@@ -113,4 +113,14 @@ table.accordionView tr td.history {
     display: none;
 }
 
+table.results tr td {
+    text-align: center;
+}
 
+table.results tr td.void {
+    background-color: #AAA;
+}
+
+span.strike {
+    text-decoration: line-through;
+}
