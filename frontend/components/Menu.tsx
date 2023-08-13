@@ -17,19 +17,22 @@ const Menu: FC<Props> = (props: Props) => {
                     <Link legacyBehavior={true} href={"/"} passHref>
                         <Navbar.Brand>Hřiště Veselice</Navbar.Brand>
                     </Link>
-                    <Nav className="me-auto">
-                        <Link legacyBehavior={true} href={"/admin"} passHref>
-                            <Nav.Link hidden={!props.user.isAdmin}>Admin</Nav.Link>
-                        </Link>
-                        <Link legacyBehavior={true} href={"/info"} passHref>
-                            <Nav.Link>Info</Nav.Link>
-                        </Link>
-                        <Link legacyBehavior={true} href={"/turnaj/2023-debl"} passHref>
-                            <Nav.Link>Debl 2023</Nav.Link>
-                        </Link>
-                    </Nav>
                     <Navbar.Toggle/>
                     <Navbar.Collapse className="justify-content-end">
+                        <Nav className="me-auto">
+                            <Link legacyBehavior={true} href={"/info"} passHref>
+                                <Nav.Link>Info</Nav.Link>
+                            </Link>
+
+                            <Link legacyBehavior={true} href={"/admin"} passHref>
+                                <Nav.Link hidden={!props.user.isAdmin}>Admin</Nav.Link>
+                            </Link>
+
+                            <Link legacyBehavior={true} href={"/turnaj/2023-debl"} passHref>
+                                <Nav.Link>Debl 2023</Nav.Link>
+                            </Link>
+                        </Nav>
+
                         <LoggedUser user={props.user}/>
 
                         <Link legacyBehavior={true} href={"/login"} passHref>

@@ -18,16 +18,16 @@ const Debl2023: NextPage = () => {
             <Col>
                 <h1>Tenisový turnaj čtyřher - 12.&nbsp;8.&nbsp;2023</h1>
                 <ol>
-                    <li><Medal type={"gold"}/> <strong>Jiří Fabiánek × Tomáš Kozák </strong></li>
-                    <li><Medal type={"silver"}/> <strong>Josef Jarůšek × Marek Jarůšek </strong></li>
-                    <li><Medal type={"bronze"}/> <strong>Martin Nečas × Jan Fabiánek </strong></li>
-                    <li><strong>Pavel Stloukal × Jiří Skoták </strong></li>
-                    <li><strong>Hanička Hebelková × Honza Hebelka </strong></li>
-                    <li><strong>Daniel Orálek × Renata Žižlavská </strong></li>
+                    <li><Medal type={"gold"}/> <strong>Jiří Fabiánek × Tomáš Kozák</strong></li>
+                    <li><Medal type={"silver"}/> <strong>Josef Jarůšek × Marek Jarůšek</strong></li>
+                    <li><Medal type={"bronze"}/> <strong>Martin Nečas × Jan Fabiánek</strong></li>
+                    <li><strong>Pavel Stloukal × Jiří Skoták</strong></li>
+                    <li><strong>Hanička Hebelková × Honza Hebelka</strong></li>
+                    <li><strong>Daniel Orálek × Renata Žižlavská (Lubomír Němec)</strong></li>
                 </ol>
 
                 <h2>Výsledky</h2>
-                <Table bordered={true} className={"results"}>
+                <Table bordered={true} responsive={true} className={"results"}>
                     <thead>
                     <tr>
                         <th></th>
@@ -99,7 +99,7 @@ const Debl2023: NextPage = () => {
             </Col>
             <Col md={12}>
                 <h2>Kola:</h2>
-                <Table>
+                <Table responsive={true}>
                     <tbody>
                     <tr>
                         <th colSpan={4}>1. kolo</th>
@@ -108,7 +108,7 @@ const Debl2023: NextPage = () => {
                         <td>Martin Nečas × Jan Fabiánek</td>
                         <td>vs.</td>
                         <td>Pavel Stloukal × Jiří Skoták</td>
-                        <td>6 : 3</td>
+                        <td style={{minWidth: "15%"}}>6 : 3</td>
                     </tr>
                     <tr>
                         <td>Hanička Hebelková × Honza Hebelka</td>
@@ -173,7 +173,7 @@ const Debl2023: NextPage = () => {
                     <tr>
                         <td>Martin Nečas × Jan Fabiánek</td>
                         <td>vs.</td>
-                        <td>Daniel Orálek × Renata Žižlavská</td>
+                        <td>Daniel Orálek × Lubomír Němec</td>
                         <td>6 : 2</td>
                     </tr>
                     <tr>
@@ -201,7 +201,7 @@ const Debl2023: NextPage = () => {
                     <tr>
                         <td>Pavel Stloukal × Jiří Skoták</td>
                         <td>vs.</td>
-                        <td>Daniel Orálek × Renata Žižlavská</td>
+                        <td>Daniel Orálek × Lubomír Němec</td>
                         <td>6 : 2</td>
                     </tr>
                     <tr>
