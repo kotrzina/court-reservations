@@ -59,12 +59,12 @@ const Home: NextPage = () => {
             </Head>
 
             <Flash flash={flash}/>
-            {ts <= 1691784000000 && <AlertBanner
-                variant={"primary"}
-                title={"Tenisový turnaj čtyřher - 12. 8. 2023"}
-                linkTitle={"Více informací"}
-                linkPage={"/tour"}
-            />}
+            {/*{ts <= 1691784000000 && <AlertBanner*/}
+            {/*    variant={"primary"}*/}
+            {/*    title={"Tenisový turnaj čtyřher - 12. 8. 2023"}*/}
+            {/*    linkTitle={"Více informací"}*/}
+            {/*    linkPage={"/tour"}*/}
+            {/*/>}*/}
             <Row>
                 <Col md={4}
                      style={{marginTop: "20px"}}
