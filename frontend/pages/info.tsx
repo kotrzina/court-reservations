@@ -52,6 +52,10 @@ const Info: NextPage = () => {
                         systémem)
                     </li>
                     <li>Osoba je povinna rezervaci využít, popř. rezervaci zrušit</li>
+                    <li>
+                        Osoba je povinna po sobě uklidit. Sundat síť a hřiště zamést. Všechny věci pak dát do přístřešku
+                        vedle hřiště
+                    </li>
                 </ol>
                 <p>
                     Rezervace jsou rozděleny do 30minutových intervalů. Podle barvy intervalu v rezervační tabulce

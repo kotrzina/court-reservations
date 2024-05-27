@@ -92,7 +92,19 @@ const Available: NextPage = () => {
                 <title>Výběr termínu - Hřiště Veselice</title>
             </Head>
 
+            <Row>
+                <Col md={12} className={"mt-3"}>
+                    <Alert variant="info">
+                        <strong>
+                            Nezapomeňte po sobě uklidit! Sundat síť a hřiště zamést. Všechny věci pak dát do přístřešku
+                            vedle hřiště. Děkujeme.
+                        </strong>
+                    </Alert>
+                </Col>
+            </Row>
+
             <Flash flash={flash}/>
+
             <Row>
                 <Col md={5}>
                     <h3>Rezervace</h3>
@@ -155,7 +167,7 @@ const Available: NextPage = () => {
                             Pokud je zrovna volno, můžete vytvořit až <strong>dvouhodinovou</strong> rezervaci.
                         </Form.Text>
 
-                        <div style={{marginTop: "10px"}} >
+                        <div style={{marginTop: "10px"}}>
                             <Button
                                 disabled={selectedSlot === -1}
                                 variant={"success"}
