@@ -90,6 +90,7 @@ func (app *app) newRouter() *gin.Engine {
 		private.GET("/v1/admin/user", app.getAllUsers)
 		private.DELETE("/v1/admin/user/:username", app.deleteUser)
 		private.GET("/v1/admin/user/:username/generate-password-token", app.generatePasswordChangeToken)
+		private.GET("/v1/config", app.getConfig)
 	}
 
 	router.GET("/", func(c *gin.Context) {

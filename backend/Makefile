@@ -1,4 +1,5 @@
 dev: export FIRESTORE_EMULATOR_HOST=localhost:8080
+dev: export ADMINS=admin
 dev:
 	go run ./...
 
