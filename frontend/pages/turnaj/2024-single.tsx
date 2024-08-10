@@ -7,6 +7,11 @@ const Single2024: NextPage = () => {
 
     const router = useRouter()
 
+    const players = [
+        "Tomáš Kozák",
+        "Jan Fabiánek",
+    ]
+
     const wikiDoubleElimination = "https://cs.wikipedia.org/wiki/Vy%C5%99azovac%C3%AD_syst%C3%A9m_na_dv%C4%9B_por%C3%A1%C5%BEky"
 
     return (
@@ -21,7 +26,9 @@ const Single2024: NextPage = () => {
                 <hr/>
                 <h3>Registrovaní hráči</h3>
                 <ul>
-                    <li>Tomáš Kozák</li>
+                    {players.map((player, index) => {
+                        return <li key={index}>{player}</li>
+                    })}
                 </ul>
 
                 <h3>Pravidla</h3>
