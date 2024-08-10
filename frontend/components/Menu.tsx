@@ -28,13 +28,13 @@ const Menu: FC<Props> = (props: Props) => {
                                 <Nav.Link hidden={!props.user.isAdmin}>Admin</Nav.Link>
                             </Link>
 
-                            <Link legacyBehavior={true} href={"/turnaj/2024-single"} passHref>
-                                <Nav.Link>Single 2024</Nav.Link>
+                            <Link legacyBehavior={true} href={"/turnaj/2024-singl"} passHref>
+                                <Nav.Link>Singl 2024</Nav.Link>
                             </Link>
 
-                            <Link legacyBehavior={true} href={"/turnaj/2023-debl"} passHref>
-                                <Nav.Link>Debl 2023</Nav.Link>
-                            </Link>
+                            {/*<Link legacyBehavior={true} href={"/turnaj/2023-debl"} passHref>*/}
+                            {/*    <Nav.Link>Debl 2023</Nav.Link>*/}
+                            {/*</Link>*/}
                         </Nav>
 
                         <LoggedUser user={props.user}/>
