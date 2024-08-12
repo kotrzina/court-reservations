@@ -11,7 +11,8 @@ import {ReservationsListTitle} from "./ReservationsListTitle";
 type Props = {
     title: string;
     reservations: Reservation[];
-    setFlash(variant: FlashVariant, message: string): void;
+    // @ts-ignore
+    setFlash(_variant: FlashVariant, _message: string): void;
     reload(): void;
 };
 

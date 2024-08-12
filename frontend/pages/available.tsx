@@ -59,7 +59,7 @@ const Available: NextPage = () => {
 
         fetchAvailable(queryDate, querySlot).then(data => {
             setAvailable(data)
-        }).catch((e) => {
+        }).catch(() => {
             setFlash("error", "Chyba! Zkuste to prosim pozdeji")
         }).finally(() => {
             setShowSpinner(false)

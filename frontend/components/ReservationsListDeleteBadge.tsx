@@ -5,7 +5,7 @@ import {UserContext} from "../src/userContext";
 
 type Props = {
     reservation: Reservation;
-    deleteReservation(r: Reservation): void;
+    deleteReservation(_r: Reservation): void;
 };
 export const ReservationsListDeleteBadge: FC<Props> = (props: Props) => {
 

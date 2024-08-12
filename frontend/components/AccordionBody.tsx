@@ -1,6 +1,6 @@
 import React, {FC} from "react";
 import {TimeTable} from "../src/api";
-import {Accordion, Table} from "react-bootstrap";
+import {Accordion} from "react-bootstrap";
 import {AccordionDay} from "./AccordionDay";
 
 type Props = {

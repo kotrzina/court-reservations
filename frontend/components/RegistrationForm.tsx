@@ -3,8 +3,7 @@ import {useState} from "react";
 import {postAlertNotification} from "../src/api";
 import {Variant} from "react-bootstrap/types";
 
-type Props = {};
-const RegistrationForm = (props: Props) => {
+const RegistrationForm = () => {
 
     const [player1, setPlayer1] = useState<string>("")
     const [player2, setPlayer2] = useState<string>("")
@@ -25,7 +24,7 @@ const RegistrationForm = (props: Props) => {
             setFlash("Registrace proběhla úspěšně!")
             setPlayer1("")
             setPlayer2("")
-        } catch (e) {
+        } catch {
             setFlashVariant("danger")
             setFlash("Chyba serveru")
         }
@@ -59,7 +58,7 @@ const RegistrationForm = (props: Props) => {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                    <Button variant="primary" onClick={e => onRegister()}>Registrovat</Button>
+                    <Button variant="primary" onClick={() => onRegister()}>Registrovat</Button>
                 </Form.Group>
             </Form>
         </>

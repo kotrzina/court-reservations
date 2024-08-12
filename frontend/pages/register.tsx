@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {ReactElement, useEffect, useState} from "react";
 import {Button, Col, Form, Row} from "react-bootstrap";
 import {useFlash} from "../src/useFlash";
 import {Flash} from "../components/Flash";
@@ -42,7 +42,7 @@ const Register: NextPage = () => {
     }
 
     function onRegister() {
-        postRegister(username, password, name, city, code).then(data => {
+        postRegister(username, password, name, city, code).then(() => {
             setFlash("ok", "Registrace proběhla úspěšně. Můžete se přihlásit")
             setName("")
             setUsername("")
@@ -55,7 +55,7 @@ const Register: NextPage = () => {
         })
     }
 
-    function rightsLabel(): JSX.Element {
+    function rightsLabel(): ReactElement {
         return (
             <>
                 Souhlasím s <Link legacyBehavior={true} href={"/info"}>podmínkami registrace</Link>

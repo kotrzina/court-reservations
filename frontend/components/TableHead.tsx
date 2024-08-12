@@ -1,7 +1,7 @@
-import React, {FC} from "react";
+import React, {FC, ReactElement} from "react";
 import {TimeTable} from "../src/api";
 
-function slot(h: number): JSX.Element {
+function slot(h: number): ReactElement {
     if (h % 2 === 0) {
         return (
             <th colSpan={2}>
@@ -21,7 +21,7 @@ export const TableHead: FC<Props> = (props: Props) => {
         <thead>
         <tr>
             <th>&nbsp;</th>
-            {props.table.timeTable[0]?.slots.map((s, idx) => {
+            {props.table.timeTable[0]?.slots.map((s) => {
                 return (
                     <React.Fragment key={s.index}>
                         {slot(s.index)}

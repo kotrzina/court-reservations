@@ -9,7 +9,6 @@ import {Flash} from "../components/Flash";
 import {ReservationsList} from "../components/ReservationsList";
 import {AccordionBody} from "../components/AccordionBody";
 import Head from "next/head";
-import AlertBanner from "../components/AlertBanner";
 
 const Home: NextPage = () => {
 
@@ -21,11 +20,8 @@ const Home: NextPage = () => {
     })
     const [flash, updateFlash] = useFlash()
     const [loading, setLoading] = useState<boolean>(true)
-    const [ts, setTs] = useState<number>(0)
 
     useEffect(() => {
-        const t = new Date()
-        setTs(t.getTime())
         fetchData()
         window.addEventListener("focus", fetchData)
         return () => {

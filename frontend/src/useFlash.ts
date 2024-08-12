@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {FlashType, FlashVariant} from "../components/Flash";
 
-type updateFlashFn = (v: FlashVariant, message: string) => void;
+type updateFlashFn = (_v: FlashVariant, _message: string) => void;
 type useFlashReturn = [FlashType, updateFlashFn]
 
 export function useFlash(): useFlashReturn {
