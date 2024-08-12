@@ -10,6 +10,7 @@ const Singl2024: NextPage = () => {
     const players = [
         "Tomáš Kozák",
         "Jan Fabiánek",
+        "Jiří Fabiánek",
     ]
 
     const wikiDoubleElimination = "https://cs.wikipedia.org/wiki/Vy%C5%99azovac%C3%AD_syst%C3%A9m_na_dv%C4%9B_por%C3%A1%C5%BEky"
@@ -34,7 +35,7 @@ const Singl2024: NextPage = () => {
                 <h3>Pravidla</h3>
                 <p>
                     <ul>
-                        <li><strong>Datum:</strong> 23.&nbsp;-&nbsp;24.&nbsp;8.&nbsp;2024 od 8-18</li>
+                        <li><strong>Datum:</strong> 24.&nbsp;-&nbsp;25.&nbsp;8.&nbsp;2024 od 8-18</li>
                         <li><strong>Maximální počet hráčů:</strong> 10</li>
                         <li><strong>Registrace do:</strong> 17. 8. 2024 do 18:00</li>
                         <li><strong>Registrace u Tomáše Kozáka, popř. pomocí SMS na 730996957.</strong></li>
