@@ -17,12 +17,12 @@ const Singl2024: NextPage = () => {
     return (
         <Row>
             <Head>
-                <title>Tenisový turnaj - 23. - 24. 8. 2024 - Hřiště Veselice</title>
+                <title>Tenisový turnaj - 24. - 25. 8. 2024 - Hřiště Veselice</title>
             </Head>
 
 
             <Col>
-                <h1>Tenisový turnaj - 23.&nbsp;-&nbsp;24.&nbsp;8.&nbsp;2024</h1>
+                <h1>Tenisový turnaj - 24.&nbsp;-&nbsp;25.&nbsp;8.&nbsp;2024</h1>
                 <hr/>
                 <h3>Registrovaní hráči</h3>
                 <ul>
