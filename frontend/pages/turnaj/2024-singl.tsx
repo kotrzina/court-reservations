@@ -14,6 +14,7 @@ const Singl2024: NextPage = () => {
         "Daniel Orálek",
         "Jiří Skoták",
         "Martin Nečas",
+        "Radim Jarůšek",
     ]
 
     const wikiDoubleElimination = "https://cs.wikipedia.org/wiki/Vy%C5%99azovac%C3%AD_syst%C3%A9m_na_dv%C4%9B_por%C3%A1%C5%BEky"
