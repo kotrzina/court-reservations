@@ -113,12 +113,20 @@ table.accordionView tr td.history {
     display: none;
 }
 
+table.results tr th {
+    text-align: center;
+}
+
 table.results tr td {
     text-align: center;
 }
 
 table.results tr td.void {
     background-color: #AAA;
+}
+
+table.results tr td.win {
+    background-color: #b1edb4;
 }
 
 span.strike {

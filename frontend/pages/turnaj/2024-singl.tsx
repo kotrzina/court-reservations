@@ -1,24 +1,166 @@
 import {NextPage} from "next";
 import {useRouter} from "next/router";
-import {Alert, Button, Col, Row} from "react-bootstrap";
+import {Button, Col, Row, Table} from "react-bootstrap";
 import Head from "next/head";
+import {Flag} from "../../components/Flag";
 
 const Singl2024: NextPage = () => {
 
     const router = useRouter()
 
-    const players = [
-        "Tomáš Kozák",
-        "Jan Fabiánek",
-        "Jiří Fabiánek",
-        "Daniel Orálek",
-        "Jiří Skoták",
-        "Martin Nečas",
-        "Radim Jarůšek",
+    const matchesSaturday = [
+        {
+            match: 1,
+            time: "10:00",
+            player1: "Tomáš Kozák",
+            player2: "Radim Jarůšek",
+            result: "X:X"
+        },
+        {
+            match: 2,
+            time: "7:00*",
+            player1: "Tomáš Kozák",
+            player2: "Jiří Fabiánek",
+            result: "X:X"
+        },
+        {
+            match: 3,
+            time: "12:00",
+            player1: "Tomáš Kozák",
+            player2: "Martin Nečas",
+            result: "X:X"
+        },
+        {
+            match: 4,
+            time: "13:00",
+            player1: "Jiří Fabiánek",
+            player2: "Radim Jarůšek",
+            result: "X:X"
+        },
+        {
+            match: 5,
+            time: "14:00",
+            player1: "Daniel Orálek",
+            player2: "Jan Fabiánek",
+            result: "X:X"
+        },
+        {
+            match: 6,
+            time: "15:00",
+            player1: "Martin Nečas",
+            player2: "Jiří Skoták",
+            result: "X:X"
+        },
+        {
+            match: 7,
+            time: "16:00",
+            player1: "Daniel Orálek",
+            player2: "Radim Jarůšek",
+            result: "X:X"
+        },
+        {
+            match: 8,
+            time: "17:00",
+            player1: "Jiří Skoták",
+            player2: "Jiří Fabiánek",
+            result: "X:X"
+        },
+        {
+            match: 9,
+            time: "18:00",
+            player1: "Martin Nečas",
+            player2: "Jan Fabiánek",
+            result: "X:X"
+        },
+        {
+            match: 10,
+            time: "19:00",
+            player1: "Daniel Orálek",
+            player2: "Jiří Fabiánek",
+            result: "X:X"
+        },
     ]
 
-    const wikiDoubleElimination = "https://cs.wikipedia.org/wiki/Vy%C5%99azovac%C3%AD_syst%C3%A9m_na_dv%C4%9B_por%C3%A1%C5%BEky"
-
+    const matchesSunday = [
+        {
+            match: 11,
+            time: "08:00",
+            player1: "Jiří Skoták",
+            player2: "Jan Fabiánek",
+            result: "X:X"
+        },
+        {
+            match: 12,
+            time: "09:00",
+            player1: "Martin Nečas",
+            player2: "Radim Jarůšek",
+            result: "X:X"
+        },
+        {
+            match: 13,
+            time: "10:00",
+            player1: "Daniel Orálek",
+            player2: "Jiří Skoták",
+            result: "X:X"
+        },
+        {
+            match: 14,
+            time: "11:00",
+            player1: "Martin Nečas",
+            player2: "Jiří Fabiánek",
+            result: "X:X"
+        },
+        {
+            match: 15,
+            time: "12:00",
+            player1: "Tomáš Kozák",
+            player2: "Jan Fabiánek",
+            result: "X:X"
+        },
+        {
+            match: 16,
+            time: "13:00",
+            player1: "Daniel Orálek",
+            player2: "Martin Nečas",
+            result: "X:X"
+        },
+        {
+            match: 17,
+            time: "14:00",
+            player1: "Tomáš Kozák",
+            player2: "Jiří Skoták",
+            result: "X:X"
+        },
+        {
+            match: 18,
+            time: "15:00",
+            player1: "Jan Fabiánek",
+            player2: "Radim Jarůšek",
+            result: "X:X"
+        },
+        {
+            match: 19,
+            time: "16:00",
+            player1: "Daniel Orálek",
+            player2: "Tomáš Kozák",
+            result: "X:X"
+        },
+        {
+            match: 20,
+            time: "17:00",
+            player1: "Jiří Skoták",
+            player2: "Radim Jarůšek",
+            result: "X:X"
+        },
+        {
+            match: 21,
+            time: "18:00",
+            player1: "Jiří Fabiánek",
+            player2: "Jan Fabiánek",
+            result: "X:X"
+        },
+    ]
+    
     return (
         <Row>
             <Head>
@@ -27,34 +169,140 @@ const Singl2024: NextPage = () => {
 
             <Col>
                 <h1>Tenisový turnaj - 24.&nbsp;-&nbsp;25.&nbsp;8.&nbsp;2024</h1>
-                <hr/>
-                <h3>Registrovaní hráči</h3>
-                <Alert variant={"warning"}>
-                    Registrace uzavřeny!
-                </Alert>
-                <ul>
-                    {players.map((player, index) => {
-                        return <li key={index}>{player}</li>
+
+                <Table bordered={true} responsive={true} className={"results"}>
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th style={{width: "12.5%"}}>Daniel Orálek</th>
+                        <th style={{width: "12.5%"}}>Tomáš Kozák</th>
+                        <th style={{width: "12.5%"}}>Martin Nečas</th>
+                        <th style={{width: "12.5%"}}>Jiří Skoták</th>
+                        <th style={{width: "12.5%"}}>Jiří Fabiánek</th>
+                        <th style={{width: "12.5%"}}>Jan Fabiánek</th>
+                        <th style={{width: "12.5%"}}>Radim Jarůšek</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>Daniel Orálek</th>
+                        <td className={"void"}></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Tomáš Kozák</th>
+                        <td></td>
+                        <td className={"void"}></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Martin Nečas</th>
+                        <td></td>
+                        <td></td>
+                        <td className={"void"}></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Jiří Skoták</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td className={"void"}></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Jiří Fabiánek</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td className={"void"}></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Jan Fabiánek</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td className={"void"}></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Radim Jarůšek</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td className={"void"}></td>
+                    </tr>
+                    </tbody>
+                </Table>
+            </Col>
+
+            <Col md={12}>
+                <h4>Sobota</h4>
+                <Table bordered={true} responsive={true}>
+                    {matchesSaturday.map((match, index) => {
+                        return (
+                            <tr key={index}>
+                                <td>{match.match}.</td>
+                                <td>{match.time}</td>
+                                <td><Flag nation={"cze"}/>{match.player1} × <Flag nation={"cze"}/>{match.player2}</td>
+                                <td>{match.result}</td>
+                            </tr>
+                        )
                     })}
-                </ul>
+                </Table>
+
+                <h4>Neděle</h4>
+                <Table bordered={true} responsive={true}>
+                    {matchesSunday.map((match, index) => {
+                        return (
+                            <tr key={index}>
+                                <td>{match.match}.</td>
+                                <td>{match.time}</td>
+                                <td><Flag nation={"cze"}/>{match.player1} × <Flag nation={"cze"}/>{match.player2}</td>
+                                <td>{match.result}</td>
+                            </tr>
+                        )
+                    })}
+                </Table>
+
+                <p>* předehra přes týden</p>
+
 
                 <h3>Pravidla</h3>
                 <p>
                     <ul>
-                        <li><strong>Datum:</strong> 24.&nbsp;-&nbsp;25.&nbsp;8.&nbsp;2024 od 8-18</li>
-                        <li><strong>Maximální počet hráčů:</strong> 10</li>
-                        <li><strong>Registrace do:</strong> 17. 8. 2024 do 18:00</li>
-                        <li><strong>Registrace u Tomáše Kozáka, popř. pomocí SMS na 730996957.</strong></li>
-                        <li><strong>Turnajový systém:</strong> vyřazovací systém na dvě porážky</li>
+                        <li><strong>Datum:</strong> 24.&nbsp;-&nbsp;25.&nbsp;8.&nbsp;2024</li>
+                        <li><strong>Turnajový systém:</strong> Round Robin (každý s každým)</li>
                         <li><strong>Herní systém:</strong> jeden set (tiebreak)</li>
                     </ul>
 
                 </p>
                 <p>
-                    Turnaj se bude hrát <a href={wikiDoubleElimination} target={"_blank"}>vyřazovacím systémem na dvě
-                    porážky</a> (double elimination). Každý zápas se hraje na jeden vítězný set. V případě shodného
-                    stavu 6:6 o vítězi rozhodne tiebreak. Turnaj je rozložen do dvou herních dnů. Přesný harmonogram
-                    bude k dispozici po ukončení registrací.
+                    Protože nás bude jen 7, rozhodli jsme se změnit systém na Round Robin. Každý zápas se hraje na
+                    jeden vítězný set. V případě shodného stavu 6:6 o vítězi rozhodne tiebreak. Turnaj je rozložen do
+                    dvou herních dnů.
                 </p>
 
             </Col>
