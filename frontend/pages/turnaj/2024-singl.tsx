@@ -1,6 +1,6 @@
 import {NextPage} from "next";
 import {useRouter} from "next/router";
-import {Button, Col, Row} from "react-bootstrap";
+import {Alert, Button, Col, Row} from "react-bootstrap";
 import Head from "next/head";
 
 const Singl2024: NextPage = () => {
@@ -25,11 +25,13 @@ const Singl2024: NextPage = () => {
                 <title>Tenisový turnaj - 24. - 25. 8. 2024 - Hřiště Veselice</title>
             </Head>
 
-
             <Col>
                 <h1>Tenisový turnaj - 24.&nbsp;-&nbsp;25.&nbsp;8.&nbsp;2024</h1>
                 <hr/>
                 <h3>Registrovaní hráči</h3>
+                <Alert variant={"warning"}>
+                    Registrace uzavřeny!
+                </Alert>
                 <ul>
                     {players.map((player, index) => {
                         return <li key={index}>{player}</li>
