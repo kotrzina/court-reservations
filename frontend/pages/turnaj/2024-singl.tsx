@@ -89,7 +89,7 @@ const Singl2024: NextPage = () => {
         {
             match: 11,
             time: "08:00",
-            player1: "Jiří Skoták",
+            player1: "Tomáš Kozák",
             player2: "Jan Fabiánek",
             result: "X:X"
         },
@@ -97,56 +97,56 @@ const Singl2024: NextPage = () => {
             match: 12,
             time: "09:00",
             player1: "Martin Nečas",
-            player2: "Radim Jarůšek",
+            player2: "Jiří Fabiánek",
             result: "X:X"
         },
         {
             match: 13,
             time: "10:00",
-            player1: "Daniel Orálek",
-            player2: "Jiří Skoták",
+            player1: "Jiří Skoták",
+            player2: "Jan Fabiánek",
             result: "X:X"
         },
         {
             match: 14,
             time: "11:00",
-            player1: "Martin Nečas",
-            player2: "Jiří Fabiánek",
+            player1: "Daniel Orálek",
+            player2: "Tomáš Kozák",
             result: "X:X"
         },
         {
             match: 15,
             time: "12:00",
-            player1: "Tomáš Kozák",
-            player2: "Jan Fabiánek",
+            player1: "Jan Fabiánek",
+            player2: "Radim Jarůšek",
             result: "X:X"
         },
         {
             match: 16,
             time: "13:00",
             player1: "Daniel Orálek",
-            player2: "Martin Nečas",
+            player2: "Jiří Skoták",
             result: "X:X"
         },
         {
             match: 17,
             time: "14:00",
-            player1: "Tomáš Kozák",
-            player2: "Jiří Skoták",
+            player1: "Martin Nečas",
+            player2: "Radim Jarůšek",
             result: "X:X"
         },
         {
             match: 18,
             time: "15:00",
-            player1: "Jan Fabiánek",
-            player2: "Radim Jarůšek",
+            player1: "Tomáš Kozák",
+            player2: "Jiří Skoták",
             result: "X:X"
         },
         {
             match: 19,
             time: "16:00",
             player1: "Daniel Orálek",
-            player2: "Tomáš Kozák",
+            player2: "Martin Nečas",
             result: "X:X"
         },
         {
@@ -158,7 +158,7 @@ const Singl2024: NextPage = () => {
         },
         {
             match: 21,
-            time: "18:00",
+            time: "TBA*",
             player1: "Jiří Fabiánek",
             player2: "Jan Fabiánek",
             result: "X:X"
@@ -192,9 +192,10 @@ const Singl2024: NextPage = () => {
                     dvou herních dnů.
                 </p>
                 <p>
-                    Rozlosování je uzpůsobeno běžcům, kteří si chtějí zaběhnout závod ve Vavřinču. Los proběhnul v
-                    pondělí kolem 20:00 na Svazarmu za účasti notáře (Maruška Přikrylová). Bylo by dobré dodržovat časy
-                    zápasů, ale není to nutné - vše na domluvě. Pokud někdo bude chtít začít dřív - není problém.
+                    Rozlosování je uzpůsobeno běžcům, kteří si chtějí zaběhnout závod ve Vavřinču, a fotbalistům, kteří
+                    mají v neděli v 17:00 mistrovské utkání okresního přeboru. Los proběhnul v pondělí kolem 20:00 na
+                    Svazarmu za účasti notáře (Maruška Přikrylová). Bylo by dobré dodržovat časy zápasů, ale není to
+                    nutné - vše na domluvě. Pokud někdo bude chtít začít dřív - není problém.
                 </p>
 
                 <h3>Tabulka výsledků:</h3>
@@ -332,7 +333,7 @@ const Singl2024: NextPage = () => {
                 </Table>
 
                 <p>
-                    * předehra ve čtvrtek v 7:30 <br/>
+                    * předehrávka <br/>
                     ** možno přesunout na konec herního dne
                 </p>
 
