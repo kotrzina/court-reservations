@@ -115,6 +115,7 @@ table.accordionView tr td.history {
 
 table.results tr th {
     text-align: center;
+    vertical-align: middle;
 }
 
 table.results tr td {

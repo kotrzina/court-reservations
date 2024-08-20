@@ -8,6 +8,10 @@ const Singl2024: NextPage = () => {
 
     const router = useRouter()
 
+    const cellStyles = {
+        width: "9%",
+    }
+
     const matchesSaturday = [
         {
             match: 1,
@@ -18,7 +22,7 @@ const Singl2024: NextPage = () => {
         },
         {
             match: 2,
-            time: "7:00*",
+            time: "čt 7:30*",
             player1: "Tomáš Kozák",
             player2: "Jiří Fabiánek",
             result: "X:X"
@@ -39,7 +43,7 @@ const Singl2024: NextPage = () => {
         },
         {
             match: 5,
-            time: "14:00",
+            time: "14:00**",
             player1: "Daniel Orálek",
             player2: "Jan Fabiánek",
             result: "X:X"
@@ -160,7 +164,7 @@ const Singl2024: NextPage = () => {
             result: "X:X"
         },
     ]
-    
+
     return (
         <Row>
             <Head>
@@ -169,23 +173,51 @@ const Singl2024: NextPage = () => {
 
             <Col>
                 <h1>Tenisový turnaj - 24.&nbsp;-&nbsp;25.&nbsp;8.&nbsp;2024</h1>
+                <hr/>
 
+                <h3>Pravidla</h3>
+                <p>
+                    <ul>
+                        <li><strong>Datum:</strong> 📅 24.&nbsp;-&nbsp;25.&nbsp;8.&nbsp;2024</li>
+                        <li><strong>Turnajový systém:</strong> ⚙️ Round Robin (každý s každým)</li>
+                        <li><strong>Herní systém:</strong> 🎾 jeden set (tiebreak)</li>
+                        <li><strong>Počet hráčů:</strong> ️‍⛹️‍♂️ 7</li>
+                        <li><strong>Pricepool:</strong> 💰 čest a sláva</li>
+                    </ul>
+
+                </p>
+                <p>
+                    Protože nás bude jen 7, rozhodli jsme se změnit systém na Round Robin. Každý zápas se hraje na
+                    jeden vítězný set. V případě shodného stavu 6:6 o vítězi rozhodne tiebreak. Turnaj je rozložen do
+                    dvou herních dnů.
+                </p>
+                <p>
+                    Rozlosování je uzpůsobeno běžcům, kteří si chtějí zaběhnout závod ve Vavřinču. Los proběhnul v
+                    pondělí kolem 20:00 na Svazarmu za účasti notáře (Maruška Přikrylová). Bylo by dobré dodržovat časy
+                    zápasů, ale není to nutné - vše na domluvě. Pokud někdo bude chtít začít dřív - není problém.
+                </p>
+
+                <h3>Tabulka výsledků:</h3>
                 <Table bordered={true} responsive={true} className={"results"}>
                     <thead>
                     <tr>
-                        <th></th>
-                        <th style={{width: "12.5%"}}>Daniel Orálek</th>
-                        <th style={{width: "12.5%"}}>Tomáš Kozák</th>
-                        <th style={{width: "12.5%"}}>Martin Nečas</th>
-                        <th style={{width: "12.5%"}}>Jiří Skoták</th>
-                        <th style={{width: "12.5%"}}>Jiří Fabiánek</th>
-                        <th style={{width: "12.5%"}}>Jan Fabiánek</th>
-                        <th style={{width: "12.5%"}}>Radim Jarůšek</th>
+                        <th style={{width: "18%"}}></th>
+                        <th style={cellStyles} title={"Vítezství"}>W</th>
+                        <th style={cellStyles} title={"Porážky"}>L</th>
+                        <th style={cellStyles}>Daniel<br/>Orálek</th>
+                        <th style={cellStyles}>Tomáš<br/>Kozák</th>
+                        <th style={cellStyles}>Martin<br/>Nečas</th>
+                        <th style={cellStyles}>Jiří<br/>Skoták</th>
+                        <th style={cellStyles}>Jiří<br/>Fabiánek</th>
+                        <th style={cellStyles}>Jan<br/>Fabiánek</th>
+                        <th style={cellStyles}>Radim<br/>Jarůšek</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <th>Daniel Orálek</th>
+                        <th>Daniel&nbsp;Orálek</th>
+                        <td>0</td>
+                        <td>0</td>
                         <td className={"void"}></td>
                         <td></td>
                         <td></td>
@@ -195,7 +227,9 @@ const Singl2024: NextPage = () => {
                         <td></td>
                     </tr>
                     <tr>
-                        <th>Tomáš Kozák</th>
+                        <th>Tomáš&nbsp;Kozák</th>
+                        <td>0</td>
+                        <td>0</td>
                         <td></td>
                         <td className={"void"}></td>
                         <td></td>
@@ -205,7 +239,9 @@ const Singl2024: NextPage = () => {
                         <td></td>
                     </tr>
                     <tr>
-                        <th>Martin Nečas</th>
+                        <th>Martin&nbsp;Nečas</th>
+                        <td>0</td>
+                        <td>0</td>
                         <td></td>
                         <td></td>
                         <td className={"void"}></td>
@@ -215,7 +251,9 @@ const Singl2024: NextPage = () => {
                         <td></td>
                     </tr>
                     <tr>
-                        <th>Jiří Skoták</th>
+                        <th>Jiří&nbsp;Skoták</th>
+                        <td>0</td>
+                        <td>0</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -225,7 +263,9 @@ const Singl2024: NextPage = () => {
                         <td></td>
                     </tr>
                     <tr>
-                        <th>Jiří Fabiánek</th>
+                        <th>Jiří&nbsp;Fabiánek</th>
+                        <td>0</td>
+                        <td>0</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -235,7 +275,9 @@ const Singl2024: NextPage = () => {
                         <td></td>
                     </tr>
                     <tr>
-                        <th>Jan Fabiánek</th>
+                        <th>Jan&nbsp;Fabiánek</th>
+                        <td>0</td>
+                        <td>0</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -245,7 +287,9 @@ const Singl2024: NextPage = () => {
                         <td></td>
                     </tr>
                     <tr>
-                        <th>Radim Jarůšek</th>
+                        <th>Radim&nbsp;Jarůšek</th>
+                        <td>0</td>
+                        <td>0</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -287,23 +331,11 @@ const Singl2024: NextPage = () => {
                     })}
                 </Table>
 
-                <p>* předehra přes týden</p>
-
-
-                <h3>Pravidla</h3>
                 <p>
-                    <ul>
-                        <li><strong>Datum:</strong> 24.&nbsp;-&nbsp;25.&nbsp;8.&nbsp;2024</li>
-                        <li><strong>Turnajový systém:</strong> Round Robin (každý s každým)</li>
-                        <li><strong>Herní systém:</strong> jeden set (tiebreak)</li>
-                    </ul>
+                    * předehra ve čtvrtek v 7:30 <br/>
+                    ** možno přesunout na konec herního dne
+                </p>
 
-                </p>
-                <p>
-                    Protože nás bude jen 7, rozhodli jsme se změnit systém na Round Robin. Každý zápas se hraje na
-                    jeden vítězný set. V případě shodného stavu 6:6 o vítězi rozhodne tiebreak. Turnaj je rozložen do
-                    dvou herních dnů.
-                </p>
 
             </Col>
 
