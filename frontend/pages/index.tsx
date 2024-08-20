@@ -1,7 +1,7 @@
 import type {NextPage} from 'next'
 import React, {useEffect, useState} from "react";
-import {Col, Row, Spinner, Table} from "react-bootstrap";
-import {fetchTimeTable, Reservation, TimeTable} from "../src/api";
+import {Alert, Button, Col, Row, Spinner, Table} from "react-bootstrap";
+import {Reservation, TimeTable} from "../src/api";
 import {TableHead} from "../components/TableHead";
 import {TableBody} from "../components/TableBody";
 import {useFlash} from "../src/useFlash";
@@ -12,7 +12,7 @@ import Head from "next/head";
 
 const Home: NextPage = () => {
 
-    const [table, setTable] = useState<TimeTable>({
+    const [table] = useState<TimeTable>({
         timeTable: [],
         reservations: [],
         todayReservations: [],
@@ -29,15 +29,10 @@ const Home: NextPage = () => {
         }
     }, [])
 
+
     function fetchData() {
-        setLoading(true)
-        fetchTimeTable().then(data => {
-            setTable(data)
-        }).catch(() => {
-            updateFlash("error", "Nelze načíst rezervace ze serveru. Zkus to prosím později.")
-        }).finally(() => {
-            setLoading(false)
-        })
+        setLoading(false)
+        return
     }
 
     function myReservationFilter(r: Reservation): boolean {
@@ -48,11 +43,31 @@ const Home: NextPage = () => {
         return !!(r.isActive && r.note && r.note.length > 0)
     }
 
+    const url = "https://www.vavrinec.cz/obec/volny-cas/rezervace/viceucelove-hriste-ve-veselici/rezervace/?kalendar_id=1&step=2"
+
     return (
         <>
             <Head>
                 <title>Rezervace - Hřiště Veselice</title>
             </Head>
+
+            <Row>
+                <Col md={12}>
+                    <Alert variant={"success"}>
+                        <Alert.Heading>Nový rezervační systém</Alert.Heading>
+                        <p>
+                            V rámci vybudovaní nového multifunkčního hřiště ve Vavřinci obec spustila nový rezervační
+                            systém i pro hřiště ve Veselici.
+                        </p>
+                        <hr/>
+                        <div className="d-flex">
+                            <Button href={url} variant="outline-success">
+                                Pokračovat do nového systému
+                            </Button>
+                        </div>
+                    </Alert>
+                </Col>
+            </Row>
 
             <Flash flash={flash}/>
             {/*{ts <= 1691784000000 && <AlertBanner*/}
@@ -97,7 +112,7 @@ const Home: NextPage = () => {
                 </Col>
             </Row>
 
-            <Row>
+            <Row hidden={true}>
                 <Spinner animation={"border"} variant={"success"} style={{margin: "0 auto"}} hidden={!loading}/>
 
                 <Col className={'d-none d-sm-none d-md-block d-lg-block d-xl-block'} md={12}
