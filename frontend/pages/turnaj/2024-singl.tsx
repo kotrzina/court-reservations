@@ -235,8 +235,8 @@ const Singl2024: NextPage = () => {
                         <td className={"void"}></td>
                         <td></td>
                         <td></td>
-                        <td></td>
                         <td>6:3</td>
+                        <td></td>
                         <td></td>
                     </tr>
                     <tr>
