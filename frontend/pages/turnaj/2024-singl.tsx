@@ -158,7 +158,7 @@ const Singl2024: NextPage = () => {
         },
         {
             match: 21,
-            time: "TBA*",
+            time: "pá 19:00*",
             player1: "Jiří Fabiánek",
             player2: "Jan Fabiánek",
             result: "X:X"
