@@ -161,7 +161,7 @@ const Singl2024: NextPage = () => {
             time: "pá 19:00*",
             player1: "Jiří Fabiánek",
             player2: "Jan Fabiánek",
-            result: "X:X"
+            result: "1:6"
         },
     ]
 
@@ -272,7 +272,7 @@ const Singl2024: NextPage = () => {
                         <td></td>
                         <td></td>
                         <td className={"void"}></td>
-                        <td></td>
+                        <td>1:6</td>
                         <td></td>
                     </tr>
                     <tr>
@@ -283,7 +283,7 @@ const Singl2024: NextPage = () => {
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
+                        <td>6:1</td>
                         <td className={"void"}></td>
                         <td></td>
                     </tr>
