@@ -95,63 +95,63 @@ const Singl2024: NextPage = () => {
         },
         {
             match: 12,
-            time: "09:00",
+            time: "10:00",
             player1: "Martin Nečas",
             player2: "Jiří Fabiánek",
             result: "X:X"
         },
         {
             match: 13,
-            time: "10:00",
+            time: "09:00",
             player1: "Jiří Skoták",
             player2: "Jan Fabiánek",
             result: "X:X"
         },
         {
             match: 14,
-            time: "11:00",
+            time: "so 19:00",
             player1: "Daniel Orálek",
             player2: "Tomáš Kozák",
             result: "2:6"
         },
         {
             match: 15,
-            time: "12:00",
+            time: "11:00",
             player1: "Jan Fabiánek",
             player2: "Radim Jarůšek",
             result: "X:X"
         },
         {
             match: 16,
-            time: "13:00",
+            time: "???",
             player1: "Daniel Orálek",
             player2: "Jiří Skoták",
             result: "X:X"
         },
         {
             match: 17,
-            time: "14:00",
+            time: "13:00",
             player1: "Martin Nečas",
             player2: "Radim Jarůšek",
             result: "X:X"
         },
         {
             match: 18,
-            time: "15:00",
+            time: "12:00",
             player1: "Tomáš Kozák",
             player2: "Jiří Skoták",
             result: "X:X"
         },
         {
             match: 19,
-            time: "16:00",
+            time: "so 18:00",
             player1: "Daniel Orálek",
             player2: "Martin Nečas",
             result: "6:3"
         },
         {
             match: 20,
-            time: "17:00",
+            time: "14:00",
             player1: "Jiří Skoták",
             player2: "Radim Jarůšek",
             result: "X:X"
