@@ -86,10 +86,38 @@ const Singl2024: NextPage = () => {
     ]
 
     const matchesSunday = [
+		{
+            match: 21,
+            time: "pá 19:00*",
+            player1: "Jiří Fabiánek",
+            player2: "Jan Fabiánek",
+            result: "1:6"
+        },
+		{
+            match: 14,
+            time: "so 19:00",
+            player1: "Daniel Orálek",
+            player2: "Tomáš Kozák",
+            result: "2:6"
+        },
+		{
+            match: 19,
+            time: "so 18:00",
+            player1: "Daniel Orálek",
+            player2: "Martin Nečas",
+            result: "6:3"
+        },
         {
             match: 11,
             time: "08:00",
             player1: "Tomáš Kozák",
+            player2: "Jan Fabiánek",
+            result: "X:X"
+        },
+		{
+            match: 13,
+            time: "09:00",
+            player1: "Jiří Skoták",
             player2: "Jan Fabiánek",
             result: "X:X"
         },
@@ -101,30 +129,16 @@ const Singl2024: NextPage = () => {
             result: "X:X"
         },
         {
-            match: 13,
-            time: "09:00",
-            player1: "Jiří Skoták",
-            player2: "Jan Fabiánek",
-            result: "X:X"
-        },
-        {
-            match: 14,
-            time: "so 19:00",
-            player1: "Daniel Orálek",
-            player2: "Tomáš Kozák",
-            result: "2:6"
-        },
-        {
             match: 15,
             time: "11:00",
             player1: "Jan Fabiánek",
             player2: "Radim Jarůšek",
             result: "X:X"
         },
-        {
-            match: 16,
-            time: "???",
-            player1: "Daniel Orálek",
+		{
+            match: 18,
+            time: "12:00",
+            player1: "Tomáš Kozák",
             player2: "Jiří Skoták",
             result: "X:X"
         },
@@ -136,32 +150,18 @@ const Singl2024: NextPage = () => {
             result: "X:X"
         },
         {
-            match: 18,
-            time: "12:00",
-            player1: "Tomáš Kozák",
-            player2: "Jiří Skoták",
-            result: "X:X"
-        },
-        {
-            match: 19,
-            time: "so 18:00",
-            player1: "Daniel Orálek",
-            player2: "Martin Nečas",
-            result: "6:3"
-        },
-        {
             match: 20,
             time: "14:00",
             player1: "Jiří Skoták",
             player2: "Radim Jarůšek",
             result: "X:X"
         },
-        {
-            match: 21,
-            time: "pá 19:00*",
-            player1: "Jiří Fabiánek",
-            player2: "Jan Fabiánek",
-            result: "1:6"
+		{
+            match: 16,
+            time: "???",
+            player1: "Daniel Orálek",
+            player2: "Jiří Skoták",
+            result: "X:X"
         },
     ]
 
