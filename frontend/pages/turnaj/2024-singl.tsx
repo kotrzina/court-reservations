@@ -60,7 +60,7 @@ const Singl2024: NextPage = () => {
             time: "16:00",
             player1: "Daniel Orálek",
             player2: "Radim Jarůšek",
-            result: "X:X"
+            result: "6:2"
         },
         {
             match: 8,
@@ -217,7 +217,7 @@ const Singl2024: NextPage = () => {
                     <tbody>
                     <tr>
                         <th>Daniel&nbsp;Orálek</th>
-                        <td>1</td>
+                        <td>2</td>
                         <td>0</td>
                         <td className={"void"}></td>
                         <td></td>
@@ -225,7 +225,7 @@ const Singl2024: NextPage = () => {
                         <td></td>
                         <td></td>
                         <td>6:3</td>
-                        <td></td>
+                        <td>6:2</td>
                     </tr>
                     <tr>
                         <th>Tomáš&nbsp;Kozák</th>
@@ -290,8 +290,8 @@ const Singl2024: NextPage = () => {
                     <tr>
                         <th>Radim&nbsp;Jarůšek</th>
                         <td>1</td>
-                        <td>1</td>
-                        <td></td>
+                        <td>2</td>
+                        <td>2:6</td>
                         <td>3:6</td>
                         <td></td>
                         <td></td>
