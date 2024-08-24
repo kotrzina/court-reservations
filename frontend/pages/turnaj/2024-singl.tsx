@@ -43,7 +43,7 @@ const Singl2024: NextPage = () => {
         },
         {
             match: 5,
-            time: "14:00**",
+            time: "14:00",
             player1: "Daniel Orálek",
             player2: "Jan Fabiánek",
             result: "6:3"
@@ -333,8 +333,7 @@ const Singl2024: NextPage = () => {
                 </Table>
 
                 <p>
-                    * předehrávka <br/>
-                    ** možno přesunout na konec herního dne
+                    * předehrávka
                 </p>
 
 
