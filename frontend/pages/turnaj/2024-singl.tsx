@@ -3,6 +3,7 @@ import {useRouter} from "next/router";
 import {Button, Col, Row, Table} from "react-bootstrap";
 import Head from "next/head";
 import {Flag} from "../../components/Flag";
+import Medal from "../../components/Medal";
 
 const Singl2024: NextPage = () => {
 
@@ -86,82 +87,82 @@ const Singl2024: NextPage = () => {
     ]
 
     const matchesSunday = [
-		{
-            match: 21,
-            time: "pá 19:00*",
-            player1: "Jiří Fabiánek",
-            player2: "Jan Fabiánek",
-            result: "1:6"
-        },
-		{
-            match: 14,
-            time: "so 19:00",
-            player1: "Daniel Orálek",
-            player2: "Tomáš Kozák",
-            result: "2:6"
-        },
-		{
-            match: 19,
-            time: "so 18:00",
-            player1: "Daniel Orálek",
-            player2: "Martin Nečas",
-            result: "6:3"
-        },
         {
             match: 11,
             time: "08:00",
             player1: "Tomáš Kozák",
             player2: "Jan Fabiánek",
-            result: "X:X"
-        },
-		{
-            match: 13,
-            time: "09:00",
-            player1: "Jiří Skoták",
-            player2: "Jan Fabiánek",
-            result: "X:X"
+            result: "6:1"
         },
         {
             match: 12,
             time: "10:00",
             player1: "Martin Nečas",
             player2: "Jiří Fabiánek",
-            result: "X:X"
+            result: "7:5"
+        },
+        {
+            match: 13,
+            time: "09:00",
+            player1: "Jiří Skoták",
+            player2: "Jan Fabiánek",
+            result: "0:6"
+        },
+        {
+            match: 14,
+            time: "so 18:00*",
+            player1: "Daniel Orálek",
+            player2: "Tomáš Kozák",
+            result: "2:6"
         },
         {
             match: 15,
             time: "11:00",
             player1: "Jan Fabiánek",
             player2: "Radim Jarůšek",
-            result: "X:X"
+            result: "0:6"
         },
-		{
-            match: 18,
-            time: "12:00",
-            player1: "Tomáš Kozák",
+        {
+            match: 16,
+            time: "---",
+            player1: "Daniel Orálek",
             player2: "Jiří Skoták",
-            result: "X:X"
+            result: "6:0k"
         },
         {
             match: 17,
             time: "13:00",
             player1: "Martin Nečas",
             player2: "Radim Jarůšek",
-            result: "X:X"
+            result: "7:6"
+        },
+        {
+            match: 18,
+            time: "12:00",
+            player1: "Tomáš Kozák",
+            player2: "Jiří Skoták",
+            result: "6:1"
+        },
+        {
+            match: 19,
+            time: "so 19:00*",
+            player1: "Daniel Orálek",
+            player2: "Martin Nečas",
+            result: "6:3"
         },
         {
             match: 20,
             time: "14:00",
             player1: "Jiří Skoták",
             player2: "Radim Jarůšek",
-            result: "X:X"
+            result: "1:6"
         },
-		{
-            match: 16,
-            time: "???",
-            player1: "Daniel Orálek",
-            player2: "Jiří Skoták",
-            result: "X:X"
+        {
+            match: 21,
+            time: "pá 19:00*",
+            player1: "Jiří Fabiánek",
+            player2: "Jan Fabiánek",
+            result: "1:6"
         },
     ]
 
@@ -171,10 +172,25 @@ const Singl2024: NextPage = () => {
                 <title>Tenisový turnaj - 24. - 25. 8. 2024 - Hřiště Veselice</title>
             </Head>
 
-            <Col>
+            <Col md={12}>
                 <h1>Tenisový turnaj - 24.&nbsp;-&nbsp;25.&nbsp;8.&nbsp;2024</h1>
                 <hr/>
+            </Col>
 
+            <Col md={6}>
+                <h3>Vítězové</h3>
+                <ol>
+                    <li><Medal type={"gold"}/> <strong>Tomáš Kozák</strong></li>
+                    <li><Medal type={"silver"}/> <strong>Daniel Orálek</strong></li>
+                    <li><Medal type={"bronze"}/> <strong>Radim Jarůšek</strong></li>
+                    <li><strong>Jan Fabiánek</strong></li>
+                    <li><strong>Martin Nečas</strong></li>
+                    <li><strong>Jiří Skoták</strong></li>
+                    <li><strong>Jiří Fabiánek</strong></li>
+                </ol>
+            </Col>
+            
+            <Col md={6}>
                 <h3>Pravidla</h3>
                 <p>
                     <ul>
@@ -186,6 +202,8 @@ const Singl2024: NextPage = () => {
                     </ul>
 
                 </p>
+            </Col>
+            <Col md={12}>
                 <p>
                     Protože nás bude jen 7, rozhodli jsme se změnit systém na Round Robin. Každý zápas se hraje na
                     jeden vítězný set. V případě shodného stavu 6:6 o vítězi rozhodne tiebreak. Turnaj je rozložen do
@@ -217,59 +235,59 @@ const Singl2024: NextPage = () => {
                     <tbody>
                     <tr>
                         <th>Daniel&nbsp;Orálek</th>
-                        <td>4</td>
+                        <td>5</td>
                         <td>1</td>
                         <td className={"void"}></td>
                         <td>2:6</td>
                         <td>6:3</td>
-                        <td></td>
+                        <td>6:0k</td>
                         <td>6:2</td>
                         <td>6:3</td>
                         <td>6:2</td>
                     </tr>
                     <tr>
                         <th>Tomáš&nbsp;Kozák</th>
-                        <td>4</td>
+                        <td>6</td>
                         <td>0</td>
                         <td>6:2</td>
                         <td className={"void"}></td>
                         <td>6:3</td>
-                        <td></td>
+                        <td>6:1</td>
                         <td>6:3</td>
-                        <td></td>
+                        <td>6:1</td>
                         <td>6:3</td>
                     </tr>
                     <tr>
                         <th>Martin&nbsp;Nečas</th>
-                        <td>1</td>
+                        <td>3</td>
                         <td>3</td>
                         <td>3:6</td>
                         <td>3:6</td>
                         <td className={"void"}></td>
                         <td>6:0</td>
-                        <td></td>
+                        <td>7:5</td>
                         <td>2:6</td>
-                        <td></td>
+                        <td>7:6</td>
                     </tr>
                     <tr>
                         <th>Jiří&nbsp;Skoták</th>
                         <td>1</td>
-                        <td>1</td>
-                        <td></td>
-                        <td></td>
+                        <td>5</td>
+                        <td>0:6k</td>
+                        <td>1:6</td>
                         <td>0:6</td>
                         <td className={"void"}></td>
                         <td>7:6</td>
-                        <td></td>
-                        <td></td>
+                        <td>0:6</td>
+                        <td>1:6</td>
                     </tr>
                     <tr>
                         <th>Jiří&nbsp;Fabiánek</th>
                         <td>0</td>
-                        <td>5</td>
+                        <td>6</td>
                         <td>2:6</td>
                         <td>3:6</td>
-                        <td></td>
+                        <td>5:7</td>
                         <td>6:7</td>
                         <td className={"void"}></td>
                         <td>1:6</td>
@@ -277,26 +295,26 @@ const Singl2024: NextPage = () => {
                     </tr>
                     <tr>
                         <th>Jan&nbsp;Fabiánek</th>
-                        <td>2</td>
-                        <td>1</td>
+                        <td>3</td>
+                        <td>3</td>
                         <td>3:6</td>
-                        <td></td>
+                        <td>1:6</td>
                         <td>6:2</td>
-                        <td></td>
+                        <td>6:0</td>
                         <td>6:1</td>
                         <td className={"void"}></td>
-                        <td></td>
+                        <td>0:6</td>
                     </tr>
                     <tr>
                         <th>Radim&nbsp;Jarůšek</th>
-                        <td>1</td>
-                        <td>2</td>
+                        <td>3</td>
+                        <td>3</td>
                         <td>2:6</td>
                         <td>3:6</td>
-                        <td></td>
-                        <td></td>
+                        <td>6:7</td>
+                        <td>6:1</td>
                         <td>6:0</td>
-                        <td></td>
+                        <td>6:0</td>
                         <td className={"void"}></td>
                     </tr>
                     </tbody>
